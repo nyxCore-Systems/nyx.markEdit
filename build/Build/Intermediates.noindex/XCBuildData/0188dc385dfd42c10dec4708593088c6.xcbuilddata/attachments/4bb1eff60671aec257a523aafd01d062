@@ -1,0 +1,41 @@
+{
+  "" : {
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary.dia",
+    "emit-module-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary-emit-module.dia",
+    "pch" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker-primary.swiftdeps"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/Extensions/Notification+Extension.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/Notification+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/Notification+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/Notification+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/FontPicker.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPicker.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/FontPickerConfiguration.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerConfiguration.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerConfiguration.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerConfiguration.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/FontPickerHandlers.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerHandlers.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerHandlers.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontPickerHandlers.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/FontStyle.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontStyle.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontStyle.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontStyle.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/Internal/FontManagerDelegate.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontManagerDelegate.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontManagerDelegate.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/x86_64/FontManagerDelegate.o"
+  }
+}

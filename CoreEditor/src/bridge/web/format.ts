@@ -14,6 +14,7 @@ import {
   insertCodeBlock,
   insertMathBlock,
   insertHorizontalRule,
+  insertPageBreak,
   formatContent,
   performEditCommand,
 } from '../../modules/commands';
@@ -39,6 +40,7 @@ export interface WebModuleFormat extends WebModule {
   insertCodeBlock(): void;
   insertMathBlock(): void;
   insertHorizontalRule(): void;
+  insertPageBreak(): void;
   insertHyperLink({ title, url, prefix }: { title: string; url: string; prefix?: string }): void;
   insertTable({ columnName, itemName }: { columnName: string; itemName: string }): void;
   formatContent(args: { insertFinalNewline: boolean; trimTrailingWhitespace: boolean; userInitiated: boolean }): boolean;
@@ -96,6 +98,10 @@ export class WebModuleFormatImpl implements WebModuleFormat {
 
   insertHorizontalRule(): void {
     insertHorizontalRule();
+  }
+
+  insertPageBreak(): void {
+    insertPageBreak();
   }
 
   insertHyperLink({ title, url, prefix }: { title: string; url: string; prefix?: string }): void {

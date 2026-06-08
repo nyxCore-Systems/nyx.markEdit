@@ -1,0 +1,2088 @@
+[
+  {
+    "typeName": "MarkEdit.IntentProvider",
+    "mangledTypeName": "8MarkEdit14IntentProviderV",
+    "kind": "struct",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/IntentProvider.swift",
+    "line": 10,
+    "conformances": [
+      "AppIntents.AppShortcutsProvider",
+      "Swift.Sendable",
+      "Swift.SendableMetatype",
+      "Swift.BitwiseCopyable"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "AppIntents.AppShortcutsProvider",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.BitwiseCopyable",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [],
+    "properties": [
+      {
+        "label": "appShortcuts",
+        "type": "Swift.Array<AppIntents.AppShortcut>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/IntentProvider.swift",
+        "line": 11,
+        "valueKind": "Array",
+        "value": [
+          {
+            "valueKind": "InitCall",
+            "value": {
+              "type": "AppIntents.AppShortcut",
+              "arguments": [
+                {
+                  "label": "intent",
+                  "type": "MarkEdit.CreateNewDocumentIntent",
+                  "valueKind": "InitCall",
+                  "value": {
+                    "type": "MarkEdit.CreateNewDocumentIntent",
+                    "arguments": []
+                  }
+                },
+                {
+                  "label": "phrases",
+                  "type": "Swift.Array<AppIntents.AppShortcutPhrase<MarkEdit.CreateNewDocumentIntent>>",
+                  "valueKind": "Array",
+                  "value": [
+                    {
+                      "valueKind": "InterpolatedStringLiteral",
+                      "value": {
+                        "segments": [
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": "Create New Document in "
+                          },
+                          {
+                            "valueKind": "Enum",
+                            "value": {
+                              "name": "applicationName"
+                            }
+                          },
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": "shortTitle",
+                  "type": "Foundation.LocalizedStringResource",
+                  "valueKind": "RawLiteral",
+                  "value": "Create New Document"
+                },
+                {
+                  "label": "systemImageName",
+                  "type": "Swift.String",
+                  "valueKind": "RawLiteral",
+                  "value": "plus.square"
+                }
+              ]
+            }
+          },
+          {
+            "valueKind": "InitCall",
+            "value": {
+              "type": "AppIntents.AppShortcut",
+              "arguments": [
+                {
+                  "label": "intent",
+                  "type": "MarkEdit.EvaluateJavaScriptIntent",
+                  "valueKind": "InitCall",
+                  "value": {
+                    "type": "MarkEdit.EvaluateJavaScriptIntent",
+                    "arguments": []
+                  }
+                },
+                {
+                  "label": "phrases",
+                  "type": "Swift.Array<AppIntents.AppShortcutPhrase<MarkEdit.EvaluateJavaScriptIntent>>",
+                  "valueKind": "Array",
+                  "value": [
+                    {
+                      "valueKind": "InterpolatedStringLiteral",
+                      "value": {
+                        "segments": [
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": "Evaluate JavaScript in "
+                          },
+                          {
+                            "valueKind": "Enum",
+                            "value": {
+                              "name": "applicationName"
+                            }
+                          },
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": "shortTitle",
+                  "type": "Foundation.LocalizedStringResource",
+                  "valueKind": "RawLiteral",
+                  "value": "Evaluate JavaScript"
+                },
+                {
+                  "label": "systemImageName",
+                  "type": "Swift.String",
+                  "valueKind": "RawLiteral",
+                  "value": "curlybraces.square"
+                }
+              ]
+            }
+          },
+          {
+            "valueKind": "InitCall",
+            "value": {
+              "type": "AppIntents.AppShortcut",
+              "arguments": [
+                {
+                  "label": "intent",
+                  "type": "MarkEdit.GetFileContentIntent",
+                  "valueKind": "InitCall",
+                  "value": {
+                    "type": "MarkEdit.GetFileContentIntent",
+                    "arguments": []
+                  }
+                },
+                {
+                  "label": "phrases",
+                  "type": "Swift.Array<AppIntents.AppShortcutPhrase<MarkEdit.GetFileContentIntent>>",
+                  "valueKind": "Array",
+                  "value": [
+                    {
+                      "valueKind": "InterpolatedStringLiteral",
+                      "value": {
+                        "segments": [
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": "Get File Content in "
+                          },
+                          {
+                            "valueKind": "Enum",
+                            "value": {
+                              "name": "applicationName"
+                            }
+                          },
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": "shortTitle",
+                  "type": "Foundation.LocalizedStringResource",
+                  "valueKind": "RawLiteral",
+                  "value": "Get File Content"
+                },
+                {
+                  "label": "systemImageName",
+                  "type": "Swift.String",
+                  "valueKind": "RawLiteral",
+                  "value": "doc.plaintext"
+                }
+              ]
+            }
+          },
+          {
+            "valueKind": "InitCall",
+            "value": {
+              "type": "AppIntents.AppShortcut",
+              "arguments": [
+                {
+                  "label": "intent",
+                  "type": "MarkEdit.UpdateFileContentIntent",
+                  "valueKind": "InitCall",
+                  "value": {
+                    "type": "MarkEdit.UpdateFileContentIntent",
+                    "arguments": []
+                  }
+                },
+                {
+                  "label": "phrases",
+                  "type": "Swift.Array<AppIntents.AppShortcutPhrase<MarkEdit.UpdateFileContentIntent>>",
+                  "valueKind": "Array",
+                  "value": [
+                    {
+                      "valueKind": "InterpolatedStringLiteral",
+                      "value": {
+                        "segments": [
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": "Update File Content in "
+                          },
+                          {
+                            "valueKind": "Enum",
+                            "value": {
+                              "name": "applicationName"
+                            }
+                          },
+                          {
+                            "valueKind": "RawLiteral",
+                            "value": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": "shortTitle",
+                  "type": "Foundation.LocalizedStringResource",
+                  "valueKind": "RawLiteral",
+                  "value": "Update File Content"
+                },
+                {
+                  "label": "systemImageName",
+                  "type": "Swift.String",
+                  "valueKind": "RawLiteral",
+                  "value": "character.textbox"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "typeName": "MarkEdit.UpdateFileContentIntent",
+    "mangledTypeName": "8MarkEdit23UpdateFileContentIntentV",
+    "kind": "struct",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+    "line": 11,
+    "conformances": [
+      "AppIntents.AppIntent",
+      "AppIntents.PersistentlyIdentifiable",
+      "AppIntents._SupportsAppDependencies",
+      "Swift.Sendable",
+      "Swift.SendableMetatype"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "AppIntents.AppIntent",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.PersistentlyIdentifiable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents._SupportsAppDependencies",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [
+      {
+        "typeAliasName": "PerformResult",
+        "substitutedTypeName": "some AppIntents.IntentResult",
+        "substitutedMangledTypeName": "8MarkEdit23UpdateFileContentIntentV7performQryYaKFQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.IntentResult"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      },
+      {
+        "typeAliasName": "SummaryContent",
+        "substitutedTypeName": "some AppIntents.ParameterSummary",
+        "substitutedMangledTypeName": "8MarkEdit23UpdateFileContentIntentV16parameterSummaryQrvpZQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ParameterSummary"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      }
+    ],
+    "properties": [
+      {
+        "label": "_content",
+        "type": "AppIntents.IntentParameter<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 45,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.String>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "_granularity",
+        "type": "AppIntents.IntentParameter<MarkEdit.UpdateFileContentIntent.Granularity>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 48,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<MarkEdit.UpdateFileContentIntent.Granularity>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Granularity"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<MarkEdit.UpdateFileContentIntent.Granularity>",
+              "valueKind": "Enum",
+              "value": {
+                "name": "wholeDocument"
+              }
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestDisambiguationDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            },
+            {
+              "label": "supportedValues",
+              "type": "Swift.Array<MarkEdit.UpdateFileContentIntent.Granularity>",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "_saveChanges",
+        "type": "AppIntents.IntentParameter<Swift.Bool>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 51,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Bool>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Save Changes"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.Bool>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "displayName",
+              "type": "Swift.Optional<Swift.Bool.IntentDisplayName>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "title",
+        "type": "Foundation.LocalizedStringResource",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 35,
+        "valueKind": "RawLiteral",
+        "value": "Update File Content"
+      },
+      {
+        "label": "description",
+        "type": "AppIntents.IntentDescription",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 36,
+        "valueKind": "RawLiteral",
+        "value": "Updates file content of the active document; throws an error if no editor is opened."
+      },
+      {
+        "label": "parameterSummary",
+        "type": "some AppIntents.ParameterSummary",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 37,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameterSummary<MarkEdit.UpdateFileContentIntent>",
+          "arguments": [
+            {
+              "label": "",
+              "type": "AppIntents.ParameterSummaryString<MarkEdit.UpdateFileContentIntent>",
+              "valueKind": "InterpolatedStringLiteral",
+              "value": {
+                "segments": [
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": "Update file with "
+                  },
+                  {
+                    "valueKind": "KeyPath",
+                    "value": {
+                      "path": "$content",
+                      "rootType": "MarkEdit.UpdateFileContentIntent",
+                      "components": [
+                        {
+                          "label": "$content",
+                          "type": "AppIntents.IntentParameter<Swift.String>"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": ""
+                  }
+                ]
+              }
+            },
+            {
+              "label": "table",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "",
+              "type": "() -> Swift.Array<Swift.PartialKeyPath<MarkEdit.UpdateFileContentIntent>>",
+              "valueKind": "Builder",
+              "value": {
+                "type": "",
+                "members": [
+                  {
+                    "kind": "buildExpression",
+                    "element": {
+                      "valueKind": "KeyPath",
+                      "value": {
+                        "path": "$granularity",
+                        "rootType": "MarkEdit.UpdateFileContentIntent",
+                        "components": [
+                          {
+                            "label": "$granularity",
+                            "type": "AppIntents.IntentParameter<MarkEdit.UpdateFileContentIntent.Granularity>"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "kind": "buildExpression",
+                    "element": {
+                      "valueKind": "KeyPath",
+                      "value": {
+                        "path": "$saveChanges",
+                        "rootType": "MarkEdit.UpdateFileContentIntent",
+                        "components": [
+                          {
+                            "label": "$saveChanges",
+                            "type": "AppIntents.IntentParameter<Swift.Bool>"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "label": "content",
+        "type": "Swift.String",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 45,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.String>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+            "line": 44,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Content"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$content",
+        "type": "AppIntents.IntentParameter<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 45,
+        "valueKind": "Runtime"
+      },
+      {
+        "label": "granularity",
+        "type": "MarkEdit.UpdateFileContentIntent.Granularity",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 48,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<MarkEdit.UpdateFileContentIntent.Granularity>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Granularity"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<MarkEdit.UpdateFileContentIntent.Granularity>",
+              "valueKind": "Enum",
+              "value": {
+                "name": "wholeDocument"
+              }
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestDisambiguationDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            },
+            {
+              "label": "supportedValues",
+              "type": "Swift.Array<MarkEdit.UpdateFileContentIntent.Granularity>",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+            "line": 47,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Granularity"
+              },
+              {
+                "label": "default",
+                "type": "Swift.Optional<MarkEdit.UpdateFileContentIntent.Granularity>",
+                "valueKind": "Enum",
+                "value": {
+                  "name": "wholeDocument"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$granularity",
+        "type": "AppIntents.IntentParameter<MarkEdit.UpdateFileContentIntent.Granularity>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 48,
+        "valueKind": "Runtime"
+      },
+      {
+        "label": "saveChanges",
+        "type": "Swift.Bool",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 51,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Bool>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Save Changes"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.Bool>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "displayName",
+              "type": "Swift.Optional<Swift.Bool.IntentDisplayName>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+            "line": 50,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Save Changes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$saveChanges",
+        "type": "AppIntents.IntentParameter<Swift.Bool>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 51,
+        "valueKind": "Runtime"
+      }
+    ]
+  },
+  {
+    "typeName": "MarkEdit.UpdateFileContentIntent.Granularity",
+    "mangledTypeName": "8MarkEdit23UpdateFileContentIntentV11GranularityO",
+    "kind": "enum",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+    "line": 12,
+    "conformances": [
+      "Swift.Equatable",
+      "Swift.Hashable",
+      "Swift.RawRepresentable",
+      "AppIntents.AppEnum",
+      "AppIntents.AppValue",
+      "AppIntents.StaticDisplayRepresentable",
+      "AppIntents.PersistentlyIdentifiable",
+      "AppIntents.TypeDisplayRepresentable",
+      "AppIntents._IntentValue",
+      "Swift.Sendable",
+      "AppIntents.CaseDisplayRepresentable",
+      "Swift.SendableMetatype",
+      "Foundation.CustomLocalizedStringResourceConvertible",
+      "Swift.CaseIterable",
+      "Swift.BitwiseCopyable"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "Swift.Equatable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Hashable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.RawRepresentable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.AppEnum",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.AppValue",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.StaticDisplayRepresentable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.PersistentlyIdentifiable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.TypeDisplayRepresentable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents._IntentValue",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.CaseDisplayRepresentable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Foundation.CustomLocalizedStringResourceConvertible",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.CaseIterable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.BitwiseCopyable",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [
+      {
+        "typeAliasName": "RawValue",
+        "substitutedTypeName": "Swift.String",
+        "substitutedMangledTypeName": "SS"
+      },
+      {
+        "typeAliasName": "ValueType",
+        "substitutedTypeName": "MarkEdit.UpdateFileContentIntent.Granularity",
+        "substitutedMangledTypeName": "8MarkEdit23UpdateFileContentIntentV11GranularityO"
+      },
+      {
+        "typeAliasName": "UnwrappedType",
+        "substitutedTypeName": "MarkEdit.UpdateFileContentIntent.Granularity",
+        "substitutedMangledTypeName": "8MarkEdit23UpdateFileContentIntentV11GranularityO"
+      },
+      {
+        "typeAliasName": "Specification",
+        "substitutedTypeName": "some AppIntents.ResolverSpecification",
+        "substitutedMangledTypeName": "10AppIntents0A4EnumPAAE28defaultResolverSpecificationQrvpZQOy8MarkEdit23UpdateFileContentIntentV11GranularityO_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ResolverSpecification"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      },
+      {
+        "typeAliasName": "AllCases",
+        "substitutedTypeName": "Swift.Array<MarkEdit.UpdateFileContentIntent.Granularity>",
+        "substitutedMangledTypeName": "Say8MarkEdit23UpdateFileContentIntentV11GranularityOG"
+      }
+    ],
+    "properties": [
+      {
+        "label": "typeDisplayRepresentation",
+        "type": "AppIntents.TypeDisplayRepresentation",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 16,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.TypeDisplayRepresentation",
+          "arguments": [
+            {
+              "label": "name",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Granularity"
+            },
+            {
+              "label": "numericFormat",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            }
+          ]
+        }
+      },
+      {
+        "label": "caseDisplayRepresentations",
+        "type": "Swift.Dictionary<MarkEdit.UpdateFileContentIntent.Granularity, AppIntents.DisplayRepresentation>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 20,
+        "valueKind": "Dictionary",
+        "value": [
+          {
+            "key": {
+              "valueKind": "Enum",
+              "value": {
+                "name": "wholeDocument"
+              }
+            },
+            "value": {
+              "valueKind": "RawLiteral",
+              "value": "Whole Document"
+            }
+          },
+          {
+            "key": {
+              "valueKind": "Enum",
+              "value": {
+                "name": "selection"
+              }
+            },
+            "value": {
+              "valueKind": "RawLiteral",
+              "value": "Selection"
+            }
+          }
+        ]
+      },
+      {
+        "label": "replaceGranularity",
+        "type": "MarkEditKit.ReplaceGranularity",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/UpdateFileContentIntent.swift",
+        "line": 27,
+        "valueKind": "Runtime"
+      },
+      {
+        "label": "allCases",
+        "type": "Swift.Array<MarkEdit.UpdateFileContentIntent.Granularity>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "valueKind": "Array",
+        "value": [
+          {
+            "valueKind": "Enum",
+            "value": {
+              "name": "wholeDocument"
+            }
+          },
+          {
+            "valueKind": "Enum",
+            "value": {
+              "name": "selection"
+            }
+          }
+        ]
+      },
+      {
+        "label": "rawValue",
+        "type": "Swift.String",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "valueKind": "Runtime"
+      }
+    ],
+    "cases": [
+      {
+        "name": "wholeDocument",
+        "rawValue": "wholeDocument"
+      },
+      {
+        "name": "selection",
+        "rawValue": "selection"
+      }
+    ]
+  },
+  {
+    "typeName": "MarkEdit.GetFileContentIntent",
+    "mangledTypeName": "8MarkEdit20GetFileContentIntentV",
+    "kind": "struct",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/GetFileContentIntent.swift",
+    "line": 10,
+    "conformances": [
+      "AppIntents.AppIntent",
+      "AppIntents.PersistentlyIdentifiable",
+      "AppIntents._SupportsAppDependencies",
+      "Swift.Sendable",
+      "Swift.SendableMetatype",
+      "Swift.BitwiseCopyable"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "AppIntents.AppIntent",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.PersistentlyIdentifiable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents._SupportsAppDependencies",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.BitwiseCopyable",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [
+      {
+        "typeAliasName": "PerformResult",
+        "substitutedTypeName": "some AppIntents.ReturnsValue<AppIntents.IntentFile>",
+        "substitutedMangledTypeName": "8MarkEdit20GetFileContentIntentV7performQryYaKFQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ReturnsValue"
+        ],
+        "opaqueTypeSameTypeRequirements": [
+          {
+            "typeAliasName": "AppIntents.IntentResult.Value",
+            "substitutedTypeName": "AppIntents.IntentFile",
+            "substitutedMangledTypeName": "10AppIntents10IntentFileV"
+          }
+        ]
+      },
+      {
+        "typeAliasName": "SummaryContent",
+        "substitutedTypeName": "some AppIntents.ParameterSummary",
+        "substitutedMangledTypeName": "10AppIntents0A6IntentPAAE16parameterSummaryQrvpZQOy8MarkEdit014GetFileContentC0V_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ParameterSummary"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      }
+    ],
+    "properties": [
+      {
+        "label": "title",
+        "type": "Foundation.LocalizedStringResource",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/GetFileContentIntent.swift",
+        "line": 11,
+        "valueKind": "RawLiteral",
+        "value": "Get File Content"
+      },
+      {
+        "label": "description",
+        "type": "AppIntents.IntentDescription",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/GetFileContentIntent.swift",
+        "line": 12,
+        "valueKind": "RawLiteral",
+        "value": "Gets file content of the active document; throws an error if no editor is opened."
+      }
+    ]
+  },
+  {
+    "typeName": "MarkEdit.EvaluateJavaScriptIntent",
+    "mangledTypeName": "8MarkEdit24EvaluateJavaScriptIntentV",
+    "kind": "struct",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+    "line": 11,
+    "conformances": [
+      "AppIntents.AppIntent",
+      "AppIntents.PersistentlyIdentifiable",
+      "AppIntents._SupportsAppDependencies",
+      "Swift.Sendable",
+      "Swift.SendableMetatype"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "AppIntents.AppIntent",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.PersistentlyIdentifiable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents._SupportsAppDependencies",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [
+      {
+        "typeAliasName": "PerformResult",
+        "substitutedTypeName": "some AppIntents.ReturnsValue<Swift.String>",
+        "substitutedMangledTypeName": "8MarkEdit24EvaluateJavaScriptIntentV7performQryYaKFQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ReturnsValue"
+        ],
+        "opaqueTypeSameTypeRequirements": [
+          {
+            "typeAliasName": "AppIntents.IntentResult.Value",
+            "substitutedTypeName": "Swift.String",
+            "substitutedMangledTypeName": "SS"
+          }
+        ]
+      },
+      {
+        "typeAliasName": "SummaryContent",
+        "substitutedTypeName": "some AppIntents.ParameterSummary",
+        "substitutedMangledTypeName": "8MarkEdit24EvaluateJavaScriptIntentV16parameterSummaryQrvpZQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ParameterSummary"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      }
+    ],
+    "properties": [
+      {
+        "label": "_content",
+        "type": "AppIntents.IntentParameter<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 22,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.String>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "InitCall",
+              "value": {
+                "type": "Swift.String.IntentInputOptions",
+                "arguments": [
+                  {
+                    "label": "keyboardType",
+                    "type": "Swift.String.IntentInputOptions.KeyboardType",
+                    "valueKind": "Runtime"
+                  },
+                  {
+                    "label": "capitalizationType",
+                    "type": "Swift.String.IntentInputOptions.CapitalizationType",
+                    "valueKind": "Enum",
+                    "value": {
+                      "name": "none"
+                    }
+                  },
+                  {
+                    "label": "multiline",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "true"
+                  },
+                  {
+                    "label": "autocorrect",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  },
+                  {
+                    "label": "smartQuotes",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  },
+                  {
+                    "label": "smartDashes",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "_callAsync",
+        "type": "AppIntents.IntentParameter<Swift.Bool>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 25,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Bool>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Call Async JavaScript"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "RawLiteral",
+              "value": "Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value."
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.Bool>",
+              "valueKind": "RawLiteral",
+              "value": "false"
+            },
+            {
+              "label": "displayName",
+              "type": "Swift.Optional<Swift.Bool.IntentDisplayName>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "title",
+        "type": "Foundation.LocalizedStringResource",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 12,
+        "valueKind": "RawLiteral",
+        "value": "Evaluate JavaScript"
+      },
+      {
+        "label": "description",
+        "type": "AppIntents.IntentDescription",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 13,
+        "valueKind": "RawLiteral",
+        "value": "Evaluates JavaScript and gets the result on the active document; throws an error if no editor is opened."
+      },
+      {
+        "label": "parameterSummary",
+        "type": "some AppIntents.ParameterSummary",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 15,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameterSummary<MarkEdit.EvaluateJavaScriptIntent>",
+          "arguments": [
+            {
+              "label": "",
+              "type": "AppIntents.ParameterSummaryString<MarkEdit.EvaluateJavaScriptIntent>",
+              "valueKind": "InterpolatedStringLiteral",
+              "value": {
+                "segments": [
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": "Evaluate JavaScript with "
+                  },
+                  {
+                    "valueKind": "KeyPath",
+                    "value": {
+                      "path": "$content",
+                      "rootType": "MarkEdit.EvaluateJavaScriptIntent",
+                      "components": [
+                        {
+                          "label": "$content",
+                          "type": "AppIntents.IntentParameter<Swift.String>"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": ""
+                  }
+                ]
+              }
+            },
+            {
+              "label": "table",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "",
+              "type": "() -> Swift.Array<Swift.PartialKeyPath<MarkEdit.EvaluateJavaScriptIntent>>",
+              "valueKind": "Builder",
+              "value": {
+                "type": "",
+                "members": [
+                  {
+                    "kind": "buildExpression",
+                    "element": {
+                      "valueKind": "KeyPath",
+                      "value": {
+                        "path": "$callAsync",
+                        "rootType": "MarkEdit.EvaluateJavaScriptIntent",
+                        "components": [
+                          {
+                            "label": "$callAsync",
+                            "type": "AppIntents.IntentParameter<Swift.Bool>"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "label": "content",
+        "type": "Swift.String",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 22,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.String>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "InitCall",
+              "value": {
+                "type": "Swift.String.IntentInputOptions",
+                "arguments": [
+                  {
+                    "label": "keyboardType",
+                    "type": "Swift.String.IntentInputOptions.KeyboardType",
+                    "valueKind": "Runtime"
+                  },
+                  {
+                    "label": "capitalizationType",
+                    "type": "Swift.String.IntentInputOptions.CapitalizationType",
+                    "valueKind": "Enum",
+                    "value": {
+                      "name": "none"
+                    }
+                  },
+                  {
+                    "label": "multiline",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "true"
+                  },
+                  {
+                    "label": "autocorrect",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  },
+                  {
+                    "label": "smartQuotes",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  },
+                  {
+                    "label": "smartDashes",
+                    "type": "Swift.Bool",
+                    "valueKind": "RawLiteral",
+                    "value": "false"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+            "line": 21,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Content"
+              },
+              {
+                "label": "inputOptions",
+                "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+                "valueKind": "InitCall",
+                "value": {
+                  "type": "Swift.String.IntentInputOptions",
+                  "arguments": [
+                    {
+                      "label": "keyboardType",
+                      "type": "Swift.String.IntentInputOptions.KeyboardType",
+                      "valueKind": "Runtime"
+                    },
+                    {
+                      "label": "capitalizationType",
+                      "type": "Swift.String.IntentInputOptions.CapitalizationType",
+                      "valueKind": "Enum",
+                      "value": {
+                        "name": "none"
+                      }
+                    },
+                    {
+                      "label": "multiline",
+                      "type": "Swift.Bool",
+                      "valueKind": "RawLiteral",
+                      "value": "true"
+                    },
+                    {
+                      "label": "autocorrect",
+                      "type": "Swift.Bool",
+                      "valueKind": "RawLiteral",
+                      "value": "false"
+                    },
+                    {
+                      "label": "smartQuotes",
+                      "type": "Swift.Bool",
+                      "valueKind": "RawLiteral",
+                      "value": "false"
+                    },
+                    {
+                      "label": "smartDashes",
+                      "type": "Swift.Bool",
+                      "valueKind": "RawLiteral",
+                      "value": "false"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$content",
+        "type": "AppIntents.IntentParameter<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 22,
+        "valueKind": "Runtime"
+      },
+      {
+        "label": "callAsync",
+        "type": "Swift.Bool",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 25,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Bool>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Call Async JavaScript"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "RawLiteral",
+              "value": "Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value."
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.Bool>",
+              "valueKind": "RawLiteral",
+              "value": "false"
+            },
+            {
+              "label": "displayName",
+              "type": "Swift.Optional<Swift.Bool.IntentDisplayName>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+            "line": 24,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Call Async JavaScript"
+              },
+              {
+                "label": "description",
+                "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+                "valueKind": "RawLiteral",
+                "value": "Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value."
+              },
+              {
+                "label": "default",
+                "type": "Swift.Optional<Swift.Bool>",
+                "valueKind": "RawLiteral",
+                "value": "false"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$callAsync",
+        "type": "AppIntents.IntentParameter<Swift.Bool>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/EvaluateJavaScriptIntent.swift",
+        "line": 25,
+        "valueKind": "Runtime"
+      }
+    ]
+  },
+  {
+    "typeName": "MarkEdit.CreateNewDocumentIntent",
+    "mangledTypeName": "8MarkEdit23CreateNewDocumentIntentV",
+    "kind": "struct",
+    "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+    "line": 11,
+    "conformances": [
+      "AppIntents.AppIntent",
+      "AppIntents.PersistentlyIdentifiable",
+      "AppIntents._SupportsAppDependencies",
+      "Swift.Sendable",
+      "Swift.SendableMetatype"
+    ],
+    "allConformances": [
+      {
+        "protocolName": "AppIntents.AppIntent",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents.PersistentlyIdentifiable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "AppIntents._SupportsAppDependencies",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.Sendable",
+        "conformanceDefiningModule": "MarkEdit"
+      },
+      {
+        "protocolName": "Swift.SendableMetatype",
+        "conformanceDefiningModule": "MarkEdit"
+      }
+    ],
+    "associatedTypeAliases": [
+      {
+        "typeAliasName": "PerformResult",
+        "substitutedTypeName": "some AppIntents.IntentResult",
+        "substitutedMangledTypeName": "8MarkEdit23CreateNewDocumentIntentV7performQryYaKFQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.IntentResult"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      },
+      {
+        "typeAliasName": "SummaryContent",
+        "substitutedTypeName": "some AppIntents.ParameterSummary",
+        "substitutedMangledTypeName": "8MarkEdit23CreateNewDocumentIntentV16parameterSummaryQrvpZQOy_Qo_",
+        "opaqueTypeProtocolRequirements": [
+          "AppIntents.ParameterSummary"
+        ],
+        "opaqueTypeSameTypeRequirements": []
+      }
+    ],
+    "properties": [
+      {
+        "label": "_fileName",
+        "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 20,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "File Name"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "_initialContent",
+        "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 23,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Initial Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "RawLiteral",
+              "value": ""
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        }
+      },
+      {
+        "label": "title",
+        "type": "Foundation.LocalizedStringResource",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 12,
+        "valueKind": "RawLiteral",
+        "value": "Create New Document"
+      },
+      {
+        "label": "description",
+        "type": "AppIntents.IntentDescription",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 13,
+        "valueKind": "RawLiteral",
+        "value": "Creates a new document, with optional parameters to set the file name and the initial content."
+      },
+      {
+        "label": "openAppWhenRun",
+        "type": "Swift.Bool",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "false",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 14,
+        "valueKind": "RawLiteral",
+        "value": "true"
+      },
+      {
+        "label": "parameterSummary",
+        "type": "some AppIntents.ParameterSummary",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "true",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 15,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameterSummary<MarkEdit.CreateNewDocumentIntent>",
+          "arguments": [
+            {
+              "label": "",
+              "type": "AppIntents.ParameterSummaryString<MarkEdit.CreateNewDocumentIntent>",
+              "valueKind": "InterpolatedStringLiteral",
+              "value": {
+                "segments": [
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": "New Document named "
+                  },
+                  {
+                    "valueKind": "KeyPath",
+                    "value": {
+                      "path": "$fileName",
+                      "rootType": "MarkEdit.CreateNewDocumentIntent",
+                      "components": [
+                        {
+                          "label": "$fileName",
+                          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": " with "
+                  },
+                  {
+                    "valueKind": "KeyPath",
+                    "value": {
+                      "path": "$initialContent",
+                      "rootType": "MarkEdit.CreateNewDocumentIntent",
+                      "components": [
+                        {
+                          "label": "$initialContent",
+                          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "valueKind": "RawLiteral",
+                    "value": ""
+                  }
+                ]
+              }
+            },
+            {
+              "label": "table",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            }
+          ]
+        }
+      },
+      {
+        "label": "fileName",
+        "type": "Swift.Optional<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 20,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "File Name"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+            "line": 19,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "File Name"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$fileName",
+        "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 20,
+        "valueKind": "Runtime"
+      },
+      {
+        "label": "initialContent",
+        "type": "Swift.Optional<Swift.String>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 23,
+        "valueKind": "InitCall",
+        "value": {
+          "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+          "arguments": [
+            {
+              "label": "title",
+              "type": "Foundation.LocalizedStringResource",
+              "valueKind": "RawLiteral",
+              "value": "Initial Content"
+            },
+            {
+              "label": "description",
+              "type": "Swift.Optional<Foundation.LocalizedStringResource>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "default",
+              "type": "Swift.Optional<Swift.String>",
+              "valueKind": "RawLiteral",
+              "value": ""
+            },
+            {
+              "label": "inputOptions",
+              "type": "Swift.Optional<Swift.String.IntentInputOptions>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "requestValueDialog",
+              "type": "Swift.Optional<AppIntents.IntentDialog>",
+              "valueKind": "NilLiteral"
+            },
+            {
+              "label": "inputConnectionBehavior",
+              "type": "AppIntents.InputConnectionBehavior",
+              "valueKind": "Runtime"
+            }
+          ]
+        },
+        "propertyWrappers": [
+          {
+            "type": "AppIntents.IntentParameter",
+            "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+            "line": 22,
+            "arguments": [
+              {
+                "label": "title",
+                "type": "Foundation.LocalizedStringResource",
+                "valueKind": "RawLiteral",
+                "value": "Initial Content"
+              },
+              {
+                "label": "default",
+                "type": "Swift.Optional<Swift.String>",
+                "valueKind": "RawLiteral",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "$initialContent",
+        "type": "AppIntents.IntentParameter<Swift.Optional<Swift.String>>",
+        "mangledTypeName": "n/a - deprecated",
+        "isStatic": "false",
+        "isComputed": "true",
+        "file": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/CreateNewDocumentIntent.swift",
+        "line": 23,
+        "valueKind": "Runtime"
+      }
+    ]
+  }
+]

@@ -1,0 +1,81 @@
+{
+  "" : {
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary.dia",
+    "emit-module-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary-emit-module.dia",
+    "pch" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AppKitControls-primary.swiftdeps"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/BackgroundTheming.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BackgroundTheming.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BackgroundTheming.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BackgroundTheming.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/BezelView.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BezelView.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BezelView.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/BezelView.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/Buttons/AquaFocusRingButton.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AquaFocusRingButton.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AquaFocusRingButton.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/AquaFocusRingButton.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/Buttons/IconOnlyButton.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/IconOnlyButton.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/IconOnlyButton.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/IconOnlyButton.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/Buttons/NonBezelButton.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/NonBezelButton.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/NonBezelButton.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/NonBezelButton.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/Buttons/TitleOnlyButton.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/TitleOnlyButton.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/TitleOnlyButton.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/TitleOnlyButton.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/DividerView.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/DividerView.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/DividerView.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/DividerView.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/FocusTrackingView.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/FocusTrackingView.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/FocusTrackingView.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/FocusTrackingView.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/GotoLine/GotoLineView.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineView.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineView.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineView.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/GotoLine/GotoLineWindow.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineWindow.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineWindow.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/GotoLineWindow.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/LabelView.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabelView.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabelView.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabelView.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/LabeledSearchField.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabeledSearchField.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabeledSearchField.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/LabeledSearchField.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/RoundedButtonGroup.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedButtonGroup.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedButtonGroup.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedButtonGroup.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitControls/RoundedNavigateButtons.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedNavigateButtons.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedNavigateButtons.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitControls.build/Objects-normal/x86_64/RoundedNavigateButtons.o"
+  }
+}

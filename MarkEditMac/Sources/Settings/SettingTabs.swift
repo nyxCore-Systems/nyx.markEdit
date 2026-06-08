@@ -23,4 +23,8 @@ extension SettingsTabViewController {
   static var window: Self {
     Self(WindowSettingsView(), title: Localized.Settings.window, icon: Icons.macwindow)
   }
+
+  static var ai: Self {
+    Self(AISettingsView(), title: Localized.Settings.aiTitle, icon: Icons.sparkles)
+  }
 }

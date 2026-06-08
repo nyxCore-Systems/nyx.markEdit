@@ -7,6 +7,7 @@ import { NativeModuleTokenizer } from '../bridge/native/tokenizer';
 import { NativeModuleAPI } from '../bridge/native/api';
 import { NativeModuleFoundationModels } from '../bridge/native/foundationModels';
 import { NativeModuleTranslation } from '../bridge/native/translation';
+import { NativeModuleAI } from '../bridge/native/ai';
 
 import type { EditorView } from '@codemirror/view';
 import type { Extension } from '@codemirror/state';
@@ -49,6 +50,7 @@ declare global {
       api: NativeModuleAPI;
       foundationModels: NativeModuleFoundationModels;
       translation: NativeModuleTranslation;
+      ai: NativeModuleAI;
     };
     __extractStyleRules__: (theme: Extension) => string[] | undefined;
     __extractHighlightSpecs__: (theme: Extension) => TagStyle[] | undefined;

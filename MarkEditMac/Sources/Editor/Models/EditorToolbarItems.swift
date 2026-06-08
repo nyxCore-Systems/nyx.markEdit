@@ -100,6 +100,8 @@ extension NSToolbarItem.Identifier {
   static let shareDocument = newItem("shareDocument")
   static let copyPandocCommand = newItem("copyPandocCommand")
   static let writingTools = newItem("writingTools")
+  static let renderPreview = newItem("renderPreview")
+  static let insertPageBreak = newItem("insertPageBreak")
 
   static var defaultItems: [NSToolbarItem.Identifier] {
     [
@@ -108,6 +110,7 @@ extension NSToolbarItem.Identifier {
       .toggleBold,
       .toggleItalic,
       .toggleList,
+      .renderPreview,
     ]
   }
 
@@ -129,6 +132,8 @@ extension NSToolbarItem.Identifier {
       .statistics,
       .shareDocument,
       .copyPandocCommand,
+      .renderPreview,
+      .insertPageBreak,
     ]
     + {
       if #available(macOS 15.1, *) {
@@ -170,6 +175,8 @@ private extension NSToolbarItem.Identifier {
     case .shareDocument: return Localized.Toolbar.shareDocument
     case .copyPandocCommand: return Localized.Toolbar.copyPandocCommand
     case .writingTools: return Localized.WritingTools.title
+    case .renderPreview: return Localized.Toolbar.renderPreview
+    case .insertPageBreak: return Localized.Toolbar.insertPageBreak
     default: fatalError("Unexpected toolbar item identifier: \(self)")
     }
   }
@@ -193,6 +200,8 @@ private extension NSToolbarItem.Identifier {
     case .shareDocument: return Icons.squareAndArrowUp
     case .copyPandocCommand: return Icons.terminal
     case .writingTools: return Icons.wandAndSparkles
+    case .renderPreview: return Icons.docRichtext
+    case .insertPageBreak: return Icons.pageBreak
     default: fatalError("Unexpected toolbar item identifier: \(self)")
     }
   }

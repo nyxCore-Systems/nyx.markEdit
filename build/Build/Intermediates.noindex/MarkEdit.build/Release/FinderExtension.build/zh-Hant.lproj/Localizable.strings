@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>New %@ File</key>
+	<string>新增%@檔案</string>
+	<key>New “%@%@”</key>
+	<string>新增“%1$@%2$@”</string>
+	<key>Untitled</key>
+	<string>未命名</string>
+</dict>
+</plist>

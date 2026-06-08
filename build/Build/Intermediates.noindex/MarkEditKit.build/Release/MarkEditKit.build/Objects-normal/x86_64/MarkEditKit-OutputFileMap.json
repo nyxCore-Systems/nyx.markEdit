@@ -1,0 +1,226 @@
+{
+  "" : {
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary.dia",
+    "emit-module-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary-emit-module.dia",
+    "pch" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/MarkEditKit-primary.swiftdeps"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleAI.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAI.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAI.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAI.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleAPI.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAPI.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAPI.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleAPI.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleCompletion.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCompletion.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCompletion.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCompletion.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleCore.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCore.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCore.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleCore.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleFoundationModels.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleFoundationModels.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleFoundationModels.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleFoundationModels.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModulePreview.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModulePreview.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModulePreview.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModulePreview.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleTokenizer.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTokenizer.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTokenizer.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTokenizer.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Generated/NativeModuleTranslation.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTranslation.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTranslation.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModuleTranslation.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleAI.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAI.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAI.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAI.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleAPI.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAPI.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAPI.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleAPI.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleCompletion.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCompletion.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCompletion.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCompletion.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleCore.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCore.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCore.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleCore.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleFoundationModels.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleFoundationModels.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleFoundationModels.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleFoundationModels.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModulePreview.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModulePreview.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModulePreview.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModulePreview.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleTokenizer.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTokenizer.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTokenizer.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTokenizer.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/Modules/EditorModuleTranslation.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTranslation.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTranslation.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorModuleTranslation.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Native/NativeModules.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModules.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModules.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NativeModules.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeAPI.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeAPI.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeAPI.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeAPI.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeCompletion.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCompletion.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCompletion.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCompletion.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeConfig.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeConfig.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeConfig.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeConfig.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeCore.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCore.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCore.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeCore.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeDummy.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeDummy.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeDummy.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeDummy.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeFormat.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFormat.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFormat.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFormat.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeFoundationModels.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFoundationModels.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFoundationModels.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeFoundationModels.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeHistory.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeHistory.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeHistory.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeHistory.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeLineEndings.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeLineEndings.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeLineEndings.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeLineEndings.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeSearch.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSearch.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSearch.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSearch.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeSelection.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSelection.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSelection.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeSelection.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeTableOfContents.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeTableOfContents.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeTableOfContents.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeTableOfContents.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/Generated/WebBridgeWritingTools.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeWritingTools.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeWritingTools.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebBridgeWritingTools.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Bridge/Web/WebModuleBridge.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebModuleBridge.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebModuleBridge.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebModuleBridge.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/EditorLogger.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorLogger.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorLogger.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorLogger.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/EditorMessageHandler.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorMessageHandler.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorMessageHandler.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorMessageHandler.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/EditorTextEncoding.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorTextEncoding.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorTextEncoding.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/EditorTextEncoding.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/Array+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/Array+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/Array+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/Array+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/LineEndings+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/LineEndings+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/LineEndings+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/LineEndings+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/NSObject+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NSObject+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NSObject+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/NSObject+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/URL+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/URL+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/URL+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/URL+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/UserDefaults+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/UserDefaults+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/UserDefaults+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/UserDefaults+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/WKWebView+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebView+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebView+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebView+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/WKWebViewConfiguration+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebViewConfiguration+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebViewConfiguration+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WKWebViewConfiguration+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/WebPoint+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebPoint+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebPoint+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebPoint+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditKit/Sources/Extensions/WebRect+Extension.swift" : {
+    "index-unit-output-path" : "/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebRect+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebRect+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEditKit.build/Release/MarkEditKit.build/Objects-normal/x86_64/WebRect+Extension.o"
+  }
+}

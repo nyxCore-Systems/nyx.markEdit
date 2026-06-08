@@ -78,6 +78,10 @@ public final class WebBridgeFormat {
     webView?.invoke(path: "webModules.format.insertHorizontalRule", completion: completion)
   }
 
+  public func insertPageBreak(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    webView?.invoke(path: "webModules.format.insertPageBreak", completion: completion)
+  }
+
   public func insertHyperLink(title: String, url: String, prefix: String?, completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     struct Message: Encodable {
       let title: String

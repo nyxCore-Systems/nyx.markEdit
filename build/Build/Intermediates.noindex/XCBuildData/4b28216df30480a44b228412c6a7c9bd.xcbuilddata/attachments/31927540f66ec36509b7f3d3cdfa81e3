@@ -1,0 +1,4 @@
+module MarkEditCore {
+header "MarkEditCore-Swift.h"
+export *
+}

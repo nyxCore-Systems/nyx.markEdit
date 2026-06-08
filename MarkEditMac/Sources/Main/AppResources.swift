@@ -64,6 +64,17 @@ enum Localized {
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
     static let shareDocument = String(localized: "Share this document", comment: "Toolbar item to share the document")
     static let copyPandocCommand = String(localized: "Copy Pandoc Command", comment: "Toolbar item to copy pandoc command")
+    static let renderPreview = String(localized: "Preview", comment: "Toolbar item to open a rendered preview of the document")
+    static let insertPageBreak = String(localized: "Page Break", comment: "Toolbar item to insert a manual page break")
+  }
+
+  enum Renderer {
+    static let windowTitle = String(localized: "Preview", comment: "Title of the rendered document preview window")
+    static let exportPDF = String(localized: "Save as PDF", comment: "Toolbar item to save the rendered preview as PDF")
+    static let refresh = String(localized: "Refresh", comment: "Toolbar item to refresh the rendered preview")
+    static let savePanelTitle = String(localized: "Export PDF", comment: "Save panel title for PDF export")
+    static let exportPDFFailed = String(localized: "Failed to save PDF", comment: "Error alert title when PDF export fails")
+    static let okButton = String(localized: "OK", comment: "Default confirmation button")
   }
 
   enum Search {
@@ -198,6 +209,17 @@ enum Localized {
     static let disallowed = String(localized: "Disallowed", comment: "Disallowed window tabbing mode")
     static let reduceTransparencyLabel = String(localized: "Reduce Transparency:", comment: "Label for the option to reduce window transparency")
     static let reduceTransparencyDescription = String(localized: "Remove the toolbar blur", comment: "Explanation for the option to reduce window transparency")
+
+    // AI
+    static let aiTitle = String(localized: "AI", comment: "Window title for AI settings")
+    static let aiEnabled = String(localized: "Enable AI selection toolbar", comment: "Label to enable the AI refactor toolbar")
+    static let aiAPIKey = String(localized: "Anthropic API Key:", comment: "Label for the Anthropic API key field")
+    static let aiKeyHint = String(localized: "Your key is stored in the macOS Keychain.", comment: "Hint about secure key storage")
+    static let aiModel = String(localized: "Model:", comment: "Label for the model identifier field")
+    static let aiBaseURL = String(localized: "API Base URL:", comment: "Label for the AI endpoint URL field")
+    static let aiMaxTokens = String(localized: "Max Tokens:", comment: "Label for the max tokens field")
+    static let aiTestConnection = String(localized: "Test Connection", comment: "Button to test the AI connection")
+    static let aiTestSuccess = String(localized: "Connection succeeded.", comment: "Status when the AI test connection succeeds")
   }
 
   enum FileVersion {
@@ -248,6 +270,7 @@ enum Icons {
   static let characterCursorIbeam = "character.cursor.ibeam"
   static let chartPie = "chart.pie"
   static let curlybracesSquare = "curlybraces.square"
+  static let docRichtext = "doc.richtext"
   static let gearshape = "gearshape"
   static let italic = "italic"
   static let link = "link"
@@ -255,9 +278,11 @@ enum Icons {
   static let listBulletRectangle = "list.bullet.rectangle"
   static let macwindow = "macwindow"
   static let number = "number"
+  static let pageBreak = "rectangle.split.1x2"
   static let photo = "photo"
   static let squareAndArrowUp = "square.and.arrow.up"
   static let squareSplit1x2 = "square.split.1x2"
+  static let sparkles = "sparkles"
   static let strikethrough = "strikethrough"
   static let tablecells = "tablecells"
   static let terminal = "terminal"

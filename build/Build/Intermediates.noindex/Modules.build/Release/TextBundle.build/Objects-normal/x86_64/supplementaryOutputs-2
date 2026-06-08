@@ -1,0 +1,12 @@
+{
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/TextBundle/Extensions/FileWrapper+Extension.swift" : {
+    "abi-baseline-json" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle.abi.json",
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle-primary.dia",
+    "objc-header" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle-Swift.h",
+    "swiftdoc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle.swiftdoc",
+    "swiftmodule" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle.swiftmodule",
+    "swiftsourceinfo" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/TextBundle.build/Objects-normal/x86_64/TextBundle.swiftsourceinfo"
+  }
+}

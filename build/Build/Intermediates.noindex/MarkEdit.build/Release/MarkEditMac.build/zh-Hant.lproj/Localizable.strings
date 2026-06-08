@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d of %d</key>
+	<string>%1$d/%2$d</string>
+	<key>1 tab</key>
+	<string>1 個制表符</string>
+	<key>2 spaces</key>
+	<string>2 個空格</string>
+	<key>2 tabs</key>
+	<string>2 個制表符</string>
+	<key>4 spaces</key>
+	<string>4 個空格</string>
+	<key>Active line indicator</key>
+	<string>當前行指示器</string>
+	<key>All</key>
+	<string>全部</string>
+	<key>Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value.</key>
+	<string>允許程式碼執行返回一個 Promise 物件。啟用時，JavaScript 程式碼必須返回一個值。</string>
+	<key>Always</key>
+	<string>總是</string>
+	<key>Appearance:</key>
+	<string>外觀：</string>
+	<key>Argument “%@” not found in event descriptor, the descriptor is likely malformed.</key>
+	<string>在事件描述符中找不到引數“%@”，該描述符可能格式不正確。</string>
+	<key>Assistant</key>
+	<string>輔助</string>
+	<key>Autocomplete:</key>
+	<string>自動補全：</string>
+	<key>Automatic</key>
+	<string>自動</string>
+	<key>Bold</key>
+	<string>粗體</string>
+	<key>Call Async JavaScript</key>
+	<string>呼叫非同步 JavaScript</string>
+	<key>Cancel</key>
+	<string>取消</string>
+	<key>Cannot export files with extension “%@”, supported extensions: %@.</key>
+	<string>不支援匯出“%1$@”格式的檔案，支援的格式：%2$@。</string>
+	<key>Case Sensitive</key>
+	<string>大小寫敏感</string>
+	<key>Characters</key>
+	<string>字元數量</string>
+	<key>Check Version History</key>
+	<string>檢查版本記錄</string>
+	<key>Classic Mac OS (CR)</key>
+	<string>Classic Mac OS (CR)</string>
+	<key>Clear Recents</key>
+	<string>清除最近</string>
+	<key>Column</key>
+	<string>欄</string>
+	<key>Comments</key>
+	<string>註解</string>
+	<key>Compact</key>
+	<string>緊湊</string>
+	<key>Completion:</key>
+	<string>單字補全：</string>
+	<key>Content</key>
+	<string>內容</string>
+	<key>Control Character</key>
+	<string>控制字元</string>
+	<key>Copy Pandoc Command</key>
+	<string>拷貝 Pandoc 指令</string>
+	<key>Couldn’t find a command to handle incoming Apple Event.</key>
+	<string>找不到用於處理接收到 Apple Event 的指令。</string>
+	<key>Create New Document</key>
+	<string>建立新文件</string>
+	<key>Creates a new document, with optional parameters to set the file name and the initial content.</key>
+	<string>新建一個文件，可透過可選變數來設定檔案名和初始內容。</string>
+	<key>Dark</key>
+	<string>深色</string>
+	<key>Dark Theme:</key>
+	<string>深色主題：</string>
+	<key>Default Line Endings:</key>
+	<string>預設行尾格式：</string>
+	<key>Default Text Encoding:</key>
+	<string>預設文字編碼：</string>
+	<key>Delete</key>
+	<string>刪除</string>
+	<key>Diacritic Insensitive</key>
+	<string>忽略變音符</string>
+	<key>Diff Chars</key>
+	<string>按字元對比</string>
+	<key>Diff Lines</key>
+	<string>按行對比</string>
+	<key>Diff Words</key>
+	<string>按單詞對比</string>
+	<key>Dim inactive lines</key>
+	<string>淡化非當前行</string>
+	<key>Disable Update Checks</key>
+	<string>禁止更新檢查</string>
+	<key>Disallowed</key>
+	<string>禁止</string>
+	<key>Document</key>
+	<string>全文件</string>
+	<key>Done</key>
+	<string>完成</string>
+	<key>Edit Behavior:</key>
+	<string>編輯行為：</string>
+	<key>Editor</key>
+	<string>編輯器</string>
+	<key>Enter the line number and hit return</key>
+	<string>輸入行號並按下回車鍵</string>
+	<key>Evaluate JavaScript</key>
+	<string>執行 JavaScript</string>
+	<key>Evaluate JavaScript with ${content}</key>
+	<string>使用 ${content} 執行 JavaScript</string>
+	<key>Evaluates JavaScript and gets the result on the active document; throws an error if no editor is opened.</key>
+	<string>在當前活躍文件執行 JavaScript 並獲取結果，沒有開啟的編輯器時將丟擲異常。</string>
+	<key>Failed to get the update.</key>
+	<string>无法获取更新。</string>
+	<key>File Extension:</key>
+	<string>檔案副檔名：</string>
+	<key>File Name</key>
+	<string>檔案名</string>
+	<key>File Size</key>
+	<string>檔案大小</string>
+	<key>Find</key>
+	<string>尋找</string>
+	<key>Find Selection</key>
+	<string>尋找選中內容</string>
+	<key>Fold Line</key>
+	<string>折疊行</string>
+	<key>Folded Code</key>
+	<string>折疊的程式碼</string>
+	<key>Folded Lines</key>
+	<string>折疊的行</string>
+	<key>Font:</key>
+	<string>字體：</string>
+	<key>Format Files:</key>
+	<string>格式化檔案：</string>
+	<key>Format when saving files.</key>
+	<string>儲存時進行格式化。</string>
+	<key>General</key>
+	<string>一般</string>
+	<key>Get Custom Themes…</key>
+	<string>獲取自訂主題…</string>
+	<key>Get File Content</key>
+	<string>獲取檔案內容</string>
+	<key>Gets file content of the active document; throws an error if no editor is opened.</key>
+	<string>獲取當前活躍檔案的內容，沒有開啟的編輯器時將丟擲異常。</string>
+	<key>Go to Line</key>
+	<string>跳轉到行</string>
+	<key>Grant Access</key>
+	<string>授予許可權</string>
+	<key>Granularity</key>
+	<string>粒度</string>
+	<key>Guessed words</key>
+	<string>猜測的單字</string>
+	<key>Headers</key>
+	<string>標題</string>
+	<key>Hidden</key>
+	<string>隱藏</string>
+	<key>Horizontal Rule</key>
+	<string>水平分割線</string>
+	<key>Indents more</key>
+	<string>增加縮排</string>
+	<key>Initial Content</key>
+	<string>初始內容</string>
+	<key>Inline Predictions</key>
+	<string>預測字詞</string>
+	<key>Insert Code</key>
+	<string>插入程式碼</string>
+	<key>Insert Image</key>
+	<string>插入圖片</string>
+	<key>Insert Line Break</key>
+	<string>插入換行符</string>
+	<key>Insert Link</key>
+	<string>插入連結</string>
+	<key>Insert Tab</key>
+	<string>插入製表符</string>
+	<key>Insert final newline</key>
+	<string>插入最終換行</string>
+	<key>Inserts 2 spaces</key>
+	<string>插入 2 個空格</string>
+	<key>Inserts 4 spaces</key>
+	<string>插入 4 個空格</string>
+	<key>Inserts tab character</key>
+	<string>插入制表符</string>
+	<key>Italic</key>
+	<string>斜體</string>
+	<key>Item</key>
+	<string>項目</string>
+	<key>JavaScript evaluation failed at line %d, column %d: %@</key>
+	<string>JavaScript 執行在第 %1$d 行，第 %2$d 欄失敗：%3$@</string>
+	<key>JavaScript evaluation failed for an unknown reason.</key>
+	<string>JavaScript 執行因未知原因失敗。</string>
+	<key>Keep caret in the middle</key>
+	<string>保持游標居中</string>
+	<key>Light</key>
+	<string>浅色</string>
+	<key>Light Theme:</key>
+	<string>淺色主題：</string>
+	<key>Line Height:</key>
+	<string>行高：</string>
+	<key>Line Wrapping:</key>
+	<string>自動折行：</string>
+	<key>Line numbers</key>
+	<string>行號</string>
+	<key>Literal Search</key>
+	<string>字面尋找</string>
+	<key>MarkEdit %@ is available!</key>
+	<string>MarkEdit %@ 已釋出！</string>
+	<key>MarkEdit %@ is currently the latest version.</key>
+	<string>MarkEdit %@ 是目前的最新版本。</string>
+	<key>Missing active document to proceed.</key>
+	<string>沒有活躍的文件來進行下一步。</string>
+	<key>More Fonts</key>
+	<string>更多字型</string>
+	<key>Never</key>
+	<string>從不</string>
+	<key>New Document</key>
+	<string>新增文件</string>
+	<key>New Document named ${fileName} with ${initialContent}</key>
+	<string>以 ${initialContent} 新增名為 ${fileName} 的文件</string>
+	<key>New Filename Extension:</key>
+	<string>新檔案副檔名：</string>
+	<key>New Window Behavior:</key>
+	<string>新視窗行為：</string>
+	<key>Next</key>
+	<string>下一個</string>
+	<key>No editor for document “%@” found.</key>
+	<string>找不到用於文件“%@”的編輯器。</string>
+	<key>No versions match the specified condition.</key>
+	<string>沒有符合條件的版本。</string>
+	<key>Normal</key>
+	<string>正常</string>
+	<key>Not Now</key>
+	<string>等下再說</string>
+	<key>Open Document</key>
+	<string>打開文件</string>
+	<key>Open Font Panel…</key>
+	<string>打開字體面板…</string>
+	<key>Paragraphs</key>
+	<string>段落數量</string>
+	<key>Please check your network connection or get the latest release from the version history.</key>
+	<string>請檢查您的網路連線，或從版本記錄中獲取最新版本。</string>
+	<key>Prefer Indent Using:</key>
+	<string>縮排偏好：</string>
+	<key>Preferred</key>
+	<string>首選</string>
+	<key>Press ⌥ ⎋ to show the panel.</key>
+	<string>按下 ⌥ ⎋ 來顯示列表。</string>
+	<key>Preview</key>
+	<string>預覽</string>
+	<key>Previous</key>
+	<string>上一個</string>
+	<key>Quit always keeps windows</key>
+	<string>退出時總是保留視窗</string>
+	<key>Quote</key>
+	<string>引用</string>
+	<key>Read Time</key>
+	<string>閱讀時間</string>
+	<key>Recent Searches</key>
+	<string>最近的搜尋</string>
+	<key>Reduce Transparency:</key>
+	<string>減少透明度：</string>
+	<key>Regular Expression</key>
+	<string>正規表示法</string>
+	<key>Relaxed</key>
+	<string>寬鬆</string>
+	<key>Remind Me Later</key>
+	<string>稍後提醒我</string>
+	<key>Remove the toolbar blur</key>
+	<string>移除工具列模糊效果</string>
+	<key>Render Invisibles:</key>
+	<string>渲染不可見字元：</string>
+	<key>Replace</key>
+	<string>取代</string>
+	<key>Replace All</key>
+	<string>全部取代</string>
+	<key>Replace All in Selection</key>
+	<string>在所選範圍中全部取代</string>
+	<key>Revert to This Version</key>
+	<string>回復成此版本</string>
+	<key>Save Changes</key>
+	<string>儲存改動</string>
+	<key>Search Actions</key>
+	<string>搜尋操作</string>
+	<key>Select All</key>
+	<string>全選</string>
+	<key>Select All Occurrences</key>
+	<string>選擇所有相同項</string>
+	<key>Select All in Selection</key>
+	<string>在所選範圍中進行全選</string>
+	<key>Selected</key>
+	<string>已選擇</string>
+	<key>Selection</key>
+	<string>選中區域</string>
+	<key>Selection status</key>
+	<string>選擇狀態</string>
+	<key>Select…</key>
+	<string>選擇…</string>
+	<key>Sentences</key>
+	<string>句子數量</string>
+	<key>Share this document</key>
+	<string>分享此文件</string>
+	<key>Show Hidden Files</key>
+	<string>顯示隱藏檔案</string>
+	<key>Show:</key>
+	<string>顯示：</string>
+	<key>Skip This Version</key>
+	<string>跳過這個版本</string>
+	<key>Standard words</key>
+	<string>標準單字</string>
+	<key>Statistics</key>
+	<string>統計數字</string>
+	<key>Strikethrough</key>
+	<string>刪除線</string>
+	<key>Suggest while typing</key>
+	<string>鍵入時提供補全</string>
+	<key>System</key>
+	<string>系統</string>
+	<key>System Default</key>
+	<string>系統預設</string>
+	<key>System Mono</key>
+	<string>系統等寬</string>
+	<key>System Rounded</key>
+	<string>系統圓潤</string>
+	<key>System Serif</key>
+	<string>系統襯線</string>
+	<key>Tab Key:</key>
+	<string>製表鍵：</string>
+	<key>Tabbing Mode:</key>
+	<string>標籤模式：</string>
+	<key>Table</key>
+	<string>表格</string>
+	<key>Table of Contents</key>
+	<string>內容目錄</string>
+	<key>Text Encoding:</key>
+	<string>文字編碼：</string>
+	<key>Text Format</key>
+	<string>文字格式</string>
+	<key>This action cannot be undone.</key>
+	<string>此操作無法被撤銷。</string>
+	<key>This release requires macOS %@ or later and cannot be installed without upgrading your operating system.</key>
+	<string>此更新需要 macOS %@ 或更高版本，在升級您的系統版本之前無法安裝。</string>
+	<key>Tight</key>
+	<string>緊湊</string>
+	<key>Toggle List</key>
+	<string>切換列表</string>
+	<key>Toolbar Mode:</key>
+	<string>工具列模式：</string>
+	<key>Trailing</key>
+	<string>尾部空白</string>
+	<key>Trim trailing whitespace</key>
+	<string>移除尾部空白</string>
+	<key>Unfold</key>
+	<string>展開</string>
+	<key>Unfold Line</key>
+	<string>展開行</string>
+	<key>Unfolded Lines</key>
+	<string>展開的行</string>
+	<key>Update File Content</key>
+	<string>更新檔案內容</string>
+	<key>Update file with ${content}</key>
+	<string>使用 ${content} 更新檔案</string>
+	<key>Updates file content of the active document; throws an error if no editor is opened.</key>
+	<string>更新當前活躍檔案的內容，沒有開啟的編輯器時將丟擲異常。</string>
+	<key>View Release Page</key>
+	<string>檢視釋出頁面</string>
+	<key>Whole Document</key>
+	<string>整個文件</string>
+	<key>Whole Word</key>
+	<string>整詞尋找</string>
+	<key>Window</key>
+	<string>視窗</string>
+	<key>Window Restoration:</key>
+	<string>視窗恢復：</string>
+	<key>Windows (CRLF)</key>
+	<string>Windows (CRLF)</string>
+	<key>Words</key>
+	<string>單字數量</string>
+	<key>Words in document</key>
+	<string>文件中的單字</string>
+	<key>Wrap lines to editor width</key>
+	<string>按編輯器的寬度換行</string>
+	<key>Writing Tools</key>
+	<string>寫作工具</string>
+	<key>Wrong file extension for type “%@”, use “.%@” instead.</key>
+	<string>“%1$@”型別的副檔名錯誤，請使用“.%2$@”。</string>
+	<key>You’re up-to-date!</key>
+	<string>您已安裝最新版本！</string>
+	<key>macOS / Unix (LF)</key>
+	<string>macOS / Unix (LF)</string>
+	<key>title</key>
+	<string>標題</string>
+	<key>⌘-click to follow</key>
+	<string>⌘ 點選以跟隨</string>
+	<key>⌘-click to toggle todo</key>
+	<string>⌘ 點選切換完成狀態</string>
+	<key>🎉 %@ is out</key>
+	<string>🎉 %@ 已釋出</string>
+</dict>
+</plist>

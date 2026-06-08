@@ -1,0 +1,114 @@
+{
+  "source" : "\/Users\/oli\/Projects\/nyx.markEdit\/MarkEditMac\/Sources\/Shortcuts\/IntentProvider.swift",
+  "version" : 2,
+  "tables" : {
+    "AppShortcuts" : [
+      {
+        "key" : "Create New Document in ${applicationName}",
+        "location" : {
+          "startingLine" : 11,
+          "startingColumn" : 0
+        },
+        "appShortcutMetadata" : [
+          {
+            "index" : 0,
+            "parameterDisplayRepresentations" : {
+
+            },
+            "parameterTypes" : {
+
+            },
+            "actionIdentifier" : "CreateNewDocumentIntent",
+            "title" : "Create New Document"
+          }
+        ],
+        "values" : [
+          "Create New Document in ${applicationName}"
+        ]
+      },
+      {
+        "key" : "Evaluate JavaScript in ${applicationName}",
+        "location" : {
+          "startingLine" : 11,
+          "startingColumn" : 0
+        },
+        "appShortcutMetadata" : [
+          {
+            "index" : 1,
+            "parameterDisplayRepresentations" : {
+
+            },
+            "parameterTypes" : {
+
+            },
+            "actionIdentifier" : "EvaluateJavaScriptIntent",
+            "title" : "Evaluate JavaScript"
+          }
+        ],
+        "values" : [
+          "Evaluate JavaScript in ${applicationName}"
+        ]
+      },
+      {
+        "key" : "Get File Content in ${applicationName}",
+        "location" : {
+          "startingLine" : 11,
+          "startingColumn" : 0
+        },
+        "appShortcutMetadata" : [
+          {
+            "index" : 2,
+            "parameterDisplayRepresentations" : {
+
+            },
+            "parameterTypes" : {
+
+            },
+            "actionIdentifier" : "GetFileContentIntent",
+            "title" : "Get File Content"
+          }
+        ],
+        "values" : [
+          "Get File Content in ${applicationName}"
+        ]
+      },
+      {
+        "key" : "Update File Content in ${applicationName}",
+        "location" : {
+          "startingLine" : 11,
+          "startingColumn" : 0
+        },
+        "appShortcutMetadata" : [
+          {
+            "index" : 3,
+            "parameterDisplayRepresentations" : {
+              "Granularity" : [
+                "Whole Document",
+                "Selection"
+              ]
+            },
+            "parameterTypes" : {
+              "granularity" : "Granularity"
+            },
+            "actionIdentifier" : "UpdateFileContentIntent",
+            "title" : "Update File Content"
+          }
+        ],
+        "values" : [
+          "Update File Content in ${applicationName}"
+        ]
+      }
+    ],
+    "Localizable" : [
+      {
+        "key" : "Evaluate JavaScript with ${content}"
+      },
+      {
+        "key" : "New Document named ${fileName} with ${initialContent}"
+      },
+      {
+        "key" : "Update file with ${content}"
+      }
+    ]
+  }
+}

@@ -87,6 +87,11 @@ export function insertHorizontalRule() {
   replaceSelections(`${br}---${br}`);
 }
 
+export function insertPageBreak() {
+  const br = window.editor.state.lineBreak;
+  replaceSelections(`${br}<div style="page-break-after: always;"></div>${br}${br}`);
+}
+
 export function insertCodeBlock() {
   insertBlockWithMarks('```');
 }

@@ -26,6 +26,11 @@
 		870F178E2985775B00003DA7 /* AppKitControls in Frameworks */ = {isa = PBXBuildFile; productRef = 870F178D2985775B00003DA7 /* AppKitControls */; };
 		870F17902985775B00003DA7 /* AppKitExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 870F178F2985775B00003DA7 /* AppKitExtensions */; };
 		870F17922985775B00003DA7 /* Previewer in Frameworks */ = {isa = PBXBuildFile; productRef = 870F17912985775B00003DA7 /* Previewer */; };
+		9AB1000000000000000A0002 /* EditorViewController+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000A0001 /* EditorViewController+Render.swift */; };
+		9AB1000000000000000A0003 /* Renderer in Frameworks */ = {isa = PBXBuildFile; productRef = 9AB1000000000000000A0004 /* Renderer */; };
+		9AB1000000000000000B0002 /* AppKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0001 /* AppKeychain.swift */; };
+		9AB1000000000000000B0004 /* AppAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0003 /* AppAIService.swift */; };
+		9AB1000000000000000B0006 /* AISettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0005 /* AISettingsView.swift */; };
 		870F17962985775B00003DA7 /* SettingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 870F17952985775B00003DA7 /* SettingsUI */; };
 		87132AA32C188FE900FD262B /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 87132AA22C188FE900FD262B /* AppShortcuts.xcstrings */; };
 		87152BA12EC599CA00B39F06 /* FinderExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87152B9A2EC599CA00B39F06 /* FinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -226,6 +231,10 @@
 		878AABE82CB111410081C5E1 /* EditorMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorMenuItem.swift; sourceTree = "<group>"; };
 		878B7B992CE0DA7D00220F39 /* EditorViewController+FileVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+FileVersion.swift"; sourceTree = "<group>"; };
 		8790ABD32A98F5F40083825C /* EditorViewController+Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Statistics.swift"; sourceTree = "<group>"; };
+		9AB1000000000000000A0001 /* EditorViewController+Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Render.swift"; sourceTree = "<group>"; };
+		9AB1000000000000000B0001 /* AppKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKeychain.swift; sourceTree = "<group>"; };
+		9AB1000000000000000B0003 /* AppAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAIService.swift; sourceTree = "<group>"; };
+		9AB1000000000000000B0005 /* AISettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISettingsView.swift; sourceTree = "<group>"; };
 		8790B6EB297036B2000DFC1A /* EditorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWindow.swift; sourceTree = "<group>"; };
 		879715C82D11547F0069964D /* EditorSaveOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSaveOptionsView.swift; sourceTree = "<group>"; };
 		87A73AB2294C4B27006A710E /* EditorWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWebView.swift; sourceTree = "<group>"; };
@@ -278,6 +287,7 @@
 				874823CE29B0BD980067EC49 /* TextCompletion in Frameworks */,
 				870F178E2985775B00003DA7 /* AppKitControls in Frameworks */,
 				870F17962985775B00003DA7 /* SettingsUI in Frameworks */,
+				9AB1000000000000000A0003 /* Renderer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +386,7 @@
 				8763C31E2F92574900A3841D /* EditorHistoryStorage.swift */,
 				CC000006300000000000001B /* EditorClosedTabHistory.swift */,
 				CC000004300000000000001B /* EditorSelectionHistory.swift */,
+				9AB1000000000000000B0003 /* AppAIService.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -471,6 +482,7 @@
 				8769BABD2C65F9D400EDA0A6 /* AppRuntimeConfig.swift */,
 				84FB00EF2C6C4AED00850E94 /* AppWritingTools.swift */,
 				87BB5A292E929BA700A17C14 /* AppExceptionCatcher.swift */,
+				9AB1000000000000000B0001 /* AppKeychain.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -551,6 +563,7 @@
 				87BDF6E32976C97100548079 /* EditorViewController+GotoLine.swift */,
 				8790ABD32A98F5F40083825C /* EditorViewController+Statistics.swift */,
 				873126E3297BAC9C001521A0 /* EditorViewController+Pandoc.swift */,
+				9AB1000000000000000A0001 /* EditorViewController+Render.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -574,6 +587,7 @@
 				8709C69D29B4412F009EABB5 /* AssistantSettingsView.swift */,
 				8780AC1B29829EDD00065EF4 /* GeneralSettingsView.swift */,
 				8780AC1F2982A2DD00065EF4 /* WindowSettingsView.swift */,
+				9AB1000000000000000B0005 /* AISettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -657,6 +671,7 @@
 				8790ABDA2A98FF610083825C /* Statistics */,
 				87B3ED8E2CBE1E12001FA6CE /* DiffKit */,
 				8701D0A32CC12321006AF8C2 /* FileVersion */,
+				9AB1000000000000000A0004 /* Renderer */,
 			);
 			productName = MarkEdit;
 			productReference = 870A51A2294700DE0095C7EB /* MarkEdit.app */;
@@ -840,6 +855,10 @@
 				87DE084B294E22C5004AD33A /* EditorViewController+TextFinder.swift in Sources */,
 				87BEF30129A88F6800596E17 /* AppCustomization.swift in Sources */,
 				8790ABD42A98F5F40083825C /* EditorViewController+Statistics.swift in Sources */,
+				9AB1000000000000000A0002 /* EditorViewController+Render.swift in Sources */,
+				9AB1000000000000000B0002 /* AppKeychain.swift in Sources */,
+				9AB1000000000000000B0004 /* AppAIService.swift in Sources */,
+				9AB1000000000000000B0006 /* AISettingsView.swift in Sources */,
 				87D7F0212DE8725100985ABF /* EditorImageLoader.swift in Sources */,
 				8752CEB6295B2F8800BA9D5B /* EditorPanelView.swift in Sources */,
 				870A51BA294702AF0095C7EB /* EditorWindowController.swift in Sources */,
@@ -1362,6 +1381,10 @@
 		8790ABDA2A98FF610083825C /* Statistics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Statistics;
+		};
+		9AB1000000000000000A0004 /* Renderer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Renderer;
 		};
 		87B3ED8E2CBE1E12001FA6CE /* DiffKit */ = {
 			isa = XCSwiftPackageProductDependency;

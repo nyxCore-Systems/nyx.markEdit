@@ -1,0 +1,16 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/IntentError.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Missing active document to proceed.",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 15
+        }
+      }
+    ]
+  },
+  "version": 1
+}

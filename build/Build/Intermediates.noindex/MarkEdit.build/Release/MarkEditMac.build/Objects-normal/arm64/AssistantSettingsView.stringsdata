@@ -1,0 +1,16 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Settings/AssistantSettingsView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "option-esc",
+        "location": {
+          "startingColumn": 19,
+          "startingLine": 72
+        }
+      }
+    ]
+  },
+  "version": 1
+}

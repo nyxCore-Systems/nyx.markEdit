@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary.dia",
+    "emit-module-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary-emit-module.dia",
+    "pch" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewExtension-primary.swiftdeps"
+  },
+  "/Users/oli/Projects/nyx.markEdit/PreviewExtension/PreviewViewController.swift" : {
+    "index-unit-output-path" : "/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewViewController.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewViewController.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/PreviewExtension.build/Objects-normal/x86_64/PreviewViewController.o"
+  }
+}

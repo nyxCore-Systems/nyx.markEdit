@@ -1,0 +1,36 @@
+{
+  "" : {
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary.dia",
+    "emit-module-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary-emit-module.dia",
+    "pch" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsUI-primary.swiftdeps"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/SettingsUI/Extensions/NSCursor+Extension.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/NSCursor+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/NSCursor+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/NSCursor+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/SettingsUI/Extensions/View+Extension.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/View+Extension.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/View+Extension.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/View+Extension.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/SettingsUI/SettingsForm.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsForm.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsForm.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsForm.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/SettingsUI/SettingsRootViewController.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsRootViewController.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsRootViewController.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsRootViewController.o"
+  },
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/SettingsUI/SettingsTabViewController.swift" : {
+    "index-unit-output-path" : "/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsTabViewController.o",
+    "llvm-bc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsTabViewController.bc",
+    "object" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/SettingsUI.build/Objects-normal/arm64/SettingsTabViewController.o"
+  }
+}

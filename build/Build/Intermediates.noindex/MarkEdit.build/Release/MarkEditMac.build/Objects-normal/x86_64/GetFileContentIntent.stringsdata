@@ -1,0 +1,24 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/Intents/GetFileContentIntent.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Get File Content",
+        "location": {
+          "startingColumn": 47,
+          "startingLine": 11
+        }
+      },
+      {
+        "comment": "",
+        "key": "Gets file content of the active document; throws an error if no editor is opened.",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 12
+        }
+      }
+    ]
+  },
+  "version": 1
+}

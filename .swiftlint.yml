@@ -1,5 +1,7 @@
 excluded:
   - MarkEditMac/Modules/.build
+  - "**/DerivedSources/**"
+  - build
 
 disabled_rules:
 

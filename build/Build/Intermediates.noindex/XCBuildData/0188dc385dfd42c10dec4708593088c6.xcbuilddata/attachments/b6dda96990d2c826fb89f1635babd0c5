@@ -1,0 +1,4 @@
+module SettingsUI {
+header "SettingsUI-Swift.h"
+export *
+}

@@ -34,6 +34,7 @@ import { filterTransaction, wordTokenizer, observeChanges, interceptInputs } fro
 import { customizedCommandsKeymap } from './modules/commands';
 import { autocompleteExtensions, standardLinkCompletion, referenceLinkCompletion } from './modules/completion';
 import { tocKeymap } from './modules/toc';
+import { aiSelectionToolbar } from './modules/ai';
 import { userExtensions, userMarkdownConfigs, userCodeLanguages } from './api/methods';
 
 const theme = new Compartment;
@@ -160,6 +161,9 @@ export function extensions(options: { lineBreak?: string }) {
     wordTokenizer(),
     interceptInputs(),
     observeChanges(),
+
+    // AI selection toolbar (Improve / Shorten / Expand / Tone)
+    aiSelectionToolbar(),
 
     // Accessibility
     EditorView.contentAttributes.of({

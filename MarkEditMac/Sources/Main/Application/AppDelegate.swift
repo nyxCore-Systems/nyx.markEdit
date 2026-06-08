@@ -201,6 +201,7 @@ private extension AppDelegate {
       settingsWindowController = SettingsRootViewController.withTabs([
         .editor,
         .assistant,
+        .ai,
         .general,
         .window,
       ])

@@ -250,6 +250,26 @@ enum AppPreferences {
     @Storage(key: "updater.completely-disabled", defaultValue: false)
     static var completelyDisabled: Bool
   }
+
+  // swiftlint:disable:next type_name
+  enum AI {
+    @Storage(key: "ai.enabled", defaultValue: true)
+    static var enabled: Bool
+
+    @Storage(key: "ai.model", defaultValue: "claude-haiku-4-5-20251001")
+    static var model: String
+
+    @Storage(key: "ai.base-url", defaultValue: "https://api.anthropic.com/v1")
+    static var baseURL: String
+
+    @Storage(key: "ai.max-tokens", defaultValue: 1024)
+    static var maxTokens: Int
+
+    static var apiKey: String? {
+      get { AppKeychain.getString(account: "anthropic.api-key") }
+      set { AppKeychain.setString(newValue, account: "anthropic.api-key") }
+    }
+  }
 }
 
 extension FontStyle {

@@ -1,0 +1,10 @@
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/EditorConfig.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/EditorLocalizable.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/EditorSharedTypes.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/Data+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/EditorConfig+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/Encodable+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/String+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/TextTokenizeAnchor+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/URL+Extension.swift
+/Users/oli/Projects/nyx.markEdit/MarkEditCore/Sources/Extensions/WKWebViewConfiguration+Extension.swift

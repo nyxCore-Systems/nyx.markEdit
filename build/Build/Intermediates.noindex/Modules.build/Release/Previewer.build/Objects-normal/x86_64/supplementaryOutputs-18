@@ -1,0 +1,12 @@
+{
+  "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/DerivedSources/resource_bundle_accessor.swift" : {
+    "abi-baseline-json" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer.abi.json",
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer-primary.dia",
+    "objc-header" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer-Swift.h",
+    "swiftdoc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer.swiftdoc",
+    "swiftmodule" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer.swiftmodule",
+    "swiftsourceinfo" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/Previewer.build/Objects-normal/x86_64/Previewer.swiftsourceinfo"
+  }
+}

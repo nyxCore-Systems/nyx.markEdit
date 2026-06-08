@@ -34,6 +34,10 @@ let package = Package(
       targets: ["Previewer"]
     ),
     .library(
+      name: "Renderer",
+      targets: ["Renderer"]
+    ),
+    .library(
       name: "SettingsUI",
       targets: ["SettingsUI"]
     ),
@@ -115,6 +119,20 @@ let package = Package(
       name: "Previewer",
       dependencies: ["AppKitExtensions", "MarkEditKit"],
       path: "Sources/Previewer",
+      resources: [
+        .process("Resources"),
+      ],
+      swiftSettings: [
+        .enableExperimentalFeature("StrictConcurrency")
+      ],
+      plugins: [
+        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+      ]
+    ),
+    .target(
+      name: "Renderer",
+      dependencies: ["AppKitExtensions", "MarkEditKit"],
+      path: "Sources/Renderer",
       resources: [
         .process("Resources"),
       ],

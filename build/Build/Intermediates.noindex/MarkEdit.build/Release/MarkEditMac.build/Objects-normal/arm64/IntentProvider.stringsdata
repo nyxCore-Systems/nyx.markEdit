@@ -1,0 +1,40 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Shortcuts/IntentProvider.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Create New Document",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "Evaluate JavaScript",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 26
+        }
+      },
+      {
+        "comment": "",
+        "key": "Get File Content",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "Update File Content",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 42
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,12 @@
+{
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/FontPicker/Extensions/Notification+Extension.swift" : {
+    "abi-baseline-json" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker.abi.json",
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker-primary.dia",
+    "objc-header" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker-Swift.h",
+    "swiftdoc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker.swiftdoc",
+    "swiftmodule" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker.swiftmodule",
+    "swiftsourceinfo" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/FontPicker.build/Objects-normal/arm64/FontPicker.swiftsourceinfo"
+  }
+}

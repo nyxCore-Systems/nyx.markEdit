@@ -1,0 +1,12 @@
+{
+  "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Modules/Sources/AppKitExtensions/Foundation/Bundle+Extension.swift" : {
+    "abi-baseline-json" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions.abi.json",
+    "const-values" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions-primary.swiftconstvalues",
+    "dependencies" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions-primary.d",
+    "diagnostics" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions-primary.dia",
+    "objc-header" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions-Swift.h",
+    "swiftdoc" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions.swiftdoc",
+    "swiftmodule" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions.swiftmodule",
+    "swiftsourceinfo" : "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/Modules.build/Release/AppKitExtensions.build/Objects-normal/arm64/AppKitExtensions.swiftsourceinfo"
+  }
+}

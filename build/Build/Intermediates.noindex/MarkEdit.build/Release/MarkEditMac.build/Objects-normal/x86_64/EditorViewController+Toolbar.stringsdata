@@ -1,0 +1,72 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/MarkEditMac/Sources/Editor/Controllers/EditorViewController+Toolbar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Content",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 334
+        }
+      },
+      {
+        "comment": "",
+        "key": "Granularity",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 334
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save Changes",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 334
+        }
+      },
+      {
+        "comment": "",
+        "key": "Content",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 79
+        }
+      },
+      {
+        "comment": "",
+        "key": "Call Async JavaScript",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 83
+        }
+      },
+      {
+        "comment": "",
+        "key": "Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value.",
+        "location": {
+          "startingColumn": 59,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "File Name",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 334
+        }
+      },
+      {
+        "comment": "",
+        "key": "Initial Content",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 334
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -94,6 +94,8 @@ extension EditorViewController: NSToolbarDelegate {
       case .shareDocument: return shareDocumentItem
       case .copyPandocCommand: return copyPandocCommandItem
       case .writingTools: return writingToolsItem
+      case .renderPreview: return renderPreviewItem
+      case .insertPageBreak: return insertPageBreakItem
       default:
         if let customItem = customItem(with: itemIdentifier) {
           return .with(identifier: itemIdentifier, customItem: customItem)
@@ -266,6 +268,18 @@ private extension EditorViewController {
       return .with(identifier: .writingTools, menu: menu.copiedMenu)
     } else {
       return nil
+    }
+  }
+
+  var renderPreviewItem: NSToolbarItem {
+    .with(identifier: .renderPreview) { [weak self] in
+      self?.showRenderedPreview()
+    }
+  }
+
+  var insertPageBreakItem: NSToolbarItem {
+    .with(identifier: .insertPageBreak) { [weak self] in
+      self?.bridge.format.insertPageBreak()
     }
   }
 

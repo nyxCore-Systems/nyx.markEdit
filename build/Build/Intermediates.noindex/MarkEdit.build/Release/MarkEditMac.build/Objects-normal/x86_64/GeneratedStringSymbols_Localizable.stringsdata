@@ -1,0 +1,24 @@
+{
+  "source": "/Users/oli/Projects/nyx.markEdit/build/Build/Intermediates.noindex/MarkEdit.build/Release/MarkEditMac.build/DerivedSources/GeneratedStringSymbols_Localizable.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Evaluate JavaScript with ${content}",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 25
+        }
+      },
+      {
+        "comment": "",
+        "key": "Update file with ${content}",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 32
+        }
+      }
+    ]
+  },
+  "version": 1
+}
