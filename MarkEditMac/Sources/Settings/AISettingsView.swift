@@ -21,8 +21,10 @@ struct AISettingsView: View {
 
   // nyxCore
   @State private var nyxEnabled = AppPreferences.NyxCore.enabled
-  @State private var nyxToken: String = AppPreferences.NyxCore.token ?? ""
-  @State private var nyxBaseURL: String = AppPreferences.NyxCore.baseURL
+  @State private var nyxPersonaToken: String = AppPreferences.NyxCore.personaToken ?? ""
+  @State private var nyxPersonaBaseURL: String = AppPreferences.NyxCore.personaBaseURL
+  @State private var nyxKnowledgeToken: String = AppPreferences.NyxCore.knowledgeToken ?? ""
+  @State private var nyxKnowledgeBaseURL: String = AppPreferences.NyxCore.knowledgeBaseURL
   @State private var nyxProjectID: String = AppPreferences.NyxCore.projectID
   @State private var nyxUseKnowledge = AppPreferences.NyxCore.useKnowledge
   @State private var nyxStatus: String = ""
@@ -107,25 +109,48 @@ struct AISettingsView: View {
           .formLabel("nyxCore")
       }
 
+      // Persona Studio credentials
       Section {
         VStack(alignment: .leading) {
-          SecureField("", text: $nyxToken, prompt: Text("nyx_mt_…"))
+          SecureField("", text: $nyxPersonaToken, prompt: Text("nyx_mt_…"))
             .textFieldStyle(.roundedBorder)
-            .onChange(of: nyxToken) {
-              AppPreferences.NyxCore.token = nyxToken.trimmingCharacters(in: .whitespaces)
+            .onChange(of: nyxPersonaToken) {
+              AppPreferences.NyxCore.personaToken = nyxPersonaToken.trimmingCharacters(in: .whitespaces)
             }
 
-          Text("Bearer token for the nyxCore MCP endpoint. Stored in the Keychain.")
+          Text("Token for nyx Persona Studio (personas). Stored in the Keychain.")
             .formDescription()
         }
-        .formLabel(alignment: .top, "Token")
+        .formLabel(alignment: .top, "Persona token")
 
-        TextField("", text: $nyxBaseURL)
+        TextField("", text: $nyxPersonaBaseURL)
           .textFieldStyle(.roundedBorder)
-          .onChange(of: nyxBaseURL) {
-            AppPreferences.NyxCore.baseURL = nyxBaseURL
+          .onChange(of: nyxPersonaBaseURL) {
+            AppPreferences.NyxCore.personaBaseURL = nyxPersonaBaseURL
           }
-          .formLabel("Endpoint")
+          .formLabel("Persona endpoint")
+      }
+
+      // Knowledge credentials
+      Section {
+        VStack(alignment: .leading) {
+          SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_mt_…"))
+            .textFieldStyle(.roundedBorder)
+            .onChange(of: nyxKnowledgeToken) {
+              AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespaces)
+            }
+
+          Text("Token for project knowledge search. Stored in the Keychain.")
+            .formDescription()
+        }
+        .formLabel(alignment: .top, "Knowledge token")
+
+        TextField("", text: $nyxKnowledgeBaseURL)
+          .textFieldStyle(.roundedBorder)
+          .onChange(of: nyxKnowledgeBaseURL) {
+            AppPreferences.NyxCore.knowledgeBaseURL = nyxKnowledgeBaseURL
+          }
+          .formLabel("Knowledge endpoint")
 
         VStack(alignment: .leading) {
           TextField("", text: $nyxProjectID, prompt: Text("UUID"))
@@ -148,10 +173,10 @@ struct AISettingsView: View {
 
       Section {
         HStack {
-          Button("Test nyxCore") {
+          Button("Test personas") {
             runNyxConnectionTest()
           }
-          .disabled(nyxTesting || nyxToken.trimmingCharacters(in: .whitespaces).isEmpty)
+          .disabled(nyxTesting || nyxPersonaToken.trimmingCharacters(in: .whitespaces).isEmpty)
 
           if nyxTesting {
             ProgressView().scaleEffect(0.6)

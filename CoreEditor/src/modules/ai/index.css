@@ -59,10 +59,13 @@
   flex-direction: column;
   gap: 0;
   padding: 4px;
-  background: inherit;
+  background-color: var(--md-ai-bg, color-mix(in oklab, Canvas 90%, CanvasText 10%));
+  background-image: linear-gradient(Canvas, Canvas);
   border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   min-width: 140px;
   z-index: 1;
 }
@@ -85,10 +88,13 @@
   flex-direction: column;
   gap: 0;
   padding: 4px;
-  background: inherit;
+  background-color: var(--md-ai-bg, color-mix(in oklab, Canvas 90%, CanvasText 10%));
+  background-image: linear-gradient(Canvas, Canvas);
   border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   min-width: 180px;
   max-height: 320px;
   overflow-y: auto;

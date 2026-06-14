@@ -43,22 +43,38 @@ struct NyxCoreClient: Sendable {
   let token: String
   let projectID: String?
 
-  /// Builds a client from the current preferences, or nil when nyxCore is
-  /// disabled or no token has been configured.
+  /// Client for nyx Persona Studio (get_personas / get_persona_skills), or nil
+  /// when nyxCore is disabled or no persona token has been configured.
   @MainActor
-  static func current() -> Self? {
+  static func personas() -> Self? {
     guard AppPreferences.NyxCore.enabled else {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.token ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    guard !token.isEmpty else {
+      return nil
+    }
+
+    return Self(baseURL: AppPreferences.NyxCore.personaBaseURL, token: token, projectID: nil)
+  }
+
+  /// Client for project knowledge search, or nil when nyxCore is disabled or no
+  /// knowledge token has been configured.
+  @MainActor
+  static func knowledge() -> Self? {
+    guard AppPreferences.NyxCore.enabled else {
+      return nil
+    }
+
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
     guard !token.isEmpty else {
       return nil
     }
 
     let project = AppPreferences.NyxCore.projectID.trimmingCharacters(in: .whitespaces)
     return Self(
-      baseURL: AppPreferences.NyxCore.baseURL,
+      baseURL: AppPreferences.NyxCore.knowledgeBaseURL,
       token: token,
       projectID: project.isEmpty ? nil : project
     )

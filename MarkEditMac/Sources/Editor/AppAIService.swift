@@ -27,8 +27,8 @@ final class AppAIService: AIService {
   }
 
   func listPersonas() async -> AIPersonaListResponse {
-    guard let client = NyxCoreClient.current() else {
-      return .init(error: "Enable nyxCore and add a token in Settings → AI.")
+    guard let client = NyxCoreClient.personas() else {
+      return .init(error: "Enable nyxCore and add a Persona Studio token in Settings → AI.")
     }
 
     do {
@@ -46,18 +46,19 @@ final class AppAIService: AIService {
     context: String?,
     useKnowledge: Bool
   ) async -> AIRefactorResponse {
-    guard let client = NyxCoreClient.current() else {
-      return .init(error: "Enable nyxCore and add a token in Settings → AI.")
+    guard let personaClient = NyxCoreClient.personas() else {
+      return .init(error: "Enable nyxCore and add a Persona Studio token in Settings → AI.")
     }
 
     do {
-      let personaPrompt = try await client.personaPrompt(personaID: personaID)
+      let personaPrompt = try await personaClient.personaPrompt(personaID: personaID)
 
       var knowledge: [String] = []
-      if useKnowledge {
+      // Knowledge uses its own credentials and is best-effort: missing config or a
+      // search failure should never block the persona rewrite.
+      if useKnowledge, let knowledgeClient = NyxCoreClient.knowledge() {
         let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
-        // Knowledge is best-effort: a search failure should not block the rewrite.
-        knowledge = (try? await client.search(query: selection, limit: limit)) ?? []
+        knowledge = (try? await knowledgeClient.search(query: selection, limit: limit)) ?? []
       }
 
       let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)

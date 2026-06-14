@@ -74,6 +74,7 @@ export function aiSelectionToolbar() {
     private readonly personaToggle: HTMLButtonElement;
     private personas: AIPersona[] | undefined;
     private personasLoading = false;
+    private personaError: string | undefined;
     private useKnowledge = true;
     private knowledgeToggleEl: HTMLButtonElement | undefined;
     private readonly state: AIToolbarState = { busy: false };
@@ -214,13 +215,14 @@ export function aiSelectionToolbar() {
 
         if (isNonEmpty(response.error)) {
           this.personas = [];
-          this.setError(response.error);
+          this.personaError = response.error;
         } else {
           this.personas = response.personas ?? [];
+          this.personaError = undefined;
         }
       } catch (err) {
         this.personas = [];
-        this.setError(err instanceof Error ? err.message : String(err));
+        this.personaError = err instanceof Error ? err.message : String(err);
       } finally {
         this.personasLoading = false;
         this.renderPersonaList();
@@ -257,7 +259,7 @@ export function aiSelectionToolbar() {
       if (this.personas === undefined || this.personas.length === 0) {
         const info = document.createElement('span');
         info.className = 'cm-md-aiPersonaInfo';
-        info.textContent = activeLabels.noPersonas;
+        info.textContent = isNonEmpty(this.personaError) ? this.personaError : activeLabels.noPersonas;
         this.personaList.appendChild(info);
         return;
       }
