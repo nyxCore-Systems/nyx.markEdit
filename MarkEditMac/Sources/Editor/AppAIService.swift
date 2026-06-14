@@ -22,6 +22,57 @@ final class AppAIService: AIService {
   }
 
   func refactor(action: AIAction, selection: String, context: String?) async -> AIRefactorResponse {
+    let prompt = buildPrompt(action: action, selection: selection, context: context)
+    return await complete(system: Self.systemPrompt, userMessage: prompt)
+  }
+
+  func listPersonas() async -> AIPersonaListResponse {
+    guard let client = NyxCoreClient.current() else {
+      return .init(error: "Enable nyxCore and add a token in Settings → AI.")
+    }
+
+    do {
+      let personas = try await client.listPersonas()
+      return .init(personas: personas.map { AIPersona(id: $0.id, name: $0.name, description: $0.description) })
+    } catch {
+      return .init(error: error.localizedDescription)
+    }
+  }
+
+  func refactorWithPersona(
+    personaID: String,
+    personaName: String,
+    selection: String,
+    context: String?,
+    useKnowledge: Bool
+  ) async -> AIRefactorResponse {
+    guard let client = NyxCoreClient.current() else {
+      return .init(error: "Enable nyxCore and add a token in Settings → AI.")
+    }
+
+    do {
+      let personaPrompt = try await client.personaPrompt(personaID: personaID)
+
+      var knowledge: [String] = []
+      if useKnowledge {
+        let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
+        // Knowledge is best-effort: a search failure should not block the rewrite.
+        knowledge = (try? await client.search(query: selection, limit: limit)) ?? []
+      }
+
+      let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)
+      let user = NyxCorePromptComposer.userPrompt(selection: selection, context: context, knowledge: knowledge)
+      return await complete(system: system, userMessage: user)
+    } catch {
+      return .init(error: error.localizedDescription)
+    }
+  }
+
+  // MARK: - Generation (Anthropic)
+
+  /// Shared text-generation call. nyxCore supplies the persona/knowledge context;
+  /// this method is the generation provider seam (currently Anthropic only).
+  private func complete(system: String, userMessage: String) async -> AIRefactorResponse {
     guard AppPreferences.AI.enabled else {
       return .init(error: "AI is disabled in Settings.")
     }
@@ -34,15 +85,14 @@ final class AppAIService: AIService {
       return .init(error: "Invalid AI endpoint URL.")
     }
 
-    let prompt = buildPrompt(action: action, selection: selection, context: context)
     let body: [String: Any] = [
       "model": AppPreferences.AI.model,
       "max_tokens": AppPreferences.AI.maxTokens,
-      "system": Self.systemPrompt,
+      "system": system,
       "messages": [
         [
           "role": "user",
-          "content": prompt,
+          "content": userMessage,
         ],
       ],
     ]

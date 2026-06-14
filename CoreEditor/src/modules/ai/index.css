@@ -72,6 +72,47 @@
   width: 100%;
 }
 
+.cm-md-aiToolbar .cm-md-aiPersonaMenu {
+  position: relative;
+}
+
+.cm-md-aiPersonaList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 4px;
+  background: inherit;
+  border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  min-width: 180px;
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.cm-md-aiPersonaList button {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.cm-md-aiPersonaList .cm-md-aiKnowledgeToggle {
+  border-bottom: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+  border-radius: 0;
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+}
+
+.cm-md-aiPersonaList .cm-md-aiPersonaInfo {
+  padding: 4px 9px;
+  font-style: italic;
+  opacity: 0.75;
+}
+
 .cm-md-aiToolbar .cm-md-aiStatus {
   padding: 0 6px;
   font-style: italic;
