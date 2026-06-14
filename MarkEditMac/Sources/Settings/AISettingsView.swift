@@ -19,6 +19,16 @@ struct AISettingsView: View {
   @State private var testStatusIsError: Bool = false
   @State private var isTesting: Bool = false
 
+  // nyxCore
+  @State private var nyxEnabled = AppPreferences.NyxCore.enabled
+  @State private var nyxToken: String = AppPreferences.NyxCore.token ?? ""
+  @State private var nyxBaseURL: String = AppPreferences.NyxCore.baseURL
+  @State private var nyxProjectID: String = AppPreferences.NyxCore.projectID
+  @State private var nyxUseKnowledge = AppPreferences.NyxCore.useKnowledge
+  @State private var nyxStatus: String = ""
+  @State private var nyxStatusIsError: Bool = false
+  @State private var nyxTesting: Bool = false
+
   var body: some View {
     SettingsForm {
       Section {
@@ -85,6 +95,96 @@ struct AISettingsView: View {
           Spacer()
         }
         .formLabel("")
+      }
+
+      // MARK: - nyxCore
+
+      Section {
+        Toggle("nyxCore personas & knowledge", isOn: $nyxEnabled)
+          .onChange(of: nyxEnabled) {
+            AppPreferences.NyxCore.enabled = nyxEnabled
+          }
+          .formLabel("nyxCore")
+      }
+
+      Section {
+        VStack(alignment: .leading) {
+          SecureField("", text: $nyxToken, prompt: Text("nyx_mt_…"))
+            .textFieldStyle(.roundedBorder)
+            .onChange(of: nyxToken) {
+              AppPreferences.NyxCore.token = nyxToken.trimmingCharacters(in: .whitespaces)
+            }
+
+          Text("Bearer token for the nyxCore MCP endpoint. Stored in the Keychain.")
+            .formDescription()
+        }
+        .formLabel(alignment: .top, "Token")
+
+        TextField("", text: $nyxBaseURL)
+          .textFieldStyle(.roundedBorder)
+          .onChange(of: nyxBaseURL) {
+            AppPreferences.NyxCore.baseURL = nyxBaseURL
+          }
+          .formLabel("Endpoint")
+
+        VStack(alignment: .leading) {
+          TextField("", text: $nyxProjectID, prompt: Text("UUID"))
+            .textFieldStyle(.roundedBorder)
+            .onChange(of: nyxProjectID) {
+              AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
+            }
+
+          Text("Optional project to scope knowledge search.")
+            .formDescription()
+        }
+        .formLabel(alignment: .top, "Project ID")
+
+        Toggle("Ground rewrites with project knowledge", isOn: $nyxUseKnowledge)
+          .onChange(of: nyxUseKnowledge) {
+            AppPreferences.NyxCore.useKnowledge = nyxUseKnowledge
+          }
+          .formLabel("Knowledge")
+      }
+
+      Section {
+        HStack {
+          Button("Test nyxCore") {
+            runNyxConnectionTest()
+          }
+          .disabled(nyxTesting || nyxToken.trimmingCharacters(in: .whitespaces).isEmpty)
+
+          if nyxTesting {
+            ProgressView().scaleEffect(0.6)
+          }
+
+          if !nyxStatus.isEmpty {
+            Text(nyxStatus)
+              .foregroundStyle(nyxStatusIsError ? .red : .green)
+              .font(.callout)
+          }
+
+          Spacer()
+        }
+        .formLabel("")
+      }
+    }
+  }
+
+  private func runNyxConnectionTest() {
+    nyxTesting = true
+    nyxStatus = ""
+    nyxStatusIsError = false
+
+    Task { @MainActor in
+      let response = await AppAIService().listPersonas()
+      nyxTesting = false
+      if let error = response.error {
+        nyxStatusIsError = true
+        nyxStatus = error
+      } else {
+        nyxStatusIsError = false
+        let count = response.personas?.count ?? 0
+        nyxStatus = "Connected — \(count) personas"
       }
     }
   }

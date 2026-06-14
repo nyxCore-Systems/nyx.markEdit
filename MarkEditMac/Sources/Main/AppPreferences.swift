@@ -270,6 +270,31 @@ enum AppPreferences {
       set { AppKeychain.setString(newValue, account: "anthropic.api-key") }
     }
   }
+
+  enum NyxCore {
+    @Storage(key: "nyxcore.enabled", defaultValue: false)
+    static var enabled: Bool
+
+    @Storage(key: "nyxcore.base-url", defaultValue: "https://nyxcore.cloud/api/v1/mcp")
+    static var baseURL: String
+
+    /// Project ID used to scope knowledge search (nyxcore_search). Optional.
+    @Storage(key: "nyxcore.project-id", defaultValue: "")
+    static var projectID: String
+
+    /// Whether persona rewrites pull in project knowledge by default.
+    @Storage(key: "nyxcore.use-knowledge", defaultValue: true)
+    static var useKnowledge: Bool
+
+    /// Maximum number of knowledge snippets injected into a rewrite prompt.
+    @Storage(key: "nyxcore.knowledge-limit", defaultValue: 5)
+    static var knowledgeLimit: Int
+
+    static var token: String? {
+      get { AppKeychain.getString(account: "nyxcore.token") }
+      set { AppKeychain.setString(newValue, account: "nyxcore.token") }
+    }
+  }
 }
 
 extension FontStyle {

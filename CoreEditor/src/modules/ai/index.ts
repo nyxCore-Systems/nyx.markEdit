@@ -1,6 +1,6 @@
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
-import { AIAction } from '../../bridge/native/ai';
+import { AIAction, AIPersona, AIPersonaListResponse } from '../../bridge/native/ai';
 import './index.css';
 
 import { isActive as isWritingToolsActive } from '../writingTools';
@@ -15,6 +15,10 @@ interface ToolbarLabels {
   toneCasual: string;
   toneFriendly: string;
   toneAcademic: string;
+  persona: string;
+  personaLoading: string;
+  noPersonas: string;
+  knowledge: string;
   loading: string;
   notConfigured: string;
 }
@@ -29,6 +33,10 @@ const defaultLabels: ToolbarLabels = {
   toneCasual: 'Casual',
   toneFriendly: 'Friendly',
   toneAcademic: 'Academic',
+  persona: 'Persona',
+  personaLoading: 'Loading personas…',
+  noPersonas: 'No personas (check nyxCore settings)',
+  knowledge: 'Use project knowledge',
   loading: 'Thinking…',
   notConfigured: 'Configure AI in Settings',
 };
@@ -62,6 +70,12 @@ export function aiSelectionToolbar() {
     private readonly actionButtons: HTMLButtonElement[] = [];
     private readonly toneList: HTMLDivElement;
     private readonly toneToggle: HTMLButtonElement;
+    private readonly personaList: HTMLDivElement;
+    private readonly personaToggle: HTMLButtonElement;
+    private personas: AIPersona[] | undefined;
+    private personasLoading = false;
+    private useKnowledge = true;
+    private knowledgeToggleEl: HTMLButtonElement | undefined;
     private readonly state: AIToolbarState = { busy: false };
     private readonly boundOnKeyDown: (event: KeyboardEvent) => void;
 
@@ -75,6 +89,8 @@ export function aiSelectionToolbar() {
       this.statusEl.style.display = 'none';
       this.toneList = document.createElement('div');
       this.toneToggle = document.createElement('button');
+      this.personaList = document.createElement('div');
+      this.personaToggle = document.createElement('button');
 
       this.build();
 
@@ -153,7 +169,112 @@ export function aiSelectionToolbar() {
       toneWrap.appendChild(this.toneList);
       this.dom.appendChild(toneWrap);
 
+      // Persona submenu (nyxCore)
+      const personaWrap = document.createElement('div');
+      personaWrap.className = 'cm-md-aiPersonaMenu';
+      this.personaToggle.type = 'button';
+      this.personaToggle.textContent = `${activeLabels.persona} ▾`;
+      this.personaToggle.title = activeLabels.persona;
+      this.actionButtons.push(this.personaToggle);
+
+      this.personaList.className = 'cm-md-aiPersonaList';
+      this.personaList.style.display = 'none';
+
+      this.personaToggle.addEventListener('click', () => {
+        const visible = this.personaList.style.display !== 'none';
+        this.personaList.style.display = visible ? 'none' : 'flex';
+        if (!visible) {
+          void this.loadPersonas();
+        }
+      });
+
+      personaWrap.appendChild(this.personaToggle);
+      personaWrap.appendChild(this.personaList);
+      this.dom.appendChild(personaWrap);
+
       this.dom.appendChild(this.statusEl);
+    }
+
+    private async loadPersonas() {
+      if (this.personas !== undefined || this.personasLoading) {
+        return;
+      }
+
+      this.personasLoading = true;
+      this.renderPersonaList();
+
+      try {
+        const raw = await window.nativeModules.ai.listPersonas();
+        let response: AIPersonaListResponse;
+        try {
+          response = typeof raw === 'string' ? JSON.parse(raw) as AIPersonaListResponse : raw;
+        } catch {
+          response = { error: 'Invalid persona response payload.' };
+        }
+
+        if (isNonEmpty(response.error)) {
+          this.personas = [];
+          this.setError(response.error);
+        } else {
+          this.personas = response.personas ?? [];
+        }
+      } catch (err) {
+        this.personas = [];
+        this.setError(err instanceof Error ? err.message : String(err));
+      } finally {
+        this.personasLoading = false;
+        this.renderPersonaList();
+      }
+    }
+
+    private renderPersonaList() {
+      this.personaList.replaceChildren();
+
+      // Knowledge toggle row.
+      const knowledgeBtn = document.createElement('button');
+      knowledgeBtn.type = 'button';
+      knowledgeBtn.className = 'cm-md-aiKnowledgeToggle';
+      const renderKnowledgeLabel = () => {
+        knowledgeBtn.textContent = `${this.useKnowledge ? '☑' : '☐'} ${activeLabels.knowledge}`;
+      };
+      renderKnowledgeLabel();
+      knowledgeBtn.addEventListener('click', event => {
+        event.stopPropagation();
+        this.useKnowledge = !this.useKnowledge;
+        renderKnowledgeLabel();
+      });
+      this.personaList.appendChild(knowledgeBtn);
+      this.knowledgeToggleEl = knowledgeBtn;
+
+      if (this.personasLoading) {
+        const info = document.createElement('span');
+        info.className = 'cm-md-aiPersonaInfo';
+        info.textContent = activeLabels.personaLoading;
+        this.personaList.appendChild(info);
+        return;
+      }
+
+      if (this.personas === undefined || this.personas.length === 0) {
+        const info = document.createElement('span');
+        info.className = 'cm-md-aiPersonaInfo';
+        info.textContent = activeLabels.noPersonas;
+        this.personaList.appendChild(info);
+        return;
+      }
+
+      for (const persona of this.personas) {
+        const pBtn = document.createElement('button');
+        pBtn.type = 'button';
+        pBtn.textContent = persona.name;
+        if (isNonEmpty(persona.description)) {
+          pBtn.title = persona.description;
+        }
+        pBtn.addEventListener('click', () => {
+          this.personaList.style.display = 'none';
+          void this.runPersona(persona);
+        });
+        this.personaList.appendChild(pBtn);
+      }
     }
 
     private onKeyDown(event: KeyboardEvent): void {
@@ -204,6 +325,7 @@ export function aiSelectionToolbar() {
     private hide() {
       this.dom.setAttribute('aria-hidden', 'true');
       this.toneList.style.display = 'none';
+      this.personaList.style.display = 'none';
       this.clearStatus();
     }
 
@@ -232,26 +354,52 @@ export function aiSelectionToolbar() {
       this.state.errorMessage = undefined;
     }
 
-    private async runAction(action: AIAction) {
+    /** Selection text plus a small surrounding window so the model can match style. */
+    private selectionContext() {
       const sel = this.view.state.selection.main;
+      const selectedText = this.view.state.sliceDoc(sel.from, sel.to);
+      const ctxFrom = Math.max(0, sel.from - 600);
+      const ctxTo = Math.min(this.view.state.doc.length, sel.to + 200);
+      const context = this.view.state.sliceDoc(ctxFrom, ctxTo);
+      return { sel, selectedText, context };
+    }
+
+    private async runAction(action: AIAction) {
+      const { sel, selectedText, context } = this.selectionContext();
       if (sel.empty) {
         return;
       }
 
-      const selectedText = this.view.state.sliceDoc(sel.from, sel.to);
+      await this.runRewrite(sel, () => window.nativeModules.ai.refactor({
+        action,
+        selection: selectedText,
+        context,
+      }));
+    }
 
-      // Provide a small surrounding context window so the model can match style.
-      const ctxFrom = Math.max(0, sel.from - 600);
-      const ctxTo = Math.min(this.view.state.doc.length, sel.to + 200);
-      const context = this.view.state.sliceDoc(ctxFrom, ctxTo);
+    private async runPersona(persona: AIPersona) {
+      const { sel, selectedText, context } = this.selectionContext();
+      if (sel.empty) {
+        return;
+      }
 
+      await this.runRewrite(sel, () => window.nativeModules.ai.refactorWithPersona({
+        personaID: persona.id,
+        personaName: persona.name,
+        selection: selectedText,
+        context,
+        useKnowledge: this.useKnowledge,
+      }));
+    }
+
+    /** Shared busy/parse/replace handling for any rewrite source. */
+    private async runRewrite(
+      sel: { from: number; to: number },
+      invoke: () => Promise<string>,
+    ) {
       this.setBusy(true);
       try {
-        const raw = await window.nativeModules.ai.refactor({
-          action,
-          selection: selectedText,
-          context,
-        });
+        const raw = await invoke();
 
         let response: { result?: string; error?: string };
         try {
