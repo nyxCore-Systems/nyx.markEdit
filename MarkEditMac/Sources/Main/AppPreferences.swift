@@ -275,8 +275,23 @@ enum AppPreferences {
     @Storage(key: "nyxcore.enabled", defaultValue: false)
     static var enabled: Bool
 
+    // Personas (nyx Persona Studio) — uses its own credentials, separate from knowledge.
+    @Storage(key: "nyxcore.persona-base-url", defaultValue: "https://nyxcore.cloud/api/v1/mcp")
+    static var personaBaseURL: String
+
+    static var personaToken: String? {
+      get { AppKeychain.getString(account: "nyxcore.persona-token") }
+      set { AppKeychain.setString(newValue, account: "nyxcore.persona-token") }
+    }
+
+    // Knowledge (project search) — its own endpoint and token.
     @Storage(key: "nyxcore.base-url", defaultValue: "https://nyxcore.cloud/api/v1/mcp")
-    static var baseURL: String
+    static var knowledgeBaseURL: String
+
+    static var knowledgeToken: String? {
+      get { AppKeychain.getString(account: "nyxcore.token") }
+      set { AppKeychain.setString(newValue, account: "nyxcore.token") }
+    }
 
     /// Project ID used to scope knowledge search (nyxcore_search). Optional.
     @Storage(key: "nyxcore.project-id", defaultValue: "")
@@ -289,11 +304,6 @@ enum AppPreferences {
     /// Maximum number of knowledge snippets injected into a rewrite prompt.
     @Storage(key: "nyxcore.knowledge-limit", defaultValue: 5)
     static var knowledgeLimit: Int
-
-    static var token: String? {
-      get { AppKeychain.getString(account: "nyxcore.token") }
-      set { AppKeychain.setString(newValue, account: "nyxcore.token") }
-    }
   }
 }
 
