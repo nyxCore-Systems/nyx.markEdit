@@ -1,6 +1,8 @@
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
 import { AIAction, AIPersona, AIPersonaListResponse } from '../../bridge/native/ai';
+import { globalState } from '../../common/store';
+import { clampPosition, computeToolbarPosition } from './positioning';
 import './index.css';
 
 import { isActive as isWritingToolsActive } from '../writingTools';
@@ -79,6 +81,8 @@ export function aiSelectionToolbar() {
     private knowledgeToggleEl: HTMLButtonElement | undefined;
     private readonly state: AIToolbarState = { busy: false };
     private readonly boundOnKeyDown: (event: KeyboardEvent) => void;
+    private manualPosition: { top: number; left: number } | undefined;
+    private wasFlipped = false;
 
     constructor(private readonly view: EditorView) {
       this.dom = document.createElement('div');
@@ -115,6 +119,13 @@ export function aiSelectionToolbar() {
     }
 
     private build() {
+      const grip = document.createElement('div');
+      grip.className = 'cm-md-aiGrip';
+      grip.textContent = '⠿';
+      grip.title = 'Drag to move';
+      grip.addEventListener('mousedown', event => this.startDrag(event));
+      this.dom.appendChild(grip);
+
       const addAction = (label: string, action: AIAction) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -285,6 +296,40 @@ export function aiSelectionToolbar() {
       }
     }
 
+    private startDrag(event: MouseEvent) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const toolbarRect = this.dom.getBoundingClientRect();
+      const editorRect = this.view.dom.getBoundingClientRect();
+      const origin = {
+        top: toolbarRect.top - editorRect.top,
+        left: toolbarRect.left - editorRect.left,
+      };
+      const startX = event.clientX;
+      const startY = event.clientY;
+
+      const onMove = (move: MouseEvent) => {
+        const rect = this.view.dom.getBoundingClientRect();
+        const pos = clampPosition(
+          { top: origin.top + (move.clientY - startY), left: origin.left + (move.clientX - startX) },
+          { width: toolbarRect.width, height: toolbarRect.height },
+          { width: rect.width, height: rect.height },
+        );
+        this.manualPosition = pos;
+        this.dom.style.top = `${pos.top}px`;
+        this.dom.style.left = `${pos.left}px`;
+      };
+
+      const onUp = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      };
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    }
+
     private reposition() {
       // Don't compete with macOS Writing Tools.
       if (isWritingToolsActive()) {
@@ -300,23 +345,39 @@ export function aiSelectionToolbar() {
         return;
       }
 
-      // Anchor at the start of the (visual) selection.
-      const anchorPos = Math.min(sel.from, sel.to);
-      const coords = this.view.coordsAtPos(anchorPos);
-      if (coords === null) {
+      const startPos = Math.min(sel.from, sel.to);
+      const endPos = Math.max(sel.from, sel.to);
+      const selStart = this.view.coordsAtPos(startPos);
+      const selEnd = this.view.coordsAtPos(endPos);
+      if (selStart === null || selEnd === null) {
         this.hide();
         return;
       }
 
-      const editorRect = this.view.dom.getBoundingClientRect();
-      const top = coords.top - editorRect.top - 44; // toolbar above the line
-      const left = coords.left - editorRect.left;
-
+      this.applyTheme();
       this.dom.style.position = 'absolute';
-      this.dom.style.top = `${Math.max(top, 0)}px`;
-      this.dom.style.left = `${Math.max(left, 0)}px`;
-      this.dom.style.zIndex = '20';
+      this.dom.style.zIndex = '550';
       this.dom.setAttribute('aria-hidden', 'false');
+
+      const editorRect = this.view.dom.getBoundingClientRect();
+      const toolbarRect = this.dom.getBoundingClientRect();
+      const toolbarSize = { width: toolbarRect.width, height: toolbarRect.height };
+
+      if (this.manualPosition !== undefined) {
+        // The user dragged the toolbar — keep their position, re-clamped.
+        const pos = clampPosition(this.manualPosition, toolbarSize, {
+          width: editorRect.width, height: editorRect.height,
+        });
+        this.dom.style.top = `${pos.top}px`;
+        this.dom.style.left = `${pos.left}px`;
+      } else {
+        const placement = computeToolbarPosition({
+          selStart, selEnd, toolbar: toolbarSize, editor: editorRect, wasFlipped: this.wasFlipped,
+        });
+        this.wasFlipped = placement.flipped;
+        this.dom.style.top = `${placement.top}px`;
+        this.dom.style.left = `${placement.left}px`;
+      }
 
       // Reset transient error after the user moves on.
       if (isNonEmpty(this.state.errorMessage)) {
@@ -324,11 +385,24 @@ export function aiSelectionToolbar() {
       }
     }
 
+    /** Sync toolbar colors with the active editor theme (not just OS appearance). */
+    private applyTheme() {
+      const colors = globalState.colors;
+      if (colors === undefined) {
+        return; // CSS falls back to system colors.
+      }
+      this.dom.style.setProperty('--md-ai-bg', colors.background);
+      this.dom.style.setProperty('--md-ai-fg', colors.text);
+      this.dom.style.setProperty('--md-ai-accent', colors.accent);
+    }
+
     private hide() {
       this.dom.setAttribute('aria-hidden', 'true');
       this.toneList.style.display = 'none';
       this.personaList.style.display = 'none';
       this.clearStatus();
+      this.manualPosition = undefined;
+      this.wasFlipped = false;
     }
 
     private setBusy(busy: boolean, label = activeLabels.loading) {
