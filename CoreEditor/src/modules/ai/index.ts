@@ -83,6 +83,7 @@ export function aiSelectionToolbar() {
     private readonly boundOnKeyDown: (event: KeyboardEvent) => void;
     private manualPosition: { top: number; left: number } | undefined;
     private wasFlipped = false;
+    private activeDragCleanup: (() => void) | undefined;
 
     constructor(private readonly view: EditorView) {
       this.dom = document.createElement('div');
@@ -114,6 +115,7 @@ export function aiSelectionToolbar() {
     }
 
     destroy() {
+      this.activeDragCleanup?.();
       document.removeEventListener('keydown', this.boundOnKeyDown);
       this.dom.remove();
     }
@@ -321,13 +323,16 @@ export function aiSelectionToolbar() {
         this.dom.style.left = `${pos.left}px`;
       };
 
-      const onUp = () => {
+      const cleanup = () => {
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
+        this.activeDragCleanup = undefined;
       };
+      const onUp = () => cleanup();
 
       document.addEventListener('mousemove', onMove);
       document.addEventListener('mouseup', onUp);
+      this.activeDragCleanup = cleanup;
     }
 
     private reposition() {

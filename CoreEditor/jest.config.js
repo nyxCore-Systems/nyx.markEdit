@@ -4,4 +4,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  moduleNameMapper: {
+    '\\.(css)$': '<rootDir>/test/@mocks/styleMock.js',
+  },
 };
