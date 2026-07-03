@@ -467,9 +467,10 @@ export function aiSelectionToolbar() {
       await this.runRewrite(sel, () => window.nativeModules.ai.refactorWithPersona({
         personaID: persona.id,
         personaName: persona.name,
+        circleID: persona.circleId,
         selection: selectedText,
         context,
-        useKnowledge: this.useKnowledge,
+        knowledgeScope: this.useKnowledge ? 'project' : 'off',
       }));
     }
 

@@ -27,46 +27,159 @@ final class AppAIService: AIService {
   }
 
   func listPersonas() async -> AIPersonaListResponse {
+    // Persona Studio tokens (nyx_pa_) use the REST API; MCP tokens use JSON-RPC.
+    if let studio = PersonaStudioClient.current() {
+      do {
+        let personas = try await studio.listPersonas()
+        guard !personas.isEmpty else {
+          return .init(error: "No published circles for this token.")
+        }
+
+        return .init(personas: personas.map {
+          AIPersona(
+            id: $0.id,
+            name: $0.name,
+            description: $0.description,
+            source: "studio",
+            circleId: $0.circleID,
+            circleName: $0.circleName
+          )
+        })
+      } catch {
+        return .init(error: error.localizedDescription)
+      }
+    }
+
     guard let client = NyxCoreClient.personas() else {
-      return .init(error: "Enable nyxCore and add a Persona Studio token in Settings → AI.")
+      return .init(error: "Enable nyxCore and add a persona token (nyx_pa_ or nyx_mt_) in Settings → AI.")
     }
 
     do {
       let personas = try await client.listPersonas()
-      return .init(personas: personas.map { AIPersona(id: $0.id, name: $0.name, description: $0.description) })
+      return .init(personas: personas.map {
+        AIPersona(id: $0.id, name: $0.name, description: $0.description, source: "mcp")
+      })
     } catch {
       return .init(error: error.localizedDescription)
     }
   }
 
+  func knowledgeConfig() async -> AIKnowledgeConfig {
+    var scopes = ["off"]
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
+    let hasProject = !AppPreferences.NyxCore.projectID.trimmingCharacters(in: .whitespaces).isEmpty
+    let hasCollection = !AppPreferences.NyxCore.collectionID.trimmingCharacters(in: .whitespaces).isEmpty
+
+    if token.hasPrefix(AxiomClient.tokenPrefix) {
+      if hasProject {
+        scopes.append("project")
+      }
+      if hasCollection {
+        scopes.append("global")
+      }
+      scopes.append("all")
+    } else if !token.isEmpty && hasProject {
+      // Legacy MCP knowledge token: only project-scoped search is possible.
+      scopes.append("project")
+    }
+
+    let preferred = Self.resolvedDefaultScope()
+    let defaultScope = scopes.contains(preferred) ? preferred : (scopes.count > 1 ? scopes[1] : "off")
+    return AIKnowledgeConfig(availableScopes: scopes, defaultScope: defaultScope)
+  }
+
   func refactorWithPersona(
     personaID: String,
     personaName: String,
+    circleID: String?,
     selection: String,
     context: String?,
-    useKnowledge: Bool
+    knowledgeScope: String
   ) async -> AIRefactorResponse {
+    // Knowledge is best-effort for both protocols: failures never block the rewrite.
+    let knowledge = await loadKnowledge(scope: knowledgeScope, query: selection)
+    let user = NyxCorePromptComposer.userPrompt(selection: selection, context: context, knowledge: knowledge)
+
+    // Persona Studio: the rewrite runs server-side (persona voice + billing in nyxCore).
+    if let studio = PersonaStudioClient.current() {
+      do {
+        let content = try await studio.chat(
+          personaID: personaID,
+          circleID: circleID,
+          system: NyxCorePromptComposer.editorContract,
+          user: user,
+          maxTokens: AppPreferences.AI.maxTokens
+        )
+        return .init(result: content)
+      } catch {
+        return .init(error: error.localizedDescription)
+      }
+    }
+
+    // MCP: fetch the persona's skill prompts, then generate locally via Anthropic.
     guard let personaClient = NyxCoreClient.personas() else {
-      return .init(error: "Enable nyxCore and add a Persona Studio token in Settings → AI.")
+      return .init(error: "Enable nyxCore and add a persona token (nyx_pa_ or nyx_mt_) in Settings → AI.")
     }
 
     do {
       let personaPrompt = try await personaClient.personaPrompt(personaID: personaID)
-
-      var knowledge: [String] = []
-      // Knowledge uses its own credentials and is best-effort: missing config or a
-      // search failure should never block the persona rewrite.
-      if useKnowledge, let knowledgeClient = NyxCoreClient.knowledge() {
-        let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
-        knowledge = (try? await knowledgeClient.search(query: selection, limit: limit)) ?? []
-      }
-
       let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)
-      let user = NyxCorePromptComposer.userPrompt(selection: selection, context: context, knowledge: knowledge)
       return await complete(system: system, userMessage: user)
     } catch {
       return .init(error: error.localizedDescription)
     }
+  }
+
+  /// Test hook for Settings → AI: runs a 1-result search in the default scope
+  /// and surfaces errors instead of swallowing them.
+  func testKnowledge() async -> (success: Bool, message: String) {
+    let scope = Self.resolvedDefaultScope()
+    guard scope != "off" else {
+      return (false, "Knowledge is off — pick a default scope first.")
+    }
+
+    do {
+      let snippets: [String]
+      if let axiom = AxiomClient.current() {
+        snippets = try await axiom.search(query: "test", scope: scope, limit: 1)
+      } else if scope == "project", let legacy = NyxCoreClient.knowledge() {
+        snippets = try await legacy.search(query: "test", limit: 1)
+      } else {
+        return (false, "Add a knowledge token (nyx_ax_) in Settings → AI.")
+      }
+      return (true, "Connected — \(snippets.count) result(s)")
+    } catch {
+      return (false, error.localizedDescription)
+    }
+  }
+
+  // MARK: - Knowledge
+
+  /// The effective default scope, migrating from the legacy useKnowledge flag
+  /// when the new preference has never been set.
+  private static func resolvedDefaultScope() -> String {
+    let stored = AppPreferences.NyxCore.knowledgeScope
+    if !stored.isEmpty {
+      return stored
+    }
+    return AppPreferences.NyxCore.useKnowledge ? "project" : "off"
+  }
+
+  private func loadKnowledge(scope: String, query: String) async -> [String] {
+    guard scope != "off", AppPreferences.NyxCore.enabled else {
+      return []
+    }
+
+    let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
+    if let axiom = AxiomClient.current() {
+      return (try? await axiom.search(query: query, scope: scope, limit: limit)) ?? []
+    }
+
+    // Legacy MCP fallback: project scope only.
+    guard scope == "project", let legacy = NyxCoreClient.knowledge() else {
+      return []
+    }
+    return (try? await legacy.search(query: query, limit: limit)) ?? []
   }
 
   // MARK: - Generation (Anthropic)

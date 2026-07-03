@@ -20,10 +20,21 @@ export interface AIPersona {
   id: string;
   name: string;
   description?: string;
+  // 'mcp' (global personas via MCP token) or 'studio' (Persona Studio circles).
+  source?: string;
+  circleId?: string;
+  circleName?: string;
 }
 
 export interface AIPersonaListResponse {
   personas?: AIPersona[];
+  error?: string;
+}
+
+export interface AIKnowledgeConfig {
+  // Subset of ['off', 'project', 'global', 'all'], always contains 'off'.
+  availableScopes?: string[];
+  defaultScope?: string;
   error?: string;
 }
 
@@ -38,15 +49,18 @@ export interface NativeModuleAI extends NativeModule {
 
   // nyxCore: personas and knowledge-grounded rewriting.
   //
-  // Both return JSON-encoded strings (parsed on the web side), matching the
+  // All return JSON-encoded strings (parsed on the web side), matching the
   // convention used by refactor. listPersonas yields an AIPersonaListResponse,
-  // refactorWithPersona yields an AIRefactorResponse.
+  // getKnowledgeConfig yields an AIKnowledgeConfig, refactorWithPersona yields
+  // an AIRefactorResponse.
   listPersonas(): Promise<string>;
+  getKnowledgeConfig(): Promise<string>;
   refactorWithPersona(args: {
     personaID: string;
     personaName: string;
+    circleID?: string;
     selection: string;
     context?: string;
-    useKnowledge: boolean;
+    knowledgeScope: string;
   }): Promise<string>;
 }
