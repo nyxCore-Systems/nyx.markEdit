@@ -10,6 +10,10 @@ import SettingsUI
 
 @MainActor
 struct AISettingsView: View {
+  /// The settings window has a fixed width (580); long single-line texts would
+  /// otherwise inflate the form's ideal width and get clipped on both sides.
+  private let descriptionWidth: Double = 340
+
   @State private var enabled = AppPreferences.AI.enabled
   @State private var apiKey: String = AppPreferences.AI.apiKey ?? ""
   @State private var model: String = AppPreferences.AI.model
@@ -88,25 +92,27 @@ struct AISettingsView: View {
       }
 
       Section {
-        HStack {
-          Button(Localized.Settings.aiTestConnection) {
-            runConnectionTest()
-          }
-          .disabled(isTesting || apiKey.trimmingCharacters(in: .whitespaces).isEmpty)
+        VStack(alignment: .leading, spacing: 8) {
+          HStack {
+            Button(Localized.Settings.aiTestConnection) {
+              runConnectionTest()
+            }
+            .disabled(isTesting || apiKey.trimmingCharacters(in: .whitespaces).isEmpty)
 
-          if isTesting {
-            ProgressView().scaleEffect(0.6)
+            if isTesting {
+              ProgressView().scaleEffect(0.6)
+            }
           }
 
           if !testStatus.isEmpty {
             Text(testStatus)
               .foregroundStyle(testStatusIsError ? .red : .green)
               .font(.callout)
+              .frame(width: descriptionWidth, alignment: .leading)
+              .fixedSize(horizontal: false, vertical: true)
           }
-
-          Spacer()
         }
-        .formLabel("")
+        .formLabel(alignment: .top, "")
       }
 
       // MARK: - nyxCore
@@ -130,6 +136,8 @@ struct AISettingsView: View {
 
           Text("Persona Studio token (nyx_pa_) or MCP token (nyx_mt_) — detected automatically. Stored in the Keychain.")
             .formDescription()
+            .frame(width: descriptionWidth, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
         }
         .formLabel(alignment: .top, "Persona token")
 
@@ -152,6 +160,8 @@ struct AISettingsView: View {
 
           Text("Axiom token (nyx_ax_). A tenant-wide token enables the Global and All scopes; a project token is pinned to its project. Stored in the Keychain.")
             .formDescription()
+            .frame(width: descriptionWidth, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
         }
         .formLabel(alignment: .top, "Knowledge token")
 
@@ -200,45 +210,53 @@ struct AISettingsView: View {
       }
 
       Section {
-        HStack {
-          Button("Test personas") {
-            runNyxConnectionTest()
-          }
-          .disabled(nyxTesting || nyxPersonaToken.trimmingCharacters(in: .whitespaces).isEmpty)
+        VStack(alignment: .leading, spacing: 8) {
+          HStack {
+            Button("Test personas") {
+              runNyxConnectionTest()
+            }
+            .disabled(nyxTesting || nyxPersonaToken.trimmingCharacters(in: .whitespaces).isEmpty)
 
-          if nyxTesting {
-            ProgressView().scaleEffect(0.6)
+            if nyxTesting {
+              ProgressView().scaleEffect(0.6)
+            }
+
+            Button("Test knowledge") {
+              runKnowledgeTest()
+            }
+            .disabled(knowledgeTesting || nyxKnowledgeToken.trimmingCharacters(in: .whitespaces).isEmpty)
+
+            if knowledgeTesting {
+              ProgressView().scaleEffect(0.6)
+            }
           }
 
           if !nyxStatus.isEmpty {
             Text(nyxStatus)
               .foregroundStyle(nyxStatusIsError ? .red : .green)
               .font(.callout)
-          }
-
-          Button("Test knowledge") {
-            runKnowledgeTest()
-          }
-          .disabled(knowledgeTesting || nyxKnowledgeToken.trimmingCharacters(in: .whitespaces).isEmpty)
-
-          if knowledgeTesting {
-            ProgressView().scaleEffect(0.6)
+              .frame(width: descriptionWidth, alignment: .leading)
+              .fixedSize(horizontal: false, vertical: true)
           }
 
           if !knowledgeStatus.isEmpty {
             Text(knowledgeStatus)
               .foregroundStyle(knowledgeStatusIsError ? .red : .green)
               .font(.callout)
+              .frame(width: descriptionWidth, alignment: .leading)
+              .fixedSize(horizontal: false, vertical: true)
           }
-
-          Spacer()
         }
-        .formLabel("")
+        .formLabel(alignment: .top, "")
       }
     }
   }
+}
 
-  private func runKnowledgeTest() {
+// MARK: - Connection tests
+
+private extension AISettingsView {
+  func runKnowledgeTest() {
     knowledgeTesting = true
     knowledgeStatus = ""
     knowledgeStatusIsError = false
@@ -251,7 +269,7 @@ struct AISettingsView: View {
     }
   }
 
-  private func runNyxConnectionTest() {
+  func runNyxConnectionTest() {
     nyxTesting = true
     nyxStatus = ""
     nyxStatusIsError = false
@@ -270,7 +288,7 @@ struct AISettingsView: View {
     }
   }
 
-  private func runConnectionTest() {
+  func runConnectionTest() {
     isTesting = true
     testStatus = ""
     testStatusIsError = false
