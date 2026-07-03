@@ -297,6 +297,15 @@ enum AppPreferences {
     @Storage(key: "nyxcore.project-id", defaultValue: "")
     static var projectID: String
 
+    /// Standalone Axiom collection used by the "global" knowledge scope. Optional.
+    @Storage(key: "nyxcore.collection-id", defaultValue: "")
+    static var collectionID: String
+
+    /// Default knowledge scope: "off" | "project" | "global" | "all".
+    /// Empty means "not set yet" — callers migrate from the legacy useKnowledge flag.
+    @Storage(key: "nyxcore.knowledge-scope", defaultValue: "")
+    static var knowledgeScope: String
+
     /// Whether persona rewrites pull in project knowledge by default.
     @Storage(key: "nyxcore.use-knowledge", defaultValue: true)
     static var useKnowledge: Bool
