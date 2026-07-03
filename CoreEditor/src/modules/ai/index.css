@@ -3,9 +3,9 @@
   align-items: center;
   gap: 2px;
   padding: 4px;
-  background: var(--md-ai-bg, color-mix(in oklab, Canvas 90%, CanvasText 10%));
-  color: CanvasText;
-  border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+  background: color-mix(in oklab, var(--md-ai-bg, Canvas) 92%, var(--md-ai-fg, CanvasText) 8%);
+  color: var(--md-ai-fg, CanvasText);
+  border: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 15%, transparent);
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -14,6 +14,18 @@
   pointer-events: auto;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
+}
+
+.cm-md-aiToolbar .cm-md-aiGrip {
+  cursor: grab;
+  padding: 4px 2px 4px 5px;
+  font-size: 10px;
+  opacity: 0.45;
+  user-select: none;
+}
+
+.cm-md-aiToolbar .cm-md-aiGrip:active {
+  cursor: grabbing;
 }
 
 .cm-md-aiToolbar button {
@@ -31,7 +43,7 @@
 }
 
 .cm-md-aiToolbar button:hover:not(:disabled) {
-  background: color-mix(in oklab, CanvasText 12%, transparent);
+  background: color-mix(in oklab, var(--md-ai-fg, CanvasText) 12%, transparent);
 }
 
 .cm-md-aiToolbar button:disabled {
@@ -42,43 +54,16 @@
 .cm-md-aiToolbar .cm-md-aiSeparator {
   width: 1px;
   height: 16px;
-  background: color-mix(in oklab, CanvasText 18%, transparent);
+  background: color-mix(in oklab, var(--md-ai-fg, CanvasText) 18%, transparent);
   margin: 0 2px;
 }
 
-.cm-md-aiToolbar .cm-md-aiToneMenu {
-  position: relative;
-}
-
-.cm-md-aiToneList {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 4px;
-  background-color: var(--md-ai-bg, color-mix(in oklab, Canvas 90%, CanvasText 10%));
-  background-image: linear-gradient(Canvas, Canvas);
-  border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  min-width: 140px;
-  z-index: 1;
-}
-
-.cm-md-aiToneList button {
-  justify-content: flex-start;
-  width: 100%;
-}
-
+.cm-md-aiToolbar .cm-md-aiToneMenu,
 .cm-md-aiToolbar .cm-md-aiPersonaMenu {
   position: relative;
 }
 
+.cm-md-aiToneList,
 .cm-md-aiPersonaList {
   position: absolute;
   top: 100%;
@@ -88,29 +73,55 @@
   flex-direction: column;
   gap: 0;
   padding: 4px;
-  background-color: var(--md-ai-bg, color-mix(in oklab, Canvas 90%, CanvasText 10%));
-  background-image: linear-gradient(Canvas, Canvas);
-  border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+  background-color: color-mix(in oklab, var(--md-ai-bg, Canvas) 92%, var(--md-ai-fg, CanvasText) 8%);
+  background-image: linear-gradient(var(--md-ai-bg, Canvas), var(--md-ai-bg, Canvas));
+  border: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 15%, transparent);
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  min-width: 180px;
-  max-height: 320px;
-  overflow-y: auto;
+  min-width: 140px;
   z-index: 1;
 }
 
+.cm-md-aiToneList button,
 .cm-md-aiPersonaList button {
   justify-content: flex-start;
   width: 100%;
 }
 
-.cm-md-aiPersonaList .cm-md-aiKnowledgeToggle {
-  border-bottom: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
-  border-radius: 0;
+.cm-md-aiPersonaList {
+  min-width: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.cm-md-aiPersonaList .cm-md-aiScopeRow {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  border-bottom: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 15%, transparent);
   margin-bottom: 4px;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
+}
+
+.cm-md-aiPersonaList .cm-md-aiScopeRow button {
+  width: auto;
+  padding: 3px 7px;
+  font-size: 11px;
+}
+
+.cm-md-aiPersonaList .cm-md-aiScopeRow button.cm-md-aiScopeSelected {
+  background: color-mix(in oklab, var(--md-ai-accent, Highlight) 25%, transparent);
+}
+
+.cm-md-aiPersonaList .cm-md-aiPersonaGroup {
+  padding: 5px 9px 2px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.55;
 }
 
 .cm-md-aiPersonaList .cm-md-aiPersonaInfo {

@@ -26,7 +26,17 @@ struct AISettingsView: View {
   @State private var nyxKnowledgeToken: String = AppPreferences.NyxCore.knowledgeToken ?? ""
   @State private var nyxKnowledgeBaseURL: String = AppPreferences.NyxCore.knowledgeBaseURL
   @State private var nyxProjectID: String = AppPreferences.NyxCore.projectID
-  @State private var nyxUseKnowledge = AppPreferences.NyxCore.useKnowledge
+  @State private var nyxCollectionID: String = AppPreferences.NyxCore.collectionID
+  @State private var nyxKnowledgeScope: String = {
+    let stored = AppPreferences.NyxCore.knowledgeScope
+    if !stored.isEmpty {
+      return stored
+    }
+    return AppPreferences.NyxCore.useKnowledge ? "project" : "off"
+  }()
+  @State private var knowledgeStatus: String = ""
+  @State private var knowledgeStatusIsError: Bool = false
+  @State private var knowledgeTesting: Bool = false
   @State private var nyxStatus: String = ""
   @State private var nyxStatusIsError: Bool = false
   @State private var nyxTesting: Bool = false
@@ -112,13 +122,13 @@ struct AISettingsView: View {
       // Persona Studio credentials
       Section {
         VStack(alignment: .leading) {
-          SecureField("", text: $nyxPersonaToken, prompt: Text("nyx_mt_…"))
+          SecureField("", text: $nyxPersonaToken, prompt: Text("nyx_pa_… / nyx_mt_…"))
             .textFieldStyle(.roundedBorder)
             .onChange(of: nyxPersonaToken) {
               AppPreferences.NyxCore.personaToken = nyxPersonaToken.trimmingCharacters(in: .whitespaces)
             }
 
-          Text("Token for nyx Persona Studio (personas). Stored in the Keychain.")
+          Text("Persona Studio token (nyx_pa_) or MCP token (nyx_mt_) — detected automatically. Stored in the Keychain.")
             .formDescription()
         }
         .formLabel(alignment: .top, "Persona token")
@@ -131,16 +141,16 @@ struct AISettingsView: View {
           .formLabel("Persona endpoint")
       }
 
-      // Knowledge credentials
+      // Knowledge credentials (Axiom REST, with legacy MCP fallback)
       Section {
         VStack(alignment: .leading) {
-          SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_mt_…"))
+          SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_ax_…"))
             .textFieldStyle(.roundedBorder)
             .onChange(of: nyxKnowledgeToken) {
               AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespaces)
             }
 
-          Text("Token for project knowledge search. Stored in the Keychain.")
+          Text("Axiom token (nyx_ax_). A tenant-wide token enables the Global and All scopes; a project token is pinned to its project. Stored in the Keychain.")
             .formDescription()
         }
         .formLabel(alignment: .top, "Knowledge token")
@@ -159,16 +169,34 @@ struct AISettingsView: View {
               AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
             }
 
-          Text("Optional project to scope knowledge search.")
+          Text("Project for the \"Project\" scope.")
             .formDescription()
         }
         .formLabel(alignment: .top, "Project ID")
 
-        Toggle("Ground rewrites with project knowledge", isOn: $nyxUseKnowledge)
-          .onChange(of: nyxUseKnowledge) {
-            AppPreferences.NyxCore.useKnowledge = nyxUseKnowledge
-          }
-          .formLabel("Knowledge")
+        VStack(alignment: .leading) {
+          TextField("", text: $nyxCollectionID, prompt: Text("UUID"))
+            .textFieldStyle(.roundedBorder)
+            .onChange(of: nyxCollectionID) {
+              AppPreferences.NyxCore.collectionID = nyxCollectionID.trimmingCharacters(in: .whitespaces)
+            }
+
+          Text("Standalone Axiom collection for the \"Global\" scope. Optional.")
+            .formDescription()
+        }
+        .formLabel(alignment: .top, "Collection ID")
+
+        Picker("", selection: $nyxKnowledgeScope) {
+          Text("Off").tag("off")
+          Text("Project").tag("project")
+          Text("Global").tag("global")
+          Text("All").tag("all")
+        }
+        .pickerStyle(.segmented)
+        .onChange(of: nyxKnowledgeScope) {
+          AppPreferences.NyxCore.knowledgeScope = nyxKnowledgeScope
+        }
+        .formLabel("Default scope")
       }
 
       Section {
@@ -188,10 +216,38 @@ struct AISettingsView: View {
               .font(.callout)
           }
 
+          Button("Test knowledge") {
+            runKnowledgeTest()
+          }
+          .disabled(knowledgeTesting || nyxKnowledgeToken.trimmingCharacters(in: .whitespaces).isEmpty)
+
+          if knowledgeTesting {
+            ProgressView().scaleEffect(0.6)
+          }
+
+          if !knowledgeStatus.isEmpty {
+            Text(knowledgeStatus)
+              .foregroundStyle(knowledgeStatusIsError ? .red : .green)
+              .font(.callout)
+          }
+
           Spacer()
         }
         .formLabel("")
       }
+    }
+  }
+
+  private func runKnowledgeTest() {
+    knowledgeTesting = true
+    knowledgeStatus = ""
+    knowledgeStatusIsError = false
+
+    Task { @MainActor in
+      let result = await AppAIService().testKnowledge()
+      knowledgeTesting = false
+      knowledgeStatusIsError = !result.success
+      knowledgeStatus = result.message
     }
   }
 

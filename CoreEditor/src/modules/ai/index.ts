@@ -1,6 +1,8 @@
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
-import { AIAction, AIPersona, AIPersonaListResponse } from '../../bridge/native/ai';
+import { AIAction, AIKnowledgeConfig, AIPersona, AIPersonaListResponse } from '../../bridge/native/ai';
+import { globalState } from '../../common/store';
+import { clampPosition, computeToolbarPosition } from './positioning';
 import './index.css';
 
 import { isActive as isWritingToolsActive } from '../writingTools';
@@ -18,7 +20,11 @@ interface ToolbarLabels {
   persona: string;
   personaLoading: string;
   noPersonas: string;
-  knowledge: string;
+  knowledgeTitle: string;
+  scopeOff: string;
+  scopeProject: string;
+  scopeGlobal: string;
+  scopeAll: string;
   loading: string;
   notConfigured: string;
 }
@@ -36,7 +42,11 @@ const defaultLabels: ToolbarLabels = {
   persona: 'Persona',
   personaLoading: 'Loading personas…',
   noPersonas: 'No personas (check nyxCore settings)',
-  knowledge: 'Use project knowledge',
+  knowledgeTitle: 'Knowledge',
+  scopeOff: 'Off',
+  scopeProject: 'Project',
+  scopeGlobal: 'Global',
+  scopeAll: 'All',
   loading: 'Thinking…',
   notConfigured: 'Configure AI in Settings',
 };
@@ -75,10 +85,13 @@ export function aiSelectionToolbar() {
     private personas: AIPersona[] | undefined;
     private personasLoading = false;
     private personaError: string | undefined;
-    private useKnowledge = true;
-    private knowledgeToggleEl: HTMLButtonElement | undefined;
+    private knowledgeScope: string | undefined;
+    private knowledgeConfig: AIKnowledgeConfig | undefined;
     private readonly state: AIToolbarState = { busy: false };
     private readonly boundOnKeyDown: (event: KeyboardEvent) => void;
+    private manualPosition: { top: number; left: number } | undefined;
+    private wasFlipped = false;
+    private activeDragCleanup: (() => void) | undefined;
 
     constructor(private readonly view: EditorView) {
       this.dom = document.createElement('div');
@@ -110,11 +123,19 @@ export function aiSelectionToolbar() {
     }
 
     destroy() {
+      this.activeDragCleanup?.();
       document.removeEventListener('keydown', this.boundOnKeyDown);
       this.dom.remove();
     }
 
     private build() {
+      const grip = document.createElement('div');
+      grip.className = 'cm-md-aiGrip';
+      grip.textContent = '⠿';
+      grip.title = 'Drag to move';
+      grip.addEventListener('mousedown', event => this.startDrag(event));
+      this.dom.appendChild(grip);
+
       const addAction = (label: string, action: AIAction) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -205,12 +226,26 @@ export function aiSelectionToolbar() {
       this.renderPersonaList();
 
       try {
-        const raw = await window.nativeModules.ai.listPersonas();
+        const [rawPersonas, rawConfig] = await Promise.all([
+          window.nativeModules.ai.listPersonas(),
+          window.nativeModules.ai.getKnowledgeConfig(),
+        ]);
+
         let response: AIPersonaListResponse;
         try {
-          response = typeof raw === 'string' ? JSON.parse(raw) as AIPersonaListResponse : raw;
+          response = typeof rawPersonas === 'string' ? JSON.parse(rawPersonas) as AIPersonaListResponse : rawPersonas;
         } catch {
           response = { error: 'Invalid persona response payload.' };
+        }
+
+        try {
+          this.knowledgeConfig = typeof rawConfig === 'string' ? JSON.parse(rawConfig) as AIKnowledgeConfig : rawConfig;
+        } catch {
+          this.knowledgeConfig = { availableScopes: ['off'], defaultScope: 'off' };
+        }
+
+        if (this.knowledgeScope === undefined) {
+          this.knowledgeScope = this.knowledgeConfig.defaultScope ?? 'off';
         }
 
         if (isNonEmpty(response.error)) {
@@ -231,22 +266,7 @@ export function aiSelectionToolbar() {
 
     private renderPersonaList() {
       this.personaList.replaceChildren();
-
-      // Knowledge toggle row.
-      const knowledgeBtn = document.createElement('button');
-      knowledgeBtn.type = 'button';
-      knowledgeBtn.className = 'cm-md-aiKnowledgeToggle';
-      const renderKnowledgeLabel = () => {
-        knowledgeBtn.textContent = `${this.useKnowledge ? '☑' : '☐'} ${activeLabels.knowledge}`;
-      };
-      renderKnowledgeLabel();
-      knowledgeBtn.addEventListener('click', event => {
-        event.stopPropagation();
-        this.useKnowledge = !this.useKnowledge;
-        renderKnowledgeLabel();
-      });
-      this.personaList.appendChild(knowledgeBtn);
-      this.knowledgeToggleEl = knowledgeBtn;
+      this.renderScopeRow();
 
       if (this.personasLoading) {
         const info = document.createElement('span');
@@ -264,25 +284,120 @@ export function aiSelectionToolbar() {
         return;
       }
 
+      // Group Persona Studio personas by circle; MCP personas have no group.
+      const grouped = new Map<string, AIPersona[]>();
       for (const persona of this.personas) {
-        const pBtn = document.createElement('button');
-        pBtn.type = 'button';
-        pBtn.textContent = persona.name;
-        if (isNonEmpty(persona.description)) {
-          pBtn.title = persona.description;
-        }
-        pBtn.addEventListener('click', () => {
-          this.personaList.style.display = 'none';
-          void this.runPersona(persona);
-        });
-        this.personaList.appendChild(pBtn);
+        const key = persona.circleName ?? '';
+        const list = grouped.get(key) ?? [];
+        list.push(persona);
+        grouped.set(key, list);
       }
+
+      for (const [circleName, personas] of grouped) {
+        if (circleName.length > 0 && grouped.size > 1) {
+          const header = document.createElement('span');
+          header.className = 'cm-md-aiPersonaGroup';
+          header.textContent = circleName;
+          this.personaList.appendChild(header);
+        }
+
+        for (const persona of personas) {
+          const pBtn = document.createElement('button');
+          pBtn.type = 'button';
+          pBtn.textContent = persona.name;
+          if (isNonEmpty(persona.description)) {
+            pBtn.title = persona.description;
+          }
+          pBtn.addEventListener('click', () => {
+            this.personaList.style.display = 'none';
+            void this.runPersona(persona);
+          });
+          this.personaList.appendChild(pBtn);
+        }
+      }
+    }
+
+    /** Knowledge scope switcher: Off / Project / Global / All. */
+    private renderScopeRow() {
+      const row = document.createElement('div');
+      row.className = 'cm-md-aiScopeRow';
+
+      const title = document.createElement('span');
+      title.className = 'cm-md-aiPersonaInfo';
+      title.textContent = activeLabels.knowledgeTitle;
+      row.appendChild(title);
+
+      const available = this.knowledgeConfig?.availableScopes ?? ['off'];
+      const entries: [string, string][] = [
+        ['off', activeLabels.scopeOff],
+        ['project', activeLabels.scopeProject],
+        ['global', activeLabels.scopeGlobal],
+        ['all', activeLabels.scopeAll],
+      ];
+
+      for (const [scope, label] of entries) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = label;
+        btn.disabled = !available.includes(scope);
+        if (btn.disabled) {
+          btn.title = 'Not available — check knowledge token, Project ID, or Collection ID in Settings';
+        }
+        if (scope === (this.knowledgeScope ?? 'off')) {
+          btn.classList.add('cm-md-aiScopeSelected');
+        }
+        btn.addEventListener('click', event => {
+          event.stopPropagation();
+          this.knowledgeScope = scope;
+          this.renderPersonaList();
+        });
+        row.appendChild(btn);
+      }
+
+      this.personaList.appendChild(row);
     }
 
     private onKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape' && this.dom.getAttribute('aria-hidden') === 'false') {
         this.hide();
       }
+    }
+
+    private startDrag(event: MouseEvent) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const toolbarRect = this.dom.getBoundingClientRect();
+      const editorRect = this.view.dom.getBoundingClientRect();
+      const origin = {
+        top: toolbarRect.top - editorRect.top,
+        left: toolbarRect.left - editorRect.left,
+      };
+      const startX = event.clientX;
+      const startY = event.clientY;
+
+      const onMove = (move: MouseEvent) => {
+        const rect = this.view.dom.getBoundingClientRect();
+        const pos = clampPosition(
+          { top: origin.top + (move.clientY - startY), left: origin.left + (move.clientX - startX) },
+          { width: toolbarRect.width, height: toolbarRect.height },
+          { width: rect.width, height: rect.height },
+        );
+        this.manualPosition = pos;
+        this.dom.style.top = `${pos.top}px`;
+        this.dom.style.left = `${pos.left}px`;
+      };
+
+      const cleanup = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        this.activeDragCleanup = undefined;
+      };
+      const onUp = () => cleanup();
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      this.activeDragCleanup = cleanup;
     }
 
     private reposition() {
@@ -300,23 +415,39 @@ export function aiSelectionToolbar() {
         return;
       }
 
-      // Anchor at the start of the (visual) selection.
-      const anchorPos = Math.min(sel.from, sel.to);
-      const coords = this.view.coordsAtPos(anchorPos);
-      if (coords === null) {
+      const startPos = Math.min(sel.from, sel.to);
+      const endPos = Math.max(sel.from, sel.to);
+      const selStart = this.view.coordsAtPos(startPos);
+      const selEnd = this.view.coordsAtPos(endPos);
+      if (selStart === null || selEnd === null) {
         this.hide();
         return;
       }
 
-      const editorRect = this.view.dom.getBoundingClientRect();
-      const top = coords.top - editorRect.top - 44; // toolbar above the line
-      const left = coords.left - editorRect.left;
-
+      this.applyTheme();
       this.dom.style.position = 'absolute';
-      this.dom.style.top = `${Math.max(top, 0)}px`;
-      this.dom.style.left = `${Math.max(left, 0)}px`;
-      this.dom.style.zIndex = '20';
+      this.dom.style.zIndex = '550';
       this.dom.setAttribute('aria-hidden', 'false');
+
+      const editorRect = this.view.dom.getBoundingClientRect();
+      const toolbarRect = this.dom.getBoundingClientRect();
+      const toolbarSize = { width: toolbarRect.width, height: toolbarRect.height };
+
+      if (this.manualPosition !== undefined) {
+        // The user dragged the toolbar — keep their position, re-clamped.
+        const pos = clampPosition(this.manualPosition, toolbarSize, {
+          width: editorRect.width, height: editorRect.height,
+        });
+        this.dom.style.top = `${pos.top}px`;
+        this.dom.style.left = `${pos.left}px`;
+      } else {
+        const placement = computeToolbarPosition({
+          selStart, selEnd, toolbar: toolbarSize, editor: editorRect, wasFlipped: this.wasFlipped,
+        });
+        this.wasFlipped = placement.flipped;
+        this.dom.style.top = `${placement.top}px`;
+        this.dom.style.left = `${placement.left}px`;
+      }
 
       // Reset transient error after the user moves on.
       if (isNonEmpty(this.state.errorMessage)) {
@@ -324,11 +455,24 @@ export function aiSelectionToolbar() {
       }
     }
 
+    /** Sync toolbar colors with the active editor theme (not just OS appearance). */
+    private applyTheme() {
+      const colors = globalState.colors;
+      if (colors === undefined) {
+        return; // CSS falls back to system colors.
+      }
+      this.dom.style.setProperty('--md-ai-bg', colors.background);
+      this.dom.style.setProperty('--md-ai-fg', colors.text);
+      this.dom.style.setProperty('--md-ai-accent', colors.accent);
+    }
+
     private hide() {
       this.dom.setAttribute('aria-hidden', 'true');
       this.toneList.style.display = 'none';
       this.personaList.style.display = 'none';
       this.clearStatus();
+      this.manualPosition = undefined;
+      this.wasFlipped = false;
     }
 
     private setBusy(busy: boolean, label = activeLabels.loading) {
@@ -388,9 +532,10 @@ export function aiSelectionToolbar() {
       await this.runRewrite(sel, () => window.nativeModules.ai.refactorWithPersona({
         personaID: persona.id,
         personaName: persona.name,
+        circleID: persona.circleId,
         selection: selectedText,
         context,
-        useKnowledge: this.useKnowledge,
+        knowledgeScope: this.knowledgeScope ?? 'off',
       }));
     }
 

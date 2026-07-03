@@ -15,7 +15,8 @@ public protocol NativeModuleAI: NativeModule {
   func isConfigured() async -> Bool
   func refactor(action: AIAction, selection: String, context: String?) async -> String
   func listPersonas() async -> String
-  func refactorWithPersona(personaID: String, personaName: String, selection: String, context: String?, useKnowledge: Bool) async -> String
+  func getKnowledgeConfig() async -> String
+  func refactorWithPersona(personaID: String, personaName: String, circleID: String?, selection: String, context: String?, knowledgeScope: String) async -> String
 }
 
 public extension NativeModuleAI {
@@ -34,6 +35,9 @@ final class NativeBridgeAI: NativeBridge {
     },
     "listPersonas": { [weak self] in
       await self?.listPersonas(parameters: $0)
+    },
+    "getKnowledgeConfig": { [weak self] in
+      await self?.getKnowledgeConfig(parameters: $0)
     },
     "refactorWithPersona": { [weak self] in
       await self?.refactorWithPersona(parameters: $0)
@@ -76,13 +80,19 @@ final class NativeBridgeAI: NativeBridge {
     return .success(result)
   }
 
+  private func getKnowledgeConfig(parameters: Data) async -> Result<Any?, Error>? {
+    let result = await module.getKnowledgeConfig()
+    return .success(result)
+  }
+
   private func refactorWithPersona(parameters: Data) async -> Result<Any?, Error>? {
     struct Message: Decodable {
       var personaID: String
       var personaName: String
+      var circleID: String?
       var selection: String
       var context: String?
-      var useKnowledge: Bool
+      var knowledgeScope: String
     }
 
     let message: Message
@@ -93,7 +103,7 @@ final class NativeBridgeAI: NativeBridge {
       return .failure(error)
     }
 
-    let result = await module.refactorWithPersona(personaID: message.personaID, personaName: message.personaName, selection: message.selection, context: message.context, useKnowledge: message.useKnowledge)
+    let result = await module.refactorWithPersona(personaID: message.personaID, personaName: message.personaName, circleID: message.circleID, selection: message.selection, context: message.context, knowledgeScope: message.knowledgeScope)
     return .success(result)
   }
 }

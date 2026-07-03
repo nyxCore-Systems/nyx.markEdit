@@ -2,6 +2,7 @@ excluded:
   - MarkEditMac/Modules/.build
   - "**/DerivedSources/**"
   - build
+  - MarkEditKit/Sources/Bridge/Native/Generated
 
 disabled_rules:
 
