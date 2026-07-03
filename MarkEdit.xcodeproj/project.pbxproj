@@ -33,6 +33,7 @@
 		9AB1000000000000000B0006 /* AISettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0005 /* AISettingsView.swift */; };
 		9AB1000000000000000B0008 /* NyxCoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0007 /* NyxCoreClient.swift */; };
 		9AB1000000000000000B000A /* NyxCorePromptComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B0009 /* NyxCorePromptComposer.swift */; };
+		9AB1000000000000000B000C /* PersonaStudioClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB1000000000000000B000B /* PersonaStudioClient.swift */; };
 		870F17962985775B00003DA7 /* SettingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 870F17952985775B00003DA7 /* SettingsUI */; };
 		87132AA32C188FE900FD262B /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 87132AA22C188FE900FD262B /* AppShortcuts.xcstrings */; };
 		87152BA12EC599CA00B39F06 /* FinderExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87152B9A2EC599CA00B39F06 /* FinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -239,6 +240,7 @@
 		9AB1000000000000000B0005 /* AISettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISettingsView.swift; sourceTree = "<group>"; };
 		9AB1000000000000000B0007 /* NyxCoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NyxCoreClient.swift; sourceTree = "<group>"; };
 		9AB1000000000000000B0009 /* NyxCorePromptComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NyxCorePromptComposer.swift; sourceTree = "<group>"; };
+		9AB1000000000000000B000B /* PersonaStudioClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaStudioClient.swift; sourceTree = "<group>"; };
 		8790B6EB297036B2000DFC1A /* EditorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWindow.swift; sourceTree = "<group>"; };
 		879715C82D11547F0069964D /* EditorSaveOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSaveOptionsView.swift; sourceTree = "<group>"; };
 		87A73AB2294C4B27006A710E /* EditorWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWebView.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				9AB1000000000000000B0003 /* AppAIService.swift */,
 				9AB1000000000000000B0007 /* NyxCoreClient.swift */,
 				9AB1000000000000000B0009 /* NyxCorePromptComposer.swift */,
+				9AB1000000000000000B000B /* PersonaStudioClient.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -867,6 +870,7 @@
 				9AB1000000000000000B0006 /* AISettingsView.swift in Sources */,
 				9AB1000000000000000B0008 /* NyxCoreClient.swift in Sources */,
 				9AB1000000000000000B000A /* NyxCorePromptComposer.swift in Sources */,
+				9AB1000000000000000B000C /* PersonaStudioClient.swift in Sources */,
 				87D7F0212DE8725100985ABF /* EditorImageLoader.swift in Sources */,
 				8752CEB6295B2F8800BA9D5B /* EditorPanelView.swift in Sources */,
 				870A51BA294702AF0095C7EB /* EditorWindowController.swift in Sources */,
