@@ -16,6 +16,7 @@ struct AxiomClient: Sendable {
     case http(Int, String)
     case missingProject
     case missingCollection
+    case invalidScope(String)
     case decoding(String)
 
     var errorDescription: String? {
@@ -29,6 +30,8 @@ struct AxiomClient: Sendable {
         return "Set a Project ID in Settings → AI to use project-scoped knowledge."
       case .missingCollection:
         return "Set a Collection ID in Settings → AI to use global knowledge."
+      case let .invalidScope(scope):
+        return "Unknown knowledge scope: \(scope)."
       case let .decoding(message):
         return "Could not parse Axiom response: \(message)"
       }
@@ -92,8 +95,12 @@ struct AxiomClient: Sendable {
         throw ClientError.missingCollection
       }
       body["collectionId"] = collectionID
+    case "all":
+      break // tenant-wide search, no filter
     default:
-      break // "all": tenant-wide search, no filter
+      // Fail closed: an unrecognized scope must never widen to a tenant-wide
+      // search. loadKnowledge's `try?` best-effort path degrades this to [].
+      throw ClientError.invalidScope(scope)
     }
 
     guard let url = URL(string: "\(origin)/api/v1/rag/search") else {

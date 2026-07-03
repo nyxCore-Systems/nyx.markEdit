@@ -27,8 +27,11 @@ final class AppAIService: AIService {
   }
 
   func listPersonas() async -> AIPersonaListResponse {
-    // Persona Studio tokens (nyx_pa_) use the REST API; MCP tokens use JSON-RPC.
-    if let studio = PersonaStudioClient.current() {
+    switch Self.resolvePersonaRoute() {
+    case let .unavailable(message):
+      return .init(error: message)
+
+    case let .studio(studio):
       do {
         let personas = try await studio.listPersonas()
         guard !personas.isEmpty else {
@@ -48,39 +51,42 @@ final class AppAIService: AIService {
       } catch {
         return .init(error: error.localizedDescription)
       }
-    }
 
-    guard let client = NyxCoreClient.personas() else {
-      return .init(error: "Enable nyxCore and add a persona token (nyx_pa_ or nyx_mt_) in Settings → AI.")
-    }
+    case .mcp:
+      guard let client = NyxCoreClient.personas() else {
+        return .init(error: Self.personaDisabledMessage)
+      }
 
-    do {
-      let personas = try await client.listPersonas()
-      return .init(personas: personas.map {
-        AIPersona(id: $0.id, name: $0.name, description: $0.description, source: "mcp")
-      })
-    } catch {
-      return .init(error: error.localizedDescription)
+      do {
+        let personas = try await client.listPersonas()
+        return .init(personas: personas.map {
+          AIPersona(id: $0.id, name: $0.name, description: $0.description, source: "mcp")
+        })
+      } catch {
+        return .init(error: error.localizedDescription)
+      }
     }
   }
 
   func knowledgeConfig() async -> AIKnowledgeConfig {
     var scopes = ["off"]
-    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
-    let hasProject = !AppPreferences.NyxCore.projectID.trimmingCharacters(in: .whitespaces).isEmpty
-    let hasCollection = !AppPreferences.NyxCore.collectionID.trimmingCharacters(in: .whitespaces).isEmpty
 
-    if token.hasPrefix(AxiomClient.tokenPrefix) {
-      if hasProject {
+    switch Self.resolveKnowledgeRoute() {
+    case let .axiom(axiom):
+      if axiom.projectID != nil {
         scopes.append("project")
       }
-      if hasCollection {
+      if axiom.collectionID != nil {
         scopes.append("global")
       }
       scopes.append("all")
-    } else if !token.isEmpty && hasProject {
+
+    case .legacy:
       // Legacy MCP knowledge token: only project-scoped search is possible.
       scopes.append("project")
+
+    case .disabled, .invalidAxiomURL, .unavailable:
+      break // Off-only: same source of truth loadKnowledge/testKnowledge gate on.
     }
 
     let preferred = Self.resolvedDefaultScope()
@@ -101,8 +107,11 @@ final class AppAIService: AIService {
     let knowledge = await loadKnowledge(scope: knowledgeScope, query: selection)
     let user = NyxCorePromptComposer.userPrompt(selection: selection, context: context, knowledge: knowledge)
 
-    // Persona Studio: the rewrite runs server-side (persona voice + billing in nyxCore).
-    if let studio = PersonaStudioClient.current() {
+    switch Self.resolvePersonaRoute() {
+    case let .unavailable(message):
+      return .init(error: message)
+
+    case let .studio(studio):
       do {
         let content = try await studio.chat(
           personaID: personaID,
@@ -115,19 +124,20 @@ final class AppAIService: AIService {
       } catch {
         return .init(error: error.localizedDescription)
       }
-    }
 
-    // MCP: fetch the persona's skill prompts, then generate locally via Anthropic.
-    guard let personaClient = NyxCoreClient.personas() else {
-      return .init(error: "Enable nyxCore and add a persona token (nyx_pa_ or nyx_mt_) in Settings → AI.")
-    }
+    case .mcp:
+      // MCP: fetch the persona's skill prompts, then generate locally via Anthropic.
+      guard let personaClient = NyxCoreClient.personas() else {
+        return .init(error: Self.personaDisabledMessage)
+      }
 
-    do {
-      let personaPrompt = try await personaClient.personaPrompt(personaID: personaID)
-      let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)
-      return await complete(system: system, userMessage: user)
-    } catch {
-      return .init(error: error.localizedDescription)
+      do {
+        let personaPrompt = try await personaClient.personaPrompt(personaID: personaID)
+        let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)
+        return await complete(system: system, userMessage: user)
+      } catch {
+        return .init(error: error.localizedDescription)
+      }
     }
   }
 
@@ -141,46 +151,25 @@ final class AppAIService: AIService {
 
     do {
       let snippets: [String]
-      if let axiom = AxiomClient.current() {
+      switch Self.resolveKnowledgeRoute() {
+      case .disabled:
+        return (false, "Enable nyxCore and add a knowledge token (nyx_ax_) in Settings → AI.")
+      case .invalidAxiomURL:
+        return (false, "Invalid Axiom endpoint URL — check Settings → AI.")
+      case let .axiom(axiom):
         snippets = try await axiom.search(query: "test", scope: scope, limit: 1)
-      } else if scope == "project", let legacy = NyxCoreClient.knowledge() {
+      case let .legacy(legacy):
+        guard scope == "project" else {
+          return (false, "Add a knowledge token (nyx_ax_) in Settings → AI.")
+        }
         snippets = try await legacy.search(query: "test", limit: 1)
-      } else {
+      case .unavailable:
         return (false, "Add a knowledge token (nyx_ax_) in Settings → AI.")
       }
       return (true, "Connected — \(snippets.count) result(s)")
     } catch {
       return (false, error.localizedDescription)
     }
-  }
-
-  // MARK: - Knowledge
-
-  /// The effective default scope, migrating from the legacy useKnowledge flag
-  /// when the new preference has never been set.
-  private static func resolvedDefaultScope() -> String {
-    let stored = AppPreferences.NyxCore.knowledgeScope
-    if !stored.isEmpty {
-      return stored
-    }
-    return AppPreferences.NyxCore.useKnowledge ? "project" : "off"
-  }
-
-  private func loadKnowledge(scope: String, query: String) async -> [String] {
-    guard scope != "off", AppPreferences.NyxCore.enabled else {
-      return []
-    }
-
-    let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
-    if let axiom = AxiomClient.current() {
-      return (try? await axiom.search(query: query, scope: scope, limit: limit)) ?? []
-    }
-
-    // Legacy MCP fallback: project scope only.
-    guard scope == "project", let legacy = NyxCoreClient.knowledge() else {
-      return []
-    }
-    return (try? await legacy.search(query: query, limit: limit)) ?? []
   }
 
   // MARK: - Generation (Anthropic)
@@ -312,6 +301,104 @@ final class AppAIService: AIService {
       return message
     }
     return nil
+  }
+}
+
+// MARK: - Protocol routing
+
+private extension AppAIService {
+  /// Which persona protocol the current settings resolve to. Routing commits
+  /// on token PREFIX: a matching prefix never falls through to the other
+  /// protocol, even when the resolved client can't be constructed (e.g. a
+  /// bad endpoint URL) — that would otherwise send the wrong token as Bearer
+  /// to the wrong endpoint.
+  enum PersonaRoute {
+    case studio(PersonaStudioClient)
+    case mcp
+    case unavailable(String)
+  }
+
+  static let personaDisabledMessage =
+    "Enable nyxCore and add a persona token (nyx_pa_ or nyx_mt_) in Settings → AI."
+
+  @MainActor
+  static func resolvePersonaRoute() -> PersonaRoute {
+    guard AppPreferences.NyxCore.enabled else {
+      return .unavailable(personaDisabledMessage)
+    }
+
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    guard token.hasPrefix(PersonaStudioClient.tokenPrefix) else {
+      return .mcp
+    }
+
+    guard let studio = PersonaStudioClient.current() else {
+      return .unavailable("Invalid Persona Studio endpoint URL — check Settings → AI.")
+    }
+
+    return .studio(studio)
+  }
+
+  /// Which knowledge protocol the current settings resolve to. Mirrors
+  /// `PersonaRoute`: a matching nyx_ax_ prefix commits to Axiom and never
+  /// falls through to the legacy MCP branch. Shared by knowledgeConfig,
+  /// testKnowledge, and loadKnowledge so all three gate identically.
+  enum KnowledgeRoute {
+    case axiom(AxiomClient)
+    case legacy(NyxCoreClient)
+    case disabled
+    case invalidAxiomURL
+    case unavailable
+  }
+
+  @MainActor
+  static func resolveKnowledgeRoute() -> KnowledgeRoute {
+    guard AppPreferences.NyxCore.enabled else {
+      return .disabled
+    }
+
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
+    if token.hasPrefix(AxiomClient.tokenPrefix) {
+      guard let axiom = AxiomClient.current() else {
+        return .invalidAxiomURL
+      }
+      return .axiom(axiom)
+    }
+
+    guard let legacy = NyxCoreClient.knowledge() else {
+      return .unavailable
+    }
+    return .legacy(legacy)
+  }
+
+  /// The effective default scope, migrating from the legacy useKnowledge flag
+  /// when the new preference has never been set.
+  static func resolvedDefaultScope() -> String {
+    let stored = AppPreferences.NyxCore.knowledgeScope
+    if !stored.isEmpty {
+      return stored
+    }
+    return AppPreferences.NyxCore.useKnowledge ? "project" : "off"
+  }
+
+  func loadKnowledge(scope: String, query: String) async -> [String] {
+    guard scope != "off" else {
+      return []
+    }
+
+    let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
+
+    switch Self.resolveKnowledgeRoute() {
+    case let .axiom(axiom):
+      // Best-effort: an unconstructible client already stops us before this
+      // point, so only the search call itself can still fail — never block
+      // a rewrite on a knowledge failure.
+      return (try? await axiom.search(query: query, scope: scope, limit: limit)) ?? []
+    case let .legacy(legacy) where scope == "project":
+      return (try? await legacy.search(query: query, limit: limit)) ?? []
+    default:
+      return []
+    }
   }
 }
 
