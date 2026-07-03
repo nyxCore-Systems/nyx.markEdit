@@ -88,6 +88,7 @@ final class AppAIService: AIService {
     return AIKnowledgeConfig(availableScopes: scopes, defaultScope: defaultScope)
   }
 
+  // swiftlint:disable:next function_parameter_count
   func refactorWithPersona(
     personaID: String,
     personaName: String,

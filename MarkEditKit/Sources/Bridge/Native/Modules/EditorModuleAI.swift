@@ -69,6 +69,7 @@ public protocol AIService: AnyObject {
   func refactor(action: AIAction, selection: String, context: String?) async -> AIRefactorResponse
   func listPersonas() async -> AIPersonaListResponse
   func knowledgeConfig() async -> AIKnowledgeConfig
+  // swiftlint:disable:next function_parameter_count
   func refactorWithPersona(
     personaID: String,
     personaName: String,
@@ -105,6 +106,7 @@ public final class EditorModuleAI: NativeModuleAI {
     return response.jsonEncoded
   }
 
+  // swiftlint:disable:next function_parameter_count
   public func refactorWithPersona(
     personaID: String,
     personaName: String,

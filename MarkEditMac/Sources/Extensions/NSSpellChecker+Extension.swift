@@ -175,6 +175,7 @@ private extension NSSpellChecker {
     )
   }
 
+  // swiftlint:disable:next function_parameter_count
   @objc func swizzled_showCompletion(
     for candidate: NSTextCheckingResult,
     selectedRange: NSRange,

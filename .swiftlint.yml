@@ -2,6 +2,7 @@ excluded:
   - MarkEditMac/Modules/.build
   - "**/DerivedSources/**"
   - build
+  - MarkEditKit/Sources/Bridge/Native/Generated
 
 disabled_rules:
 
@@ -424,12 +425,6 @@ attributes:
 file_length:
   warning: 1000
   error: 2000
-
-function_parameter_count:
-  # nyxCore's refactorWithPersona bridge call carries 6 (personaID, personaName,
-  # circleID, selection, context, knowledgeScope) — one over the SwiftLint default.
-  warning: 6
-  error: 8
 
 function_body_length:
   warning: 200
