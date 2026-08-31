@@ -1,0 +1,101 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v1.33.0). Must already exist.'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish macOS release
+    runs-on: macos-26
+    env:
+      node-version: '22.x'
+      DEVELOPER_DIR: /Applications/Xcode_26.0.app/Contents/Developer
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Resolve version
+        id: version
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Use Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.node-version }}
+          cache: 'npm'
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Build CoreEditor
+        working-directory: CoreEditor
+        run: |
+          corepack enable
+          yarn install
+          yarn build
+          yarn test
+
+      - name: Build MarkEditMac (Release)
+        run: |
+          xcodebuild build \
+            -project MarkEdit.xcodeproj \
+            -scheme MarkEditMac \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+      - name: Verify built version
+        run: |
+          APP="$RUNNER_TEMP/DerivedData/Build/Products/Release/MarkEdit.app"
+          test -d "$APP" || { echo "MarkEdit.app not found at $APP"; exit 1; }
+          PLIST="$APP/Contents/Info.plist"
+          SHORT=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$PLIST")
+          BUILD=$(/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' "$PLIST")
+          echo "Built MarkEdit.app $SHORT ($BUILD)"
+          if [ "$SHORT" != "${{ steps.version.outputs.version }}" ]; then
+            echo "::error::Tag version ${{ steps.version.outputs.version }} does not match MARKETING_VERSION $SHORT in Build.xcconfig"
+            exit 1
+          fi
+
+      - name: Ad-hoc sign and package
+        run: |
+          APP="$RUNNER_TEMP/DerivedData/Build/Products/Release/MarkEdit.app"
+          codesign --force --deep --sign - "$APP"
+          xattr -cr "$APP"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$APP" "$RUNNER_TEMP/MarkEdit-${{ steps.version.outputs.version }}.zip"
+          shasum -a 256 "$RUNNER_TEMP/MarkEdit-${{ steps.version.outputs.version }}.zip"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarkEdit-${{ steps.version.outputs.version }}
+          path: ${{ runner.temp }}/MarkEdit-${{ steps.version.outputs.version }}.zip
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES_FILE="RELEASE_NOTES_${{ steps.version.outputs.tag }}.md"
+          if [ -f "$NOTES_FILE" ]; then
+            NOTES_ARG=(--notes-file "$NOTES_FILE")
+          else
+            NOTES_ARG=(--generate-notes)
+          fi
+          gh release create "${{ steps.version.outputs.tag }}" \
+            "$RUNNER_TEMP/MarkEdit-${{ steps.version.outputs.version }}.zip" \
+            --title "MarkEdit ${{ steps.version.outputs.version }}" \
+            "${NOTES_ARG[@]}"
