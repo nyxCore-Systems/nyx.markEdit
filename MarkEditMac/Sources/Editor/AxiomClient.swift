@@ -119,7 +119,7 @@ struct AxiomClient: Sendable {
     }
 
     guard (200...299).contains(http.statusCode) else {
-      throw ClientError.http(http.statusCode, String(data: data, encoding: .utf8) ?? "")
+      throw ClientError.http(http.statusCode, Self.errorDetail(from: data))
     }
 
     let payload: Payload
@@ -141,5 +141,28 @@ struct AxiomClient: Sendable {
 
       return label.isEmpty ? text : "[\(label)]\n\(text)"
     }
+  }
+
+  /// Prefers the API envelope's error message ({"ok":false,"error":{"code","message"}})
+  /// over dumping the raw response body into user-facing errors.
+  private static func errorDetail(from data: Data) -> String {
+    struct Envelope: Decodable {
+      struct Inner: Decodable {
+        let code: String?
+
+        let message: String?
+      }
+
+      let error: Inner?
+    }
+
+    if let envelope = try? JSONDecoder().decode(Envelope.self, from: data),
+       let message = envelope.error?.message, !message.isEmpty {
+      if let code = envelope.error?.code, !code.isEmpty {
+        return "\(message) (\(code))"
+      }
+      return message
+    }
+    return String(data: data, encoding: .utf8) ?? ""
   }
 }
