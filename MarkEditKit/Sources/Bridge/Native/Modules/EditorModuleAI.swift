@@ -11,10 +11,15 @@ import MarkEditCore
 public struct AIRefactorResponse: Codable, Equatable, Sendable {
   public var result: String?
   public var error: String?
+  /// Non-fatal note about a degraded run — e.g. knowledge retrieval failed and
+  /// the rewrite went ahead ungrounded. Presented alongside a result, never
+  /// instead of one, so a silent downgrade cannot pass for a grounded answer.
+  public var warning: String?
 
-  public init(result: String? = nil, error: String? = nil) {
+  public init(result: String? = nil, error: String? = nil, warning: String? = nil) {
     self.result = result
     self.error = error
+    self.warning = warning
   }
 }
 
@@ -53,13 +58,41 @@ public struct AIPersonaListResponse: Codable, Equatable, Sendable {
   }
 }
 
+/// One selectable grounding source for AI actions.
+///
+/// `id` is the routing key the web side hands back. The legacy scope strings
+/// ("off", "project", "global", "all") remain valid ids; named sources use
+/// "project:<uuid>" / "collection:<uuid>" so the target travels with the id and
+/// no second lookup is needed to resolve it.
+public struct AIKnowledgeSource: Codable, Equatable, Sendable {
+  public var id: String
+  public var name: String
+  /// "off" | "project" | "collection" | "all"
+  public var kind: String
+
+  public init(id: String, name: String, kind: String) {
+    self.id = id
+    self.name = name
+    self.kind = kind
+  }
+}
+
 public struct AIKnowledgeConfig: Codable, Equatable, Sendable {
   public var availableScopes: [String]
   public var defaultScope: String
+  public var sources: [AIKnowledgeSource]
+  public var defaultSourceId: String
 
-  public init(availableScopes: [String], defaultScope: String) {
+  public init(
+    availableScopes: [String],
+    defaultScope: String,
+    sources: [AIKnowledgeSource] = [],
+    defaultSourceId: String = "off"
+  ) {
     self.availableScopes = availableScopes
     self.defaultScope = defaultScope
+    self.sources = sources
+    self.defaultSourceId = defaultSourceId
   }
 }
 
@@ -77,6 +110,12 @@ public protocol AIService: AnyObject {
     selection: String,
     context: String?,
     knowledgeScope: String
+  ) async -> AIRefactorResponse
+  func refactorWithPrompt(
+    prompt: String,
+    selection: String,
+    context: String?,
+    knowledgeSource: String
   ) async -> AIRefactorResponse
 }
 
@@ -122,6 +161,21 @@ public final class EditorModuleAI: NativeModuleAI {
       selection: selection,
       context: context,
       knowledgeScope: knowledgeScope
+    )
+    return response.jsonEncoded
+  }
+
+  public func refactorWithPrompt(
+    prompt: String,
+    selection: String,
+    context: String?,
+    knowledgeSource: String
+  ) async -> String {
+    let response = await service.refactorWithPrompt(
+      prompt: prompt,
+      selection: selection,
+      context: context,
+      knowledgeSource: knowledgeSource
     )
     return response.jsonEncoded
   }

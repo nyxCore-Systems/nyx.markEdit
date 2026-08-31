@@ -1,6 +1,6 @@
 import { EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
-import { AIAction, AIKnowledgeConfig, AIPersona, AIPersonaListResponse } from '../../bridge/native/ai';
+import { AIAction, AIKnowledgeConfig, AIKnowledgeSource, AIPersona, AIPersonaListResponse, AIRefactorResponse } from '../../bridge/native/ai';
 import { globalState } from '../../common/store';
 import { clampPosition, computeToolbarPosition } from './positioning';
 import './index.css';
@@ -25,9 +25,29 @@ interface ToolbarLabels {
   scopeProject: string;
   scopeGlobal: string;
   scopeAll: string;
+  prompt: string;
+  promptPlaceholder: string;
+  promptRun: string;
+  promptHint: string;
+  promptExamplesTitle: string;
+  promptRecentTitle: string;
   loading: string;
   notConfigured: string;
 }
+
+/**
+ * Starter instructions offered the first time the prompt field is opened.
+ *
+ * A blank box is the hardest thing to answer: these show the shape of a useful
+ * instruction — a verb, a target, a source — and are replaced by the user's own
+ * recent prompts as soon as there are any.
+ */
+const promptExamples = [
+  'Expand this using the relevant facts from the knowledge base',
+  'Turn these bullet points into full paragraphs',
+  'Rewrite this in a formal tone',
+  'Summarise this as three bullet points',
+];
 
 const defaultLabels: ToolbarLabels = {
   improve: 'Improve',
@@ -47,9 +67,41 @@ const defaultLabels: ToolbarLabels = {
   scopeProject: 'Project',
   scopeGlobal: 'Global',
   scopeAll: 'All',
+  prompt: 'Prompt',
+  promptPlaceholder: 'What should happen with this text?',
+  promptRun: 'Run',
+  promptHint: '↵ to run · ⇧↵ for a new line',
+  promptExamplesTitle: 'Try',
+  promptRecentTitle: 'Recent',
   loading: 'Thinking…',
   notConfigured: 'Configure AI in Settings',
 };
+
+const promptHistoryKey = 'markedit.ai.promptHistory';
+const promptHistoryLimit = 5;
+
+/**
+ * Recently used instructions, newest first. Browser storage can throw outright
+ * (private windows, blocked site data), so every access is guarded and a failure
+ * degrades to "no history" rather than breaking the panel.
+ */
+function loadPromptHistory(): string[] {
+  try {
+    const raw = window.localStorage.getItem(promptHistoryKey);
+    const parsed: unknown = raw === null ? [] : JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter(item => typeof item === 'string').slice(0, promptHistoryLimit) : [];
+  } catch {
+    return [];
+  }
+}
+
+function savePromptHistory(history: string[]) {
+  try {
+    window.localStorage.setItem(promptHistoryKey, JSON.stringify(history.slice(0, promptHistoryLimit)));
+  } catch {
+    // Storage unavailable — the panel still works, it just won't remember.
+  }
+}
 
 let activeLabels: ToolbarLabels = defaultLabels;
 
@@ -82,14 +134,23 @@ export function aiSelectionToolbar() {
     private readonly toneToggle: HTMLButtonElement;
     private readonly personaList: HTMLDivElement;
     private readonly personaToggle: HTMLButtonElement;
+    private readonly promptPanel: HTMLDivElement;
+    private readonly promptToggle: HTMLButtonElement;
+    private readonly promptInput: HTMLTextAreaElement;
+    private readonly promptSourceRow: HTMLDivElement;
+    private readonly promptChips: HTMLDivElement;
+    private readonly promptRun: HTMLButtonElement;
     private personas: AIPersona[] | undefined;
     private personasLoading = false;
     private personaError: string | undefined;
     private knowledgeScope: string | undefined;
     private knowledgeConfig: AIKnowledgeConfig | undefined;
+    private knowledgeLoading = false;
+    private promptHistory: string[] = loadPromptHistory();
     private readonly state: AIToolbarState = { busy: false };
     private readonly boundOnKeyDown: (event: KeyboardEvent) => void;
     private manualPosition: { top: number; left: number } | undefined;
+    private statusPinned = false;
     private wasFlipped = false;
     private activeDragCleanup: (() => void) | undefined;
 
@@ -97,7 +158,13 @@ export function aiSelectionToolbar() {
       this.dom = document.createElement('div');
       this.dom.className = 'cm-md-aiToolbar';
       this.dom.setAttribute('aria-hidden', 'true');
-      this.dom.addEventListener('mousedown', e => e.preventDefault()); // keep editor selection
+      // Keep the editor selection when the toolbar is clicked — except for the
+      // prompt field, which has to be able to take focus to be typed into.
+      this.dom.addEventListener('mousedown', event => {
+        if (!(event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement)) {
+          event.preventDefault();
+        }
+      });
       this.statusEl = document.createElement('span');
       this.statusEl.className = 'cm-md-aiStatus';
       this.statusEl.style.display = 'none';
@@ -105,6 +172,12 @@ export function aiSelectionToolbar() {
       this.toneToggle = document.createElement('button');
       this.personaList = document.createElement('div');
       this.personaToggle = document.createElement('button');
+      this.promptPanel = document.createElement('div');
+      this.promptToggle = document.createElement('button');
+      this.promptInput = document.createElement('textarea');
+      this.promptSourceRow = document.createElement('div');
+      this.promptChips = document.createElement('div');
+      this.promptRun = document.createElement('button');
 
       this.build();
 
@@ -156,6 +229,8 @@ export function aiSelectionToolbar() {
       const sep = document.createElement('div');
       sep.className = 'cm-md-aiSeparator';
       this.dom.appendChild(sep);
+
+      this.buildPromptMenu();
 
       // Tone submenu
       const toneWrap = document.createElement('div');
@@ -217,6 +292,177 @@ export function aiSelectionToolbar() {
       this.dom.appendChild(this.statusEl);
     }
 
+    /**
+     * The free-form instruction panel: source picker, the instruction itself,
+     * and one-tap starters. The source sits above the field rather than behind a
+     * menu, so it is never a surprise which knowledge an answer was — or was
+     * not — grounded in.
+     */
+    private buildPromptMenu() {
+      const wrap = document.createElement('div');
+      wrap.className = 'cm-md-aiPromptMenu';
+
+      this.promptToggle.type = 'button';
+      this.promptToggle.textContent = `${activeLabels.prompt} ▾`;
+      this.promptToggle.title = activeLabels.prompt;
+      this.actionButtons.push(this.promptToggle);
+      this.promptToggle.addEventListener('click', () => {
+        if (this.promptPanel.style.display !== 'none') {
+          this.promptPanel.style.display = 'none';
+          return;
+        }
+        void this.openPrompt();
+      });
+
+      this.promptPanel.className = 'cm-md-aiPromptPanel';
+      this.promptPanel.style.display = 'none';
+      this.promptSourceRow.className = 'cm-md-aiSourceRow';
+      this.promptChips.className = 'cm-md-aiPromptChips';
+
+      this.promptInput.className = 'cm-md-aiPromptInput';
+      this.promptInput.rows = 3;
+      this.promptInput.placeholder = activeLabels.promptPlaceholder;
+      this.promptInput.addEventListener('keydown', event => this.onPromptKeyDown(event));
+      this.promptInput.addEventListener('input', () => {
+        this.promptRun.disabled = this.promptInput.value.trim().length === 0;
+      });
+
+      const footer = document.createElement('div');
+      footer.className = 'cm-md-aiPromptFooter';
+
+      const hint = document.createElement('span');
+      hint.className = 'cm-md-aiPromptHint';
+      hint.textContent = activeLabels.promptHint;
+      footer.appendChild(hint);
+
+      this.promptRun.type = 'button';
+      this.promptRun.className = 'cm-md-aiPromptRun';
+      this.promptRun.textContent = activeLabels.promptRun;
+      this.promptRun.disabled = true;
+      this.promptRun.addEventListener('click', () => {
+        void this.runPrompt();
+      });
+      footer.appendChild(this.promptRun);
+
+      this.promptPanel.appendChild(this.promptSourceRow);
+      this.promptPanel.appendChild(this.promptInput);
+      this.promptPanel.appendChild(this.promptChips);
+      this.promptPanel.appendChild(footer);
+
+      wrap.appendChild(this.promptToggle);
+      wrap.appendChild(this.promptPanel);
+      this.dom.appendChild(wrap);
+    }
+
+    private onPromptKeyDown(event: KeyboardEvent) {
+      // Escape closes the panel and hands focus back, rather than dismissing the
+      // whole toolbar the way the document-level handler would.
+      if (event.key === 'Escape') {
+        event.stopPropagation();
+        this.promptPanel.style.display = 'none';
+        this.view.focus();
+        return;
+      }
+
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        void this.runPrompt();
+      }
+    }
+
+    private async openPrompt() {
+      this.toneList.style.display = 'none';
+      this.personaList.style.display = 'none';
+      this.promptPanel.style.display = 'flex';
+      this.renderPromptPanel();
+      this.promptInput.focus();
+
+      await this.loadKnowledgeConfig();
+      this.renderPromptPanel();
+    }
+
+    private renderPromptPanel() {
+      this.renderSourceRow(this.promptSourceRow);
+      this.renderPromptChips();
+      this.promptRun.disabled = this.state.busy || this.promptInput.value.trim().length === 0;
+    }
+
+    /** Recent instructions once there are any, worked examples until then. */
+    private renderPromptChips() {
+      this.promptChips.replaceChildren();
+
+      const hasHistory = this.promptHistory.length > 0;
+      const entries = hasHistory ? this.promptHistory : promptExamples;
+
+      const title = document.createElement('span');
+      title.className = 'cm-md-aiPromptChipsTitle';
+      title.textContent = hasHistory ? activeLabels.promptRecentTitle : activeLabels.promptExamplesTitle;
+      this.promptChips.appendChild(title);
+
+      for (const entry of entries) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'cm-md-aiPromptChip';
+        chip.textContent = entry;
+        chip.title = entry;
+        chip.addEventListener('click', () => {
+          this.promptInput.value = entry;
+          this.promptRun.disabled = false;
+          this.promptInput.focus();
+        });
+        this.promptChips.appendChild(chip);
+      }
+    }
+
+    private async runPrompt() {
+      const instruction = this.promptInput.value.trim();
+      if (instruction.length === 0) {
+        return;
+      }
+
+      const { sel, selectedText, context } = this.selectionContext();
+      if (sel.empty) {
+        return;
+      }
+
+      this.rememberPrompt(instruction);
+      this.promptPanel.style.display = 'none';
+
+      await this.runRewrite(sel, () => window.nativeModules.ai.refactorWithPrompt({
+        prompt: instruction,
+        selection: selectedText,
+        context,
+        knowledgeSource: this.knowledgeScope ?? 'off',
+      }));
+    }
+
+    private rememberPrompt(instruction: string) {
+      this.promptHistory = [instruction, ...this.promptHistory.filter(item => item !== instruction)]
+        .slice(0, promptHistoryLimit);
+      savePromptHistory(this.promptHistory);
+    }
+
+    /** Loads the knowledge configuration once; safe to await from anywhere. */
+    private async loadKnowledgeConfig() {
+      if (this.knowledgeConfig !== undefined || this.knowledgeLoading) {
+        return;
+      }
+
+      this.knowledgeLoading = true;
+      try {
+        const raw = await window.nativeModules.ai.getKnowledgeConfig();
+        this.knowledgeConfig = typeof raw === 'string' ? JSON.parse(raw) as AIKnowledgeConfig : raw;
+      } catch {
+        this.knowledgeConfig = { availableScopes: ['off'], defaultScope: 'off' };
+      } finally {
+        this.knowledgeLoading = false;
+      }
+
+      if (this.knowledgeScope === undefined) {
+        this.knowledgeScope = this.knowledgeConfig.defaultSourceId ?? this.knowledgeConfig.defaultScope ?? 'off';
+      }
+    }
+
     private async loadPersonas() {
       if (this.personas !== undefined || this.personasLoading) {
         return;
@@ -226,9 +472,9 @@ export function aiSelectionToolbar() {
       this.renderPersonaList();
 
       try {
-        const [rawPersonas, rawConfig] = await Promise.all([
+        const [rawPersonas] = await Promise.all([
           window.nativeModules.ai.listPersonas(),
-          window.nativeModules.ai.getKnowledgeConfig(),
+          this.loadKnowledgeConfig(),
         ]);
 
         let response: AIPersonaListResponse;
@@ -236,16 +482,6 @@ export function aiSelectionToolbar() {
           response = typeof rawPersonas === 'string' ? JSON.parse(rawPersonas) as AIPersonaListResponse : rawPersonas;
         } catch {
           response = { error: 'Invalid persona response payload.' };
-        }
-
-        try {
-          this.knowledgeConfig = typeof rawConfig === 'string' ? JSON.parse(rawConfig) as AIKnowledgeConfig : rawConfig;
-        } catch {
-          this.knowledgeConfig = { availableScopes: ['off'], defaultScope: 'off' };
-        }
-
-        if (this.knowledgeScope === undefined) {
-          this.knowledgeScope = this.knowledgeConfig.defaultScope ?? 'off';
         }
 
         if (isNonEmpty(response.error)) {
@@ -266,7 +502,11 @@ export function aiSelectionToolbar() {
 
     private renderPersonaList() {
       this.personaList.replaceChildren();
-      this.renderScopeRow();
+
+      const scopeRow = document.createElement('div');
+      scopeRow.className = 'cm-md-aiSourceRow';
+      this.renderSourceRow(scopeRow);
+      this.personaList.appendChild(scopeRow);
 
       if (this.personasLoading) {
         const info = document.createElement('span');
@@ -317,44 +557,65 @@ export function aiSelectionToolbar() {
       }
     }
 
-    /** Knowledge scope switcher: Off / Project / Global / All. */
-    private renderScopeRow() {
-      const row = document.createElement('div');
-      row.className = 'cm-md-aiScopeRow';
+    /**
+     * Knowledge source picker, shared by the persona menu and the prompt panel
+     * so both always agree on what the next rewrite will be grounded in.
+     *
+     * A list of named places beats a row of scope words: "Compliance-Axiom" is
+     * answerable, "Global" is a guess about someone else's configuration.
+     */
+    private renderSourceRow(container: HTMLElement) {
+      container.replaceChildren();
 
       const title = document.createElement('span');
       title.className = 'cm-md-aiPersonaInfo';
       title.textContent = activeLabels.knowledgeTitle;
-      row.appendChild(title);
+      container.appendChild(title);
 
-      const available = this.knowledgeConfig?.availableScopes ?? ['off'];
-      const entries: [string, string][] = [
-        ['off', activeLabels.scopeOff],
-        ['project', activeLabels.scopeProject],
-        ['global', activeLabels.scopeGlobal],
-        ['all', activeLabels.scopeAll],
-      ];
+      const select = document.createElement('select');
+      select.className = 'cm-md-aiSourceSelect';
+      select.disabled = this.knowledgeLoading;
+      select.title = 'Where the AI may look things up for this rewrite';
 
-      for (const [scope, label] of entries) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = label;
-        btn.disabled = !available.includes(scope);
-        if (btn.disabled) {
-          btn.title = 'Not available — check knowledge token, Project ID, or Collection ID in Settings';
-        }
-        if (scope === (this.knowledgeScope ?? 'off')) {
-          btn.classList.add('cm-md-aiScopeSelected');
-        }
-        btn.addEventListener('click', event => {
-          event.stopPropagation();
-          this.knowledgeScope = scope;
-          this.renderPersonaList();
-        });
-        row.appendChild(btn);
+      const current = this.knowledgeScope
+        ?? this.knowledgeConfig?.defaultSourceId
+        ?? this.knowledgeConfig?.defaultScope
+        ?? 'off';
+
+      for (const source of this.availableSources()) {
+        const option = document.createElement('option');
+        option.value = source.id;
+        option.textContent = source.name;
+        option.selected = source.id === current;
+        select.appendChild(option);
       }
 
-      this.personaList.appendChild(row);
+      select.addEventListener('change', () => {
+        this.knowledgeScope = select.value;
+      });
+
+      container.appendChild(select);
+    }
+
+    /**
+     * Sources as the native side reports them, falling back to names derived
+     * from the legacy scope list when a host only supplies that.
+     */
+    private availableSources(): AIKnowledgeSource[] {
+      const provided = this.knowledgeConfig?.sources;
+      if (provided !== undefined && provided.length > 0) {
+        return provided;
+      }
+
+      const names: Record<string, string> = {
+        off: activeLabels.scopeOff,
+        project: activeLabels.scopeProject,
+        global: activeLabels.scopeGlobal,
+        all: activeLabels.scopeAll,
+      };
+
+      const scopes = this.knowledgeConfig?.availableScopes ?? ['off'];
+      return scopes.map(scope => ({ id: scope, name: names[scope] ?? scope, kind: scope }));
     }
 
     private onKeyDown(event: KeyboardEvent): void {
@@ -449,8 +710,12 @@ export function aiSelectionToolbar() {
         this.dom.style.left = `${placement.left}px`;
       }
 
-      // Reset transient error after the user moves on.
-      if (isNonEmpty(this.state.errorMessage)) {
+      // Reset transient status after the user moves on. A warning raised by the
+      // rewrite that just landed has to survive the reposition its own document
+      // change triggers, or it would never be readable.
+      if (this.statusPinned) {
+        this.statusPinned = false;
+      } else if (isNonEmpty(this.state.errorMessage)) {
         this.clearStatus();
       }
     }
@@ -470,6 +735,8 @@ export function aiSelectionToolbar() {
       this.dom.setAttribute('aria-hidden', 'true');
       this.toneList.style.display = 'none';
       this.personaList.style.display = 'none';
+      this.promptPanel.style.display = 'none';
+      this.statusPinned = false;
       this.clearStatus();
       this.manualPosition = undefined;
       this.wasFlipped = false;
@@ -478,6 +745,7 @@ export function aiSelectionToolbar() {
     private setBusy(busy: boolean, label = activeLabels.loading) {
       this.state.busy = busy;
       this.actionButtons.forEach(b => { b.disabled = busy; });
+      this.promptRun.disabled = busy || this.promptInput.value.trim().length === 0;
       if (busy) {
         this.statusEl.textContent = label;
         this.statusEl.className = 'cm-md-aiStatus';
@@ -492,6 +760,20 @@ export function aiSelectionToolbar() {
       this.statusEl.className = 'cm-md-aiError';
       this.statusEl.style.display = '';
       this.state.errorMessage = message;
+    }
+
+    /**
+     * Non-fatal note shown beside a rewrite that did land — typically that the
+     * chosen knowledge source could not be consulted. Kept visible instead of
+     * dismissing the toolbar, because a rewrite the user believes is grounded
+     * and one that silently is not are indistinguishable in the document.
+     */
+    private setWarning(message: string) {
+      this.statusEl.textContent = message;
+      this.statusEl.className = 'cm-md-aiWarning';
+      this.statusEl.style.display = '';
+      this.state.errorMessage = message;
+      this.statusPinned = true;
     }
 
     private clearStatus() {
@@ -548,9 +830,9 @@ export function aiSelectionToolbar() {
       try {
         const raw = await invoke();
 
-        let response: { result?: string; error?: string };
+        let response: AIRefactorResponse;
         try {
-          response = typeof raw === 'string' ? JSON.parse(raw) as { result?: string; error?: string } : raw;
+          response = typeof raw === 'string' ? JSON.parse(raw) as AIRefactorResponse : raw;
         } catch {
           response = { error: 'Invalid AI response payload.' };
         }
@@ -575,7 +857,11 @@ export function aiSelectionToolbar() {
         });
 
         this.setBusy(false);
-        this.hide();
+        if (isNonEmpty(response.warning)) {
+          this.setWarning(response.warning);
+        } else {
+          this.hide();
+        }
       } catch (err) {
         this.setBusy(false);
         this.setError(err instanceof Error ? err.message : String(err));

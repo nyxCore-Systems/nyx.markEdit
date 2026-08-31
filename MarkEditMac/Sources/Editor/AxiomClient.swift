@@ -10,6 +10,48 @@
 
 import Foundation
 
+/// A named knowledge source the user configured in Settings → AI, on top of the
+/// single Project ID / Collection ID pair that the legacy scopes use.
+///
+/// Persisted as a JSON array under `nyxcore.knowledge-sources` so the list can
+/// grow without a new preference key per entry.
+struct KnowledgeSourcePreference: Codable, Equatable, Sendable, Identifiable {
+  /// "project" or "collection" — which Axiom filter the target id fills.
+  var kind: String
+  /// The project or collection UUID this source points at.
+  var target: String
+  var name: String
+
+  /// Routing key handed to the web side and back: the target travels with the
+  /// id, so resolving a pick never needs a second lookup into preferences.
+  var id: String { "\(kind):\(target)" }
+
+  var isValid: Bool {
+    (kind == "project" || kind == "collection")
+      && !target.trimmingCharacters(in: .whitespaces).isEmpty
+      && !name.trimmingCharacters(in: .whitespaces).isEmpty
+  }
+
+  @MainActor
+  static func load() -> [Self] {
+    let raw = AppPreferences.NyxCore.knowledgeSources
+    guard let data = raw.data(using: .utf8), !raw.isEmpty else {
+      return []
+    }
+
+    return ((try? JSONDecoder().decode([Self].self, from: data)) ?? []).filter { $0.isValid }
+  }
+
+  @MainActor
+  static func save(_ sources: [Self]) {
+    guard let data = try? JSONEncoder().encode(sources), let json = String(data: data, encoding: .utf8) else {
+      return
+    }
+
+    AppPreferences.NyxCore.knowledgeSources = json
+  }
+}
+
 struct AxiomClient: Sendable {
   enum ClientError: LocalizedError {
     case invalidURL
@@ -72,6 +114,39 @@ struct AxiomClient: Sendable {
     )
   }
 
+  /// The Axiom request filter a knowledge source id resolves to.
+  ///
+  /// Accepts the legacy scopes ("project", "global", "all") as well as the
+  /// named-source ids "project:<uuid>" / "collection:<uuid>". Fails closed:
+  /// anything unrecognized throws rather than widening to a tenant-wide search,
+  /// because an unfiltered search is the one answer no scope should degrade to.
+  func filter(for scope: String) throws -> [String: String] {
+    if let target = scope.dropping(prefix: "project:") {
+      return ["projectId": target]
+    }
+
+    if let target = scope.dropping(prefix: "collection:") {
+      return ["collectionId": target]
+    }
+
+    switch scope {
+    case "project":
+      guard let projectID else {
+        throw ClientError.missingProject
+      }
+      return ["projectId": projectID]
+    case "global":
+      guard let collectionID else {
+        throw ClientError.missingCollection
+      }
+      return ["collectionId": collectionID]
+    case "all":
+      return [:] // tenant-wide search, no filter
+    default:
+      throw ClientError.invalidScope(scope)
+    }
+  }
+
   /// Knowledge snippet texts, most relevant first, formatted "[filename › heading]\ncontent".
   func search(query: String, scope: String, limit: Int) async throws -> [String] {
     struct Hit: Decodable {
@@ -84,23 +159,8 @@ struct AxiomClient: Sendable {
     }
 
     var body: [String: Any] = ["query": query, "limit": limit]
-    switch scope {
-    case "project":
-      guard let projectID else {
-        throw ClientError.missingProject
-      }
-      body["projectId"] = projectID
-    case "global":
-      guard let collectionID else {
-        throw ClientError.missingCollection
-      }
-      body["collectionId"] = collectionID
-    case "all":
-      break // tenant-wide search, no filter
-    default:
-      // Fail closed: an unrecognized scope must never widen to a tenant-wide
-      // search. loadKnowledge's `try?` best-effort path degrades this to [].
-      throw ClientError.invalidScope(scope)
+    for (key, value) in try filter(for: scope) {
+      body[key] = value
     }
 
     guard let url = URL(string: "\(origin)/api/v1/rag/search") else {
@@ -164,5 +224,20 @@ struct AxiomClient: Sendable {
       return message
     }
     return String(data: data, encoding: .utf8) ?? ""
+  }
+}
+
+// MARK: - Helpers
+
+private extension String {
+  /// The remainder after `prefix`, or nil when the prefix is absent or nothing
+  /// follows it — so "project:" is rejected rather than read as an empty target.
+  func dropping(prefix: String) -> String? {
+    guard hasPrefix(prefix) else {
+      return nil
+    }
+
+    let target = String(dropFirst(prefix.count)).trimmingCharacters(in: .whitespaces)
+    return target.isEmpty ? nil : target
   }
 }
