@@ -17,6 +17,7 @@ public protocol NativeModuleAI: NativeModule {
   func listPersonas() async -> String
   func getKnowledgeConfig() async -> String
   func refactorWithPersona(personaID: String, personaName: String, circleID: String?, selection: String, context: String?, knowledgeScope: String) async -> String
+  func refactorWithPrompt(prompt: String, selection: String, context: String?, knowledgeSource: String) async -> String
 }
 
 public extension NativeModuleAI {
@@ -41,6 +42,9 @@ final class NativeBridgeAI: NativeBridge {
     },
     "refactorWithPersona": { [weak self] in
       await self?.refactorWithPersona(parameters: $0)
+    },
+    "refactorWithPrompt": { [weak self] in
+      await self?.refactorWithPrompt(parameters: $0)
     },
   ]
 
@@ -104,6 +108,26 @@ final class NativeBridgeAI: NativeBridge {
     }
 
     let result = await module.refactorWithPersona(personaID: message.personaID, personaName: message.personaName, circleID: message.circleID, selection: message.selection, context: message.context, knowledgeScope: message.knowledgeScope)
+    return .success(result)
+  }
+
+  private func refactorWithPrompt(parameters: Data) async -> Result<Any?, Error>? {
+    struct Message: Decodable {
+      var prompt: String
+      var selection: String
+      var context: String?
+      var knowledgeSource: String
+    }
+
+    let message: Message
+    do {
+      message = try decoder.decode(Message.self, from: parameters)
+    } catch {
+      Logger.assertFail("Failed to decode parameters: \(parameters)")
+      return .failure(error)
+    }
+
+    let result = await module.refactorWithPrompt(prompt: message.prompt, selection: message.selection, context: message.context, knowledgeSource: message.knowledgeSource)
     return .success(result)
   }
 }

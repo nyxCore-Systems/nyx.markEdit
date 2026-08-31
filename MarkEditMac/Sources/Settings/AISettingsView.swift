@@ -31,6 +31,7 @@ struct AISettingsView: View {
   @State private var nyxKnowledgeBaseURL: String = AppPreferences.NyxCore.knowledgeBaseURL
   @State private var nyxProjectID: String = AppPreferences.NyxCore.projectID
   @State private var nyxCollectionID: String = AppPreferences.NyxCore.collectionID
+  @State private var nyxSources: [KnowledgeSourcePreference] = KnowledgeSourcePreference.load()
   @State private var nyxKnowledgeScope: String = {
     let stored = AppPreferences.NyxCore.knowledgeScope
     if !stored.isEmpty {
@@ -195,6 +196,50 @@ struct AISettingsView: View {
             .formDescription()
         }
         .formLabel(alignment: .top, "Collection ID")
+
+        VStack(alignment: .leading, spacing: 8) {
+          ForEach(nyxSources.indices, id: \.self) { index in
+            VStack(alignment: .leading, spacing: 4) {
+              HStack(spacing: 6) {
+                TextField("", text: $nyxSources[index].name, prompt: Text("Display name"))
+                  .textFieldStyle(.roundedBorder)
+
+                Button {
+                  nyxSources.remove(at: index)
+                } label: {
+                  Image(systemName: "minus.circle")
+                }
+                .buttonStyle(.borderless)
+                .help("Remove this source")
+              }
+
+              HStack(spacing: 6) {
+                Picker("", selection: $nyxSources[index].kind) {
+                  Text("Project").tag("project")
+                  Text("Collection").tag("collection")
+                }
+                .labelsHidden()
+                .frame(width: 110)
+
+                TextField("", text: $nyxSources[index].target, prompt: Text("UUID"))
+                  .textFieldStyle(.roundedBorder)
+              }
+            }
+          }
+
+          Button("Add source") {
+            nyxSources.append(KnowledgeSourcePreference(kind: "project", target: "", name: ""))
+          }
+
+          Text("Extra projects and Axiom collections offered in the editor's source picker, "
+            + "in addition to the two fields above. Incomplete rows are ignored.")
+            .formDescription()
+        }
+        .frame(width: descriptionWidth, alignment: .leading)
+        .onChange(of: nyxSources) {
+          KnowledgeSourcePreference.save(nyxSources)
+        }
+        .formLabel(alignment: .top, "Knowledge sources")
 
         Picker("", selection: $nyxKnowledgeScope) {
           Text("Off").tag("off")

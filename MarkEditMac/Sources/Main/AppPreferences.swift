@@ -301,6 +301,12 @@ enum AppPreferences {
     @Storage(key: "nyxcore.collection-id", defaultValue: "")
     static var collectionID: String
 
+    /// Named knowledge sources, JSON-encoded `[KnowledgeSourcePreference]`.
+    /// Additive to the single Project ID / Collection ID above, which keep
+    /// backing the legacy "project" and "global" scopes.
+    @Storage(key: "nyxcore.knowledge-sources", defaultValue: "")
+    static var knowledgeSources: String
+
     /// Default knowledge scope: "off" | "project" | "global" | "all".
     /// Empty means "not set yet" — callers migrate from the legacy useKnowledge flag.
     @Storage(key: "nyxcore.knowledge-scope", defaultValue: "")

@@ -96,23 +96,27 @@
   overflow-y: auto;
 }
 
-.cm-md-aiPersonaList .cm-md-aiScopeRow {
+.cm-md-aiSourceRow {
   display: flex;
   flex-direction: row;
-  gap: 2px;
+  align-items: center;
+  gap: 4px;
   border-bottom: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 15%, transparent);
   margin-bottom: 4px;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
 }
 
-.cm-md-aiPersonaList .cm-md-aiScopeRow button {
-  width: auto;
-  padding: 3px 7px;
+.cm-md-aiSourceRow .cm-md-aiSourceSelect {
+  flex: 1;
+  min-width: 0;
+  max-width: 220px;
+  padding: 2px 4px;
+  background: color-mix(in oklab, var(--md-ai-fg, CanvasText) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 20%, transparent);
+  border-radius: 5px;
+  color: inherit;
+  font: inherit;
   font-size: 11px;
-}
-
-.cm-md-aiPersonaList .cm-md-aiScopeRow button.cm-md-aiScopeSelected {
-  background: color-mix(in oklab, var(--md-ai-accent, Highlight) 25%, transparent);
 }
 
 .cm-md-aiPersonaList .cm-md-aiPersonaGroup {
@@ -149,4 +153,109 @@
 
 .cm-md-aiToolbar[aria-hidden="true"] {
   display: none !important;
+}
+
+/* Prompt panel — free-form instruction over the selection. */
+
+.cm-md-aiToolbar .cm-md-aiPromptMenu {
+  position: relative;
+}
+
+.cm-md-aiPromptPanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  width: 320px;
+  background-color: color-mix(in oklab, var(--md-ai-bg, Canvas) 92%, var(--md-ai-fg, CanvasText) 8%);
+  background-image: linear-gradient(var(--md-ai-bg, Canvas), var(--md-ai-bg, Canvas));
+  border: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 15%, transparent);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  z-index: 1;
+}
+
+.cm-md-aiPromptPanel .cm-md-aiPromptInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 7px;
+  background: color-mix(in oklab, var(--md-ai-fg, CanvasText) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--md-ai-fg, CanvasText) 20%, transparent);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  line-height: 1.35;
+  resize: vertical;
+  user-select: text;
+}
+
+.cm-md-aiPromptPanel .cm-md-aiPromptInput:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--md-ai-accent, Highlight) 60%, transparent);
+}
+
+.cm-md-aiPromptChips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.cm-md-aiPromptChips .cm-md-aiPromptChipsTitle {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.55;
+  padding: 0 2px 2px;
+}
+
+.cm-md-aiPromptPanel .cm-md-aiPromptChip {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 3px 6px;
+  text-align: left;
+  font-size: 11px;
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cm-md-aiPromptFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cm-md-aiPromptFooter .cm-md-aiPromptHint {
+  font-size: 10px;
+  opacity: 0.55;
+}
+
+.cm-md-aiPromptPanel .cm-md-aiPromptRun {
+  background: color-mix(in oklab, var(--md-ai-accent, Highlight) 30%, transparent);
+  font-weight: 600;
+}
+
+.cm-md-aiPromptPanel .cm-md-aiPromptRun:disabled {
+  cursor: not-allowed;
+}
+
+.cm-md-aiToolbar .cm-md-aiWarning {
+  padding: 0 6px;
+  color: #ad6800;
+}
+
+@media (prefers-color-scheme: dark) {
+  .cm-md-aiToolbar .cm-md-aiWarning {
+    color: #ffc069;
+  }
 }

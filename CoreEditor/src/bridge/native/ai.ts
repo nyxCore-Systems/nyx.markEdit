@@ -14,6 +14,9 @@ export enum AIAction {
 export interface AIRefactorResponse {
   result?: string;
   error?: string;
+  // Non-fatal note about a degraded run, e.g. knowledge retrieval failed and
+  // the rewrite went ahead ungrounded. Shown next to the result, never instead.
+  warning?: string;
 }
 
 export interface AIPersona {
@@ -31,10 +34,28 @@ export interface AIPersonaListResponse {
   error?: string;
 }
 
+/**
+ * One selectable grounding source for AI actions.
+ *
+ * `id` is the opaque routing key handed back to the native side. The legacy
+ * scope strings ('off', 'project', 'global', 'all') are valid ids, and named
+ * sources configured in Settings use 'project:<uuid>' / 'collection:<uuid>'.
+ */
+export interface AIKnowledgeSource {
+  id: string;
+  name: string;
+  // 'off' | 'project' | 'collection' | 'all'
+  kind: string;
+}
+
 export interface AIKnowledgeConfig {
   // Subset of ['off', 'project', 'global', 'all'], always contains 'off'.
   availableScopes?: string[];
   defaultScope?: string;
+  // Preferred over availableScopes when present: carries display names for
+  // the project/collection each entry actually points at.
+  sources?: AIKnowledgeSource[];
+  defaultSourceId?: string;
   error?: string;
 }
 
@@ -61,6 +82,18 @@ export interface NativeModuleAI extends NativeModule {
     circleID?: string;
     selection: string;
     context?: string;
+    // A knowledge source id (see AIKnowledgeSource); legacy scope strings still apply.
     knowledgeScope: string;
+  }): Promise<string>;
+
+  /**
+   * Free-form instruction over the selection, optionally grounded in a
+   * knowledge source. Yields an AIRefactorResponse like the other rewrites.
+   */
+  refactorWithPrompt(args: {
+    prompt: string;
+    selection: string;
+    context?: string;
+    knowledgeSource: string;
   }): Promise<string>;
 }

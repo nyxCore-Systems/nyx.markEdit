@@ -70,20 +70,32 @@ final class AppAIService: AIService {
 
   func knowledgeConfig() async -> AIKnowledgeConfig {
     var scopes = ["off"]
+    var sources = [AIKnowledgeSource(id: "off", name: "No knowledge", kind: "off")]
 
     switch Self.resolveKnowledgeRoute() {
     case let .axiom(axiom):
       if axiom.projectID != nil {
         scopes.append("project")
+        sources.append(AIKnowledgeSource(id: "project", name: "Project (Settings)", kind: "project"))
       }
       if axiom.collectionID != nil {
         scopes.append("global")
+        sources.append(AIKnowledgeSource(id: "global", name: "Collection (Settings)", kind: "collection"))
       }
       scopes.append("all")
+      sources.append(AIKnowledgeSource(id: "all", name: "All (tenant-wide)", kind: "all"))
+
+      // Named sources are additive: the two Settings fields above stay the
+      // default, and each extra entry names the project or Axiom collection it
+      // points at so the picker reads as places, not as scope jargon.
+      sources.append(contentsOf: KnowledgeSourcePreference.load().map {
+        AIKnowledgeSource(id: $0.id, name: $0.name, kind: $0.kind)
+      })
 
     case .legacy:
       // Legacy MCP knowledge token: only project-scoped search is possible.
       scopes.append("project")
+      sources.append(AIKnowledgeSource(id: "project", name: "Project (Settings)", kind: "project"))
 
     case .disabled, .invalidAxiomURL, .unavailable:
       break // Off-only: same source of truth loadKnowledge/testKnowledge gate on.
@@ -91,7 +103,14 @@ final class AppAIService: AIService {
 
     let preferred = Self.resolvedDefaultScope()
     let defaultScope = scopes.contains(preferred) ? preferred : (scopes.count > 1 ? scopes[1] : "off")
-    return AIKnowledgeConfig(availableScopes: scopes, defaultScope: defaultScope)
+    let hasDefaultSource = sources.contains { $0.id == defaultScope }
+
+    return AIKnowledgeConfig(
+      availableScopes: scopes,
+      defaultScope: defaultScope,
+      sources: sources,
+      defaultSourceId: hasDefaultSource ? defaultScope : "off"
+    )
   }
 
   // swiftlint:disable:next function_parameter_count
@@ -103,8 +122,9 @@ final class AppAIService: AIService {
     context: String?,
     knowledgeScope: String
   ) async -> AIRefactorResponse {
-    // Knowledge is best-effort for both protocols: failures never block the rewrite.
-    let knowledge = await loadKnowledge(scope: knowledgeScope, query: selection)
+    // Knowledge is best-effort for both protocols: failures never block the
+    // rewrite, but they do travel back as a warning rather than vanishing.
+    let (knowledge, warning) = await loadKnowledge(source: knowledgeScope, query: selection)
     let user = NyxCorePromptComposer.userPrompt(selection: selection, context: context, knowledge: knowledge)
 
     switch Self.resolvePersonaRoute() {
@@ -120,7 +140,7 @@ final class AppAIService: AIService {
           user: user,
           maxTokens: AppPreferences.AI.maxTokens
         )
-        return .init(result: content)
+        return .init(result: content, warning: warning)
       } catch {
         return .init(error: error.localizedDescription)
       }
@@ -134,11 +154,44 @@ final class AppAIService: AIService {
       do {
         let personaPrompt = try await personaClient.personaPrompt(personaID: personaID)
         let system = NyxCorePromptComposer.systemPrompt(personaName: personaName, personaPrompt: personaPrompt)
-        return await complete(system: system, userMessage: user)
+        return await complete(system: system, userMessage: user).adding(warning: warning)
       } catch {
         return .init(error: error.localizedDescription)
       }
     }
+  }
+
+  /// Applies a user-written instruction to the selection, optionally grounded in
+  /// a knowledge source. The free-form sibling of `refactor`: same generation
+  /// path, but the instruction comes from the user instead of a fixed action.
+  func refactorWithPrompt(
+    prompt: String,
+    selection: String,
+    context: String?,
+    knowledgeSource: String
+  ) async -> AIRefactorResponse {
+    let instruction = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !instruction.isEmpty else {
+      return .init(error: "Describe what should happen with the selection.")
+    }
+
+    // The instruction is part of the retrieval query: "expand with the release
+    // criteria" should look for release criteria, not just for what the passage
+    // already happens to say.
+    let (knowledge, warning) = await loadKnowledge(
+      source: knowledgeSource,
+      query: "\(instruction)\n\n\(selection)"
+    )
+
+    let user = NyxCorePromptComposer.customUserPrompt(
+      instruction: instruction,
+      selection: selection,
+      context: context,
+      knowledge: knowledge
+    )
+
+    let response = await complete(system: NyxCorePromptComposer.customInstructionContract, userMessage: user)
+    return response.adding(warning: warning)
   }
 
   /// Test hook for Settings → AI: runs a 1-result search in the default scope
@@ -381,24 +434,61 @@ private extension AppAIService {
     return AppPreferences.NyxCore.useKnowledge ? "project" : "off"
   }
 
-  func loadKnowledge(scope: String, query: String) async -> [String] {
-    guard scope != "off" else {
-      return []
+  /// Grounding passages for a knowledge source id, plus a note when the source
+  /// could not be consulted.
+  ///
+  /// Retrieval stays best-effort — it never blocks a rewrite — but the failure
+  /// is reported rather than swallowed. "Expand this from the Axiom" answered
+  /// from the model's own priors and answered from the knowledge base look
+  /// identical in the document; only the warning tells them apart.
+  func loadKnowledge(source: String, query: String) async -> (snippets: [String], warning: String?) {
+    guard source != "off" else {
+      return ([], nil)
     }
 
     let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
 
-    switch Self.resolveKnowledgeRoute() {
-    case let .axiom(axiom):
-      // Best-effort: an unconstructible client already stops us before this
-      // point, so only the search call itself can still fail — never block
-      // a rewrite on a knowledge failure.
-      return (try? await axiom.search(query: query, scope: scope, limit: limit)) ?? []
-    case let .legacy(legacy) where scope == "project":
-      return (try? await legacy.search(query: query, limit: limit)) ?? []
-    default:
-      return []
+    do {
+      switch Self.resolveKnowledgeRoute() {
+      case let .axiom(axiom):
+        return Self.reporting(try await axiom.search(query: query, scope: source, limit: limit))
+      case let .legacy(legacy) where source == "project":
+        return Self.reporting(try await legacy.search(query: query, limit: limit))
+      case .legacy:
+        return ([], "This knowledge source needs an Axiom token (nyx_ax_) — rewritten without grounding.")
+      case .disabled:
+        return ([], "nyxCore knowledge is turned off — rewritten without grounding.")
+      case .invalidAxiomURL:
+        return ([], "Invalid Axiom endpoint URL — rewritten without grounding.")
+      case .unavailable:
+        return ([], "No knowledge token configured — rewritten without grounding.")
+      }
+    } catch {
+      return ([], "Knowledge unavailable: \(error.localizedDescription) — rewritten without grounding.")
     }
+  }
+
+  /// An empty hit list is a legitimate answer, not a failure — but it is still
+  /// worth saying, because it is indistinguishable from grounding in the result.
+  static func reporting(_ snippets: [String]) -> (snippets: [String], warning: String?) {
+    (snippets, snippets.isEmpty ? "No matching passages in the selected knowledge source." : nil)
+  }
+}
+
+// MARK: - Response helpers
+
+private extension AIRefactorResponse {
+  /// Carries a knowledge warning onto a successful result. A failed response
+  /// keeps its own error: a retrieval note must never displace the reason the
+  /// rewrite itself did not happen.
+  func adding(warning: String?) -> Self {
+    guard error == nil, let warning else {
+      return self
+    }
+
+    var copy = self
+    copy.warning = warning
+    return copy
   }
 }
 
