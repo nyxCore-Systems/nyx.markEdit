@@ -150,109 +150,7 @@ struct AISettingsView: View {
           .formLabel("Persona endpoint")
       }
 
-      // Knowledge credentials (Axiom REST, with legacy MCP fallback)
-      Section {
-        VStack(alignment: .leading) {
-          SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_ax_…"))
-            .textFieldStyle(.roundedBorder)
-            .onChange(of: nyxKnowledgeToken) {
-              AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespaces)
-            }
-
-          Text("Axiom token (nyx_ax_). A tenant-wide token enables the Global and All scopes; a project token is pinned to its project. Stored in the Keychain.")
-            .formDescription()
-            .frame(width: descriptionWidth, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        .formLabel(alignment: .top, "Knowledge token")
-
-        TextField("", text: $nyxKnowledgeBaseURL)
-          .textFieldStyle(.roundedBorder)
-          .onChange(of: nyxKnowledgeBaseURL) {
-            AppPreferences.NyxCore.knowledgeBaseURL = nyxKnowledgeBaseURL
-          }
-          .formLabel("Knowledge endpoint")
-
-        VStack(alignment: .leading) {
-          TextField("", text: $nyxProjectID, prompt: Text("UUID"))
-            .textFieldStyle(.roundedBorder)
-            .onChange(of: nyxProjectID) {
-              AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
-            }
-
-          Text("Project for the \"Project\" scope.")
-            .formDescription()
-        }
-        .formLabel(alignment: .top, "Project ID")
-
-        VStack(alignment: .leading) {
-          TextField("", text: $nyxCollectionID, prompt: Text("UUID"))
-            .textFieldStyle(.roundedBorder)
-            .onChange(of: nyxCollectionID) {
-              AppPreferences.NyxCore.collectionID = nyxCollectionID.trimmingCharacters(in: .whitespaces)
-            }
-
-          Text("Standalone Axiom collection for the \"Global\" scope. Optional.")
-            .formDescription()
-        }
-        .formLabel(alignment: .top, "Collection ID")
-
-        VStack(alignment: .leading, spacing: 8) {
-          ForEach(nyxSources.indices, id: \.self) { index in
-            VStack(alignment: .leading, spacing: 4) {
-              HStack(spacing: 6) {
-                TextField("", text: $nyxSources[index].name, prompt: Text("Display name"))
-                  .textFieldStyle(.roundedBorder)
-
-                Button {
-                  nyxSources.remove(at: index)
-                } label: {
-                  Image(systemName: "minus.circle")
-                }
-                .buttonStyle(.borderless)
-                .help("Remove this source")
-              }
-
-              HStack(spacing: 6) {
-                Picker("", selection: $nyxSources[index].kind) {
-                  Text("Project").tag("project")
-                  Text("Collection").tag("collection")
-                }
-                .labelsHidden()
-                .frame(width: 110)
-
-                TextField("", text: $nyxSources[index].target, prompt: Text("UUID"))
-                  .textFieldStyle(.roundedBorder)
-              }
-            }
-          }
-
-          Button("Add source") {
-            nyxSources.append(KnowledgeSourcePreference(kind: "project", target: "", name: ""))
-          }
-
-          Text("Extra projects and Axiom collections offered in the editor's source picker, "
-            + "in addition to the two fields above. Incomplete rows are ignored.")
-            .formDescription()
-        }
-        .frame(width: descriptionWidth, alignment: .leading)
-        .onChange(of: nyxSources) {
-          KnowledgeSourcePreference.save(nyxSources)
-        }
-        .formLabel(alignment: .top, "Knowledge sources")
-
-        Picker("", selection: $nyxKnowledgeScope) {
-          Text("Off").tag("off")
-          Text("Project").tag("project")
-          Text("Global").tag("global")
-          Text("All").tag("all")
-        }
-        .pickerStyle(.segmented)
-        .onChange(of: nyxKnowledgeScope) {
-          AppPreferences.NyxCore.knowledgeScope = nyxKnowledgeScope
-        }
-        .formLabel("Default scope")
-      }
+      knowledgeSection
 
       Section {
         VStack(alignment: .leading, spacing: 8) {
@@ -294,6 +192,117 @@ struct AISettingsView: View {
         }
         .formLabel(alignment: .top, "")
       }
+    }
+  }
+}
+
+// MARK: - nyxCore knowledge
+
+private extension AISettingsView {
+  /// Lives in an extension so the form body stays inside SwiftLint's
+  /// type_body_length budget as the nyxCore settings keep growing.
+  @ViewBuilder var knowledgeSection: some View {
+    Section {
+      VStack(alignment: .leading) {
+        SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_ax_…"))
+          .textFieldStyle(.roundedBorder)
+          .onChange(of: nyxKnowledgeToken) {
+            AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespaces)
+          }
+
+        Text("Axiom token (nyx_ax_). A tenant-wide token enables the Global and All scopes; a project token is pinned to its project. Stored in the Keychain.")
+          .formDescription()
+          .frame(width: descriptionWidth, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
+      }
+      .formLabel(alignment: .top, "Knowledge token")
+
+      TextField("", text: $nyxKnowledgeBaseURL)
+        .textFieldStyle(.roundedBorder)
+        .onChange(of: nyxKnowledgeBaseURL) {
+          AppPreferences.NyxCore.knowledgeBaseURL = nyxKnowledgeBaseURL
+        }
+        .formLabel("Knowledge endpoint")
+
+      VStack(alignment: .leading) {
+        TextField("", text: $nyxProjectID, prompt: Text("UUID"))
+          .textFieldStyle(.roundedBorder)
+          .onChange(of: nyxProjectID) {
+            AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
+          }
+
+        Text("Project for the \"Project\" scope.")
+          .formDescription()
+      }
+      .formLabel(alignment: .top, "Project ID")
+
+      VStack(alignment: .leading) {
+        TextField("", text: $nyxCollectionID, prompt: Text("UUID"))
+          .textFieldStyle(.roundedBorder)
+          .onChange(of: nyxCollectionID) {
+            AppPreferences.NyxCore.collectionID = nyxCollectionID.trimmingCharacters(in: .whitespaces)
+          }
+
+        Text("Standalone Axiom collection for the \"Global\" scope. Optional.")
+          .formDescription()
+      }
+      .formLabel(alignment: .top, "Collection ID")
+
+      VStack(alignment: .leading, spacing: 8) {
+        ForEach(nyxSources.indices, id: \.self) { index in
+          VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 6) {
+              TextField("", text: $nyxSources[index].name, prompt: Text("Display name"))
+                .textFieldStyle(.roundedBorder)
+
+              Button {
+                nyxSources.remove(at: index)
+              } label: {
+                Image(systemName: "minus.circle")
+              }
+              .buttonStyle(.borderless)
+              .help("Remove this source")
+            }
+
+            HStack(spacing: 6) {
+              Picker("", selection: $nyxSources[index].kind) {
+                Text("Project").tag("project")
+                Text("Collection").tag("collection")
+              }
+              .labelsHidden()
+              .frame(width: 110)
+
+              TextField("", text: $nyxSources[index].target, prompt: Text("UUID"))
+                .textFieldStyle(.roundedBorder)
+            }
+          }
+        }
+
+        Button("Add source") {
+          nyxSources.append(KnowledgeSourcePreference(kind: "project", target: "", name: ""))
+        }
+
+        Text("Extra projects and Axiom collections offered in the editor's source picker, "
+          + "in addition to the two fields above. Incomplete rows are ignored.")
+          .formDescription()
+      }
+      .frame(width: descriptionWidth, alignment: .leading)
+      .onChange(of: nyxSources) {
+        KnowledgeSourcePreference.save(nyxSources)
+      }
+      .formLabel(alignment: .top, "Knowledge sources")
+
+      Picker("", selection: $nyxKnowledgeScope) {
+        Text("Off").tag("off")
+        Text("Project").tag("project")
+        Text("Global").tag("global")
+        Text("All").tag("all")
+      }
+      .pickerStyle(.segmented)
+      .onChange(of: nyxKnowledgeScope) {
+        AppPreferences.NyxCore.knowledgeScope = nyxKnowledgeScope
+      }
+      .formLabel("Default scope")
     }
   }
 }

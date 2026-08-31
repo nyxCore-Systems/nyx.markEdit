@@ -224,12 +224,14 @@ final class AppAIService: AIService {
       return (false, error.localizedDescription)
     }
   }
+}
 
-  // MARK: - Generation (Anthropic)
+// MARK: - Generation (Anthropic)
 
+private extension AppAIService {
   /// Shared text-generation call. nyxCore supplies the persona/knowledge context;
   /// this method is the generation provider seam (currently Anthropic only).
-  private func complete(system: String, userMessage: String) async -> AIRefactorResponse {
+  func complete(system: String, userMessage: String) async -> AIRefactorResponse {
     guard AppPreferences.AI.enabled else {
       return .init(error: "AI is disabled in Settings.")
     }
@@ -285,7 +287,7 @@ final class AppAIService: AIService {
 
   // MARK: - Prompts
 
-  private static let systemPrompt = """
+  static let systemPrompt = """
   You are a precise text editor for Markdown documents. The user will provide a passage and ask \
   you to rewrite it. Output only the rewritten passage — no preamble, no explanation, no quoting, \
   no surrounding code fences. Preserve the original Markdown formatting style: keep inline code, \
@@ -293,7 +295,7 @@ final class AppAIService: AIService {
   selection. If there is nothing meaningful to change, return the original text verbatim.
   """
 
-  private func buildPrompt(action: AIAction, selection: String, context: String?) -> String {
+  func buildPrompt(action: AIAction, selection: String, context: String?) -> String {
     let instruction: String = {
       switch action {
       case .improve:
@@ -328,7 +330,7 @@ final class AppAIService: AIService {
 
   // MARK: - Response parsing
 
-  private static func extractText(from data: Data) -> String? {
+  static func extractText(from data: Data) -> String? {
     guard
       let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
       let content = json["content"] as? [[String: Any]]
@@ -345,7 +347,7 @@ final class AppAIService: AIService {
     return joined.isEmpty ? nil : joined
   }
 
-  private static func extractErrorMessage(from data: Data) -> String? {
+  static func extractErrorMessage(from data: Data) -> String? {
     guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
       return nil
     }
