@@ -246,7 +246,7 @@ struct NyxCoreClient: Sendable {
   static func mostRelevant(_ snippets: [String], plus other: [String], to query: String, limit: Int) -> [String] {
     let terms = Set(
       query.lowercased()
-        .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+        .split { !$0.isLetter && !$0.isNumber }
         .filter { $0.count > 3 }
         .map(String.init)
     )
