@@ -16,7 +16,9 @@ import Foundation
 /// Persisted as a JSON array under `nyxcore.knowledge-sources` so the list can
 /// grow without a new preference key per entry.
 struct KnowledgeSourcePreference: Codable, Equatable, Sendable, Identifiable {
-  /// "project" or "collection" — which Axiom filter the target id fills.
+  /// "project" (Axiom project), "collection" (Axiom collection), or
+  /// "nyxproject" (a whole nyxCore project: Axiom passages plus its patterns
+  /// and insights, via MCP).
   var kind: String
   /// The project or collection UUID this source points at.
   var target: String
@@ -24,10 +26,10 @@ struct KnowledgeSourcePreference: Codable, Equatable, Sendable, Identifiable {
 
   /// Routing key handed to the web side and back: the target travels with the
   /// id, so resolving a pick never needs a second lookup into preferences.
-  var id: String { "\(kind):\(target)" }
+  var id: String { kind == "nyxproject" ? "nyx:\(target)" : "\(kind):\(target)" }
 
   var isValid: Bool {
-    (kind == "project" || kind == "collection")
+    ["project", "collection", "nyxproject"].contains(kind)
       && !target.trimmingCharacters(in: .whitespaces).isEmpty
       && !name.trimmingCharacters(in: .whitespaces).isEmpty
   }
@@ -99,7 +101,7 @@ struct AxiomClient: Sendable {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard token.hasPrefix(tokenPrefix) else {
       return nil
     }
@@ -249,7 +251,7 @@ struct AxiomClient: Sendable {
 
 // MARK: - Helpers
 
-private extension String {
+extension String {
   /// The remainder after `prefix`, or nil when the prefix is absent or nothing
   /// follows it — so "project:" is rejected rather than read as an empty target.
   func dropping(prefix: String) -> String? {

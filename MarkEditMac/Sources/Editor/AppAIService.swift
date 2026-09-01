@@ -235,7 +235,7 @@ private extension AppAIService {
     guard AppPreferences.AI.enabled else {
       return .init(error: "AI is disabled in Settings.")
     }
-    guard let apiKey = AppPreferences.AI.apiKey?.trimmingCharacters(in: .whitespaces), !apiKey.isEmpty else {
+    guard let apiKey = AppPreferences.AI.apiKey?.trimmingCharacters(in: .whitespacesAndNewlines), !apiKey.isEmpty else {
       return .init(error: "Add your Anthropic API key in Settings → AI.")
     }
 
@@ -382,7 +382,7 @@ private extension AppAIService {
       return .unavailable(personaDisabledMessage)
     }
 
-    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard token.hasPrefix(PersonaStudioClient.tokenPrefix) else {
       return .mcp
     }
@@ -412,7 +412,7 @@ private extension AppAIService {
       return .disabled
     }
 
-    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     if token.hasPrefix(AxiomClient.tokenPrefix) {
       guard let axiom = AxiomClient.current() else {
         return .invalidAxiomURL
@@ -449,6 +449,24 @@ private extension AppAIService {
     }
 
     let limit = max(1, AppPreferences.NyxCore.knowledgeLimit)
+
+    // A whole-project source answers from the MCP catalog, not from Axiom REST,
+    // so it bypasses the knowledge route entirely: patterns and insights have
+    // no REST equivalent, and nyxcore_search is the only call that reaches
+    // them alongside the documents.
+    if let projectID = source.dropping(prefix: "nyx:") {
+      guard let client = NyxCoreClient.directory() else {
+        return ([], "Project knowledge needs an MCP persona token (nyx_mt_) — rewritten without grounding.")
+      }
+
+      do {
+        return Self.reporting(
+          try await client.projectKnowledge(query: query, limit: limit, projectID: projectID)
+        )
+      } catch {
+        return ([], "Project knowledge unavailable: \(error.localizedDescription) — rewritten without grounding.")
+      }
+    }
 
     do {
       switch Self.resolveKnowledgeRoute() {
