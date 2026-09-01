@@ -32,6 +32,9 @@ struct AISettingsView: View {
   @State private var nyxProjectID: String = AppPreferences.NyxCore.projectID
   @State private var nyxCollectionID: String = AppPreferences.NyxCore.collectionID
   @State private var nyxSources: [KnowledgeSourcePreference] = KnowledgeSourcePreference.load()
+  @State private var nyxProjects: [NyxProject] = []
+  @State private var projectsLoading: Bool = false
+  @State private var projectListStatus: String = ""
   @State private var nyxKnowledgeScope: String = {
     let stored = AppPreferences.NyxCore.knowledgeScope
     if !stored.isEmpty {
@@ -225,14 +228,28 @@ private extension AISettingsView {
         .formLabel("Knowledge endpoint")
 
       VStack(alignment: .leading) {
-        TextField("", text: $nyxProjectID, prompt: Text("UUID"))
-          .textFieldStyle(.roundedBorder)
-          .onChange(of: nyxProjectID) {
-            AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
+        HStack(spacing: 6) {
+          TextField("", text: $nyxProjectID, prompt: Text("UUID"))
+            .textFieldStyle(.roundedBorder)
+            .onChange(of: nyxProjectID) {
+              AppPreferences.NyxCore.projectID = nyxProjectID.trimmingCharacters(in: .whitespaces)
+            }
+
+          projectChooser { project in
+            nyxProjectID = project.id
           }
+        }
 
         Text("Project for the \"Project\" scope.")
           .formDescription()
+
+        if !projectListStatus.isEmpty {
+          Text(projectListStatus)
+            .formDescription()
+            .foregroundStyle(.secondary)
+            .frame(width: descriptionWidth, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+        }
       }
       .formLabel(alignment: .top, "Project ID")
 
@@ -243,8 +260,11 @@ private extension AISettingsView {
             AppPreferences.NyxCore.collectionID = nyxCollectionID.trimmingCharacters(in: .whitespaces)
           }
 
-        Text("Standalone Axiom collection for the \"Global\" scope. Optional.")
+        Text("Standalone Axiom collection for the \"Global\" scope. Optional. "
+          + "Collections cannot be listed by the API, so this one is typed in.")
           .formDescription()
+          .frame(width: descriptionWidth, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
       }
       .formLabel(alignment: .top, "Collection ID")
 
@@ -274,6 +294,18 @@ private extension AISettingsView {
 
               TextField("", text: $nyxSources[index].target, prompt: Text("UUID"))
                 .textFieldStyle(.roundedBorder)
+
+              if nyxSources[index].kind == "project" {
+                // Picking a project fills the display name too — an unnamed
+                // row is ignored on load, and typing the name again is the
+                // step people skip.
+                projectChooser { project in
+                  nyxSources[index].target = project.id
+                  if nyxSources[index].name.trimmingCharacters(in: .whitespaces).isEmpty {
+                    nyxSources[index].name = project.name
+                  }
+                }
+              }
             }
           }
         }
@@ -361,6 +393,69 @@ private extension AISettingsView {
       } else {
         testStatusIsError = false
         testStatus = Localized.Settings.aiTestSuccess
+      }
+    }
+  }
+}
+
+// MARK: - Project chooser
+
+private extension AISettingsView {
+  /// Menu that fills a project UUID by name.
+  ///
+  /// The field stays a text field rather than becoming a pure picker: a token
+  /// that cannot list projects, or a project the catalog does not return, must
+  /// still be usable by pasting the id. The menu is a convenience over that,
+  /// not a replacement for it.
+  ///
+  /// Collections have no listing endpoint on either the Axiom REST API or the
+  /// MCP catalog, so they get no equivalent — the Collection ID description
+  /// says so instead of leaving an empty menu to explain itself.
+  @ViewBuilder
+  func projectChooser(onPick: @escaping (NyxProject) -> Void) -> some View {
+    Menu {
+      if nyxProjects.isEmpty {
+        Text(projectsLoading ? "Loading…" : "No projects loaded")
+      } else {
+        ForEach(nyxProjects) { project in
+          Button(project.name) { onPick(project) }
+        }
+      }
+
+      Divider()
+      Button(nyxProjects.isEmpty ? "Load projects" : "Reload projects") {
+        loadProjects()
+      }
+    } label: {
+      Text("Choose")
+    }
+    .menuStyle(.borderlessButton)
+    .fixedSize()
+    .disabled(projectsLoading)
+    .help("Pick a project by name instead of pasting its UUID")
+  }
+
+  func loadProjects() {
+    projectsLoading = true
+    projectListStatus = ""
+
+    Task { @MainActor in
+      defer { projectsLoading = false }
+
+      guard let client = NyxCoreClient.directory() else {
+        projectListStatus = "Listing projects needs an MCP persona token (nyx_mt_). "
+          + "With a Persona Studio token, enter the ID manually."
+        return
+      }
+
+      do {
+        nyxProjects = try await client.listProjects()
+        projectListStatus = nyxProjects.isEmpty
+          ? "No active projects returned for this token."
+          : "\(nyxProjects.count) projects loaded."
+      } catch {
+        nyxProjects = []
+        projectListStatus = error.localizedDescription
       }
     }
   }
