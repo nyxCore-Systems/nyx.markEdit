@@ -59,6 +59,7 @@ struct AxiomClient: Sendable {
     case missingProject
     case missingCollection
     case invalidScope(String)
+    case notTenantWide
     case decoding(String)
 
     var errorDescription: String? {
@@ -74,6 +75,9 @@ struct AxiomClient: Sendable {
         return "Set a Collection ID in Settings → AI to use global knowledge."
       case let .invalidScope(scope):
         return "Unknown knowledge scope: \(scope)."
+      case .notTenantWide:
+        return "This token covers several projects, so \"All\" is ambiguous — "
+          + "pick a Project or Collection instead, or use a tenant-wide token."
       case let .decoding(message):
         return "Could not parse Axiom response: \(message)"
       }
@@ -179,6 +183,13 @@ struct AxiomClient: Sendable {
     }
 
     guard (200...299).contains(http.statusCode) else {
+      // A 400 on the unfiltered "all" search is not a malformed request but an
+      // ambiguous one: the token names several projects and the service will
+      // not guess between them. Say that, instead of repeating its wording.
+      if http.statusCode == 400, scope == "all", Self.isMissingTarget(data) {
+        throw ClientError.notTenantWide
+      }
+
       throw ClientError.http(http.statusCode, Self.errorDetail(from: data))
     }
 
@@ -201,6 +212,15 @@ struct AxiomClient: Sendable {
 
       return label.isEmpty ? text : "[\(label)]\n\(text)"
     }
+  }
+
+  /// Whether the response is the API's "name a project or collection" rejection.
+  private static func isMissingTarget(_ data: Data) -> Bool {
+    guard let text = String(data: data, encoding: .utf8)?.lowercased() else {
+      return false
+    }
+
+    return text.contains("projectid") && text.contains("collectionid")
   }
 
   /// Prefers the API envelope's error message ({"ok":false,"error":{"code","message"}})

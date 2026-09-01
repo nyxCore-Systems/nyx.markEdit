@@ -17,6 +17,13 @@ struct NyxPersona: Decodable, Sendable, Identifiable {
   let description: String?
 }
 
+struct NyxProject: Decodable, Sendable, Identifiable {
+  let id: String
+  let name: String
+  let description: String?
+  let status: String?
+}
+
 struct NyxCoreClient: Sendable {
   enum ClientError: LocalizedError {
     case invalidURL
@@ -80,7 +87,42 @@ struct NyxCoreClient: Sendable {
     )
   }
 
+  /// Client for catalog lookups (listing projects), or nil when there is no
+  /// MCP token to make them with.
+  ///
+  /// Uses the persona credentials because the project catalog lives behind the
+  /// same MCP endpoint as the personas. A `nyx_pa_` token is Persona Studio
+  /// REST and speaks no MCP at all, so it is rejected here rather than sent to
+  /// an endpoint that cannot answer.
+  @MainActor
+  static func directory() -> Self? {
+    guard AppPreferences.NyxCore.enabled else {
+      return nil
+    }
+
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    guard !token.isEmpty, !token.hasPrefix(PersonaStudioClient.tokenPrefix) else {
+      return nil
+    }
+
+    return Self(baseURL: AppPreferences.NyxCore.personaBaseURL, token: token, projectID: nil)
+  }
+
   // MARK: - Tools
+
+  /// Active projects visible to this token, for the Settings pickers.
+  ///
+  /// Requires a tenant-scoped token; a global-scope one answers with an RPC
+  /// error, which surfaces as the reason the list stayed empty.
+  func listProjects() async throws -> [NyxProject] {
+    struct Payload: Decodable { let projects: [NyxProject] }
+    let payload: Payload = try await callTool(
+      name: "nyxcore_list_projects",
+      arguments: ["status": "active"]
+    )
+
+    return payload.projects.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+  }
 
   func listPersonas() async throws -> [NyxPersona] {
     struct Payload: Decodable { let personas: [NyxPersona] }
