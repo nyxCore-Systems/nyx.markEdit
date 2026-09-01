@@ -1,0 +1,75 @@
+name: Test build
+
+# A MarkEdit.app to click through, without publishing anything.
+#
+# release.yml also produces an app, but it cuts a public GitHub Release on the
+# way and insists the tag match MARKETING_VERSION — too much ceremony when the
+# question is only "does this branch work in the app". build-and-test.yml builds
+# the same app and throws it away. This keeps it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag or SHA to build (default: this workflow''s ref)'
+        required: false
+
+jobs:
+  build:
+    name: Build MarkEdit.app
+    runs-on: macos-26
+    env:
+      node-version: '22.x'
+      DEVELOPER_DIR: /Applications/Xcode_26.0.app/Contents/Developer
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: Describe what is being built
+        id: describe
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Building $SHA — $(git log -1 --pretty=%s)"
+
+      - name: Use Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.node-version }}
+          cache: 'npm'
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Build CoreEditor
+        working-directory: CoreEditor
+        run: |
+          corepack enable
+          yarn install
+          yarn build
+
+      - name: Build MarkEditMac (Release)
+        run: |
+          xcodebuild build \
+            -project MarkEdit.xcodeproj \
+            -scheme MarkEditMac \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+      - name: Ad-hoc sign and package
+        run: |
+          APP="$RUNNER_TEMP/DerivedData/Build/Products/Release/MarkEdit.app"
+          test -d "$APP" || { echo "::error::MarkEdit.app not found at $APP"; exit 1; }
+          codesign --force --deep --sign - "$APP"
+          xattr -cr "$APP"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$APP" "$RUNNER_TEMP/MarkEdit-${{ steps.describe.outputs.sha }}.zip"
+
+      - name: Upload the app
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarkEdit-${{ steps.describe.outputs.sha }}
+          path: ${{ runner.temp }}/MarkEdit-${{ steps.describe.outputs.sha }}.zip
+          retention-days: 14
