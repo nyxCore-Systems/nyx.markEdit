@@ -58,7 +58,7 @@ struct NyxCoreClient: Sendable {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard !token.isEmpty else {
       return nil
     }
@@ -74,7 +74,7 @@ struct NyxCoreClient: Sendable {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.knowledgeToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard !token.isEmpty else {
       return nil
     }
@@ -100,7 +100,7 @@ struct NyxCoreClient: Sendable {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard !token.isEmpty, !token.hasPrefix(PersonaStudioClient.tokenPrefix) else {
       return nil
     }
@@ -145,15 +145,134 @@ struct NyxCoreClient: Sendable {
       .joined(separator: "\n\n")
   }
 
+  /// Everything nyxCore knows about a project: Axiom passages, consolidation
+  /// patterns, and workflow insights, as prompt-ready snippets.
+  ///
+  /// Three calls rather than one because `nyxcore_search` only ever answers
+  /// from Axiom — passing `sources: ["patterns"]` was verified to change
+  /// nothing, every hit still comes back `source: "axiom"`. Patterns and
+  /// insights are reachable only through their own tools, which take no query,
+  /// so they are fetched whole and ranked here.
+  func projectKnowledge(query: String, limit: Int, projectID: String) async throws -> [String] {
+    async let passages = try? search(query: query, limit: limit, projectID: projectID)
+    async let patterns = try? listPatterns(projectID: projectID)
+    async let insights = try? listInsights(projectID: projectID)
+
+    let ranked = Self.mostRelevant(
+      (await patterns) ?? [],
+      plus: (await insights) ?? [],
+      to: query,
+      limit: limit
+    )
+
+    return ((await passages) ?? []) + ranked
+  }
+
+  /// Consolidation patterns — the project's recorded pains, solutions and
+  /// architecture choices.
+  func listPatterns(projectID: String) async throws -> [String] {
+    struct Pattern: Decodable {
+      let type: String?
+      let title: String?
+      let description: String?
+      let evidence: [String]?
+    }
+    struct Payload: Decodable { let patterns: [Pattern] }
+
+    let payload: Payload = try await callTool(
+      name: "nyxcore_get_patterns",
+      arguments: ["projectId": projectID]
+    )
+
+    return payload.patterns.compactMap { pattern in
+      guard let title = pattern.title?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty else {
+        return nil
+      }
+
+      // Evidence is capped: a heavily consolidated pattern can carry a dozen
+      // bullet points, which would crowd out every other snippet in the prompt.
+      let evidence = (pattern.evidence ?? []).prefix(3).map { "- \($0)" }.joined(separator: "\n")
+      let body = [pattern.description, evidence.isEmpty ? nil : evidence]
+        .compactMap { $0 }
+        .filter { !$0.isEmpty }
+        .joined(separator: "\n")
+
+      let kind = pattern.type ?? "pattern"
+      return "[Project pattern · \(kind)] \(title)\n\(body)"
+    }
+  }
+
+  /// Workflow insights — the lessons the project has recorded.
+  func listInsights(projectID: String) async throws -> [String] {
+    struct Insight: Decodable {
+      let title: String?
+      let detail: String?
+      let suggestion: String?
+      let insightType: String?
+      let severity: String?
+    }
+    struct Payload: Decodable { let insights: [Insight] }
+
+    let payload: Payload = try await callTool(
+      name: "nyxcore_get_insights",
+      arguments: ["projectId": projectID]
+    )
+
+    return payload.insights.compactMap { insight in
+      guard let title = insight.title?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty else {
+        return nil
+      }
+
+      let body = [insight.detail, insight.suggestion.map { "Suggestion: \($0)" }]
+        .compactMap { $0 }
+        .filter { !$0.isEmpty }
+        .joined(separator: "\n")
+
+      let label = [insight.insightType, insight.severity]
+        .compactMap { $0 }
+        .filter { !$0.isEmpty }
+        .joined(separator: " · ")
+
+      return "[Project insight\(label.isEmpty ? "" : " · \(label)")] \(title)\n\(body)"
+    }
+  }
+
+  /// Ranks whole-corpus snippets against the query by word overlap.
+  ///
+  /// Neither patterns nor insights have a server-side search, so the choice is
+  /// between ranking here and sending everything. A long project would blow the
+  /// prompt budget and bury the passage being edited, so it is ranked here —
+  /// crudely, but a crude order beats an arbitrary one.
+  static func mostRelevant(_ snippets: [String], plus other: [String], to query: String, limit: Int) -> [String] {
+    let terms = Set(
+      query.lowercased()
+        .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+        .filter { $0.count > 3 }
+        .map(String.init)
+    )
+
+    let all = snippets + other
+    guard !terms.isEmpty else {
+      return Array(all.prefix(limit))
+    }
+
+    return all
+      .map { (snippet: $0, score: terms.count { $0.isEmpty ? false : snippet.lowercased().contains($0) }) }
+      .filter { $0.score > 0 }
+      .sorted { $0.score > $1.score }
+      .prefix(limit)
+      .map(\.snippet)
+  }
+
   /// Knowledge snippet texts relevant to the query, most relevant first.
-  func search(query: String, limit: Int) async throws -> [String] {
+  func search(query: String, limit: Int, projectID overrideProjectID: String? = nil) async throws -> [String] {
     struct Metadata: Decodable { let filename: String?; let heading: String? }
     struct Hit: Decodable { let content: String?; let metadata: Metadata? }
     struct Payload: Decodable { let results: [Hit] }
 
     var arguments: [String: Any] = ["query": query, "limit": limit]
-    if let projectID {
-      arguments["projectId"] = projectID
+    if let target = overrideProjectID ?? projectID {
+      arguments["projectId"] = target
     }
 
     let payload: Payload = try await callTool(name: "nyxcore_search", arguments: arguments)
@@ -170,10 +289,13 @@ struct NyxCoreClient: Sendable {
       return label.isEmpty ? body : "[\(label)]\n\(body)"
     }
   }
+}
 
-  // MARK: - Transport
+// MARK: - Transport
 
-  private func callTool<T: Decodable>(name: String, arguments: [String: Any]) async throws -> T {
+private extension NyxCoreClient {
+
+  func callTool<T: Decodable>(name: String, arguments: [String: Any]) async throws -> T {
     guard let url = URL(string: baseURL) else {
       throw ClientError.invalidURL
     }
@@ -216,6 +338,15 @@ struct NyxCoreClient: Sendable {
       let inner = text.data(using: .utf8)
     else {
       throw ClientError.decoding("Missing tool content")
+    }
+
+    // A tool that refuses still answers 200 with isError and its reason in the
+    // very field a successful payload would occupy. Decoding it as the payload
+    // turns "projectId is required for tenant-scoped tokens" into a parse
+    // error — the one message that cannot be acted on.
+    if result["isError"] as? Bool == true {
+      let detail = (try? JSONSerialization.jsonObject(with: inner) as? [String: Any])?["error"] as? String
+      throw ClientError.rpc(detail ?? text)
     }
 
     do {

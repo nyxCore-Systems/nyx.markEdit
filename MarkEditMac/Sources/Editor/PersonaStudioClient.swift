@@ -70,7 +70,7 @@ struct PersonaStudioClient: Sendable {
       return nil
     }
 
-    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespaces)
+    let token = (AppPreferences.NyxCore.personaToken ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     guard token.hasPrefix(tokenPrefix) else {
       return nil
     }

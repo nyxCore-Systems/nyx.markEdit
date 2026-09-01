@@ -64,7 +64,7 @@ struct AISettingsView: View {
           SecureField("", text: $apiKey, prompt: Text("sk-ant-…"))
             .textFieldStyle(.roundedBorder)
             .onChange(of: apiKey) {
-              AppPreferences.AI.apiKey = apiKey.trimmingCharacters(in: .whitespaces)
+              AppPreferences.AI.apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
             }
 
           Text(Localized.Settings.aiKeyHint)
@@ -101,7 +101,7 @@ struct AISettingsView: View {
             Button(Localized.Settings.aiTestConnection) {
               runConnectionTest()
             }
-            .disabled(isTesting || apiKey.trimmingCharacters(in: .whitespaces).isEmpty)
+            .disabled(isTesting || apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
             if isTesting {
               ProgressView().scaleEffect(0.6)
@@ -135,7 +135,7 @@ struct AISettingsView: View {
           SecureField("", text: $nyxPersonaToken, prompt: Text("nyx_pa_… / nyx_mt_…"))
             .textFieldStyle(.roundedBorder)
             .onChange(of: nyxPersonaToken) {
-              AppPreferences.NyxCore.personaToken = nyxPersonaToken.trimmingCharacters(in: .whitespaces)
+              AppPreferences.NyxCore.personaToken = nyxPersonaToken.trimmingCharacters(in: .whitespacesAndNewlines)
             }
 
           Text("Persona Studio token (nyx_pa_) or MCP token (nyx_mt_) — detected automatically. Stored in the Keychain.")
@@ -161,7 +161,7 @@ struct AISettingsView: View {
             Button("Test personas") {
               runNyxConnectionTest()
             }
-            .disabled(nyxTesting || nyxPersonaToken.trimmingCharacters(in: .whitespaces).isEmpty)
+            .disabled(nyxTesting || nyxPersonaToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
             if nyxTesting {
               ProgressView().scaleEffect(0.6)
@@ -170,7 +170,7 @@ struct AISettingsView: View {
             Button("Test knowledge") {
               runKnowledgeTest()
             }
-            .disabled(knowledgeTesting || nyxKnowledgeToken.trimmingCharacters(in: .whitespaces).isEmpty)
+            .disabled(knowledgeTesting || nyxKnowledgeToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
             if knowledgeTesting {
               ProgressView().scaleEffect(0.6)
@@ -210,7 +210,7 @@ private extension AISettingsView {
         SecureField("", text: $nyxKnowledgeToken, prompt: Text("nyx_ax_…"))
           .textFieldStyle(.roundedBorder)
           .onChange(of: nyxKnowledgeToken) {
-            AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespaces)
+            AppPreferences.NyxCore.knowledgeToken = nyxKnowledgeToken.trimmingCharacters(in: .whitespacesAndNewlines)
           }
 
         Text("Axiom token (nyx_ax_). A tenant-wide token enables the Global and All scopes; a project token is pinned to its project. Stored in the Keychain.")
@@ -286,16 +286,17 @@ private extension AISettingsView {
 
             HStack(spacing: 6) {
               Picker("", selection: $nyxSources[index].kind) {
-                Text("Project").tag("project")
-                Text("Collection").tag("collection")
+                Text("Axiom project").tag("project")
+                Text("Axiom collection").tag("collection")
+                Text("Project + patterns").tag("nyxproject")
               }
               .labelsHidden()
-              .frame(width: 110)
+              .frame(width: 150)
 
               TextField("", text: $nyxSources[index].target, prompt: Text("UUID"))
                 .textFieldStyle(.roundedBorder)
 
-              if nyxSources[index].kind == "project" {
+              if nyxSources[index].kind != "collection" {
                 // Picking a project fills the display name too — an unnamed
                 // row is ignored on load, and typing the name again is the
                 // step people skip.
@@ -314,9 +315,12 @@ private extension AISettingsView {
           nyxSources.append(KnowledgeSourcePreference(kind: "project", target: "", name: ""))
         }
 
-        Text("Extra projects and Axiom collections offered in the editor's source picker, "
-          + "in addition to the two fields above. Incomplete rows are ignored.")
+        Text("Offered in the editor's source picker, in addition to the two fields above. "
+          + "\"Project + patterns\" also pulls the project's recorded patterns, solutions "
+          + "and pains through the MCP token; the Axiom kinds search documents only. "
+          + "Incomplete rows are ignored.")
           .formDescription()
+          .fixedSize(horizontal: false, vertical: true)
       }
       .frame(width: descriptionWidth, alignment: .leading)
       .onChange(of: nyxSources) {
