@@ -257,7 +257,10 @@ struct NyxCoreClient: Sendable {
     }
 
     return all
-      .map { (snippet: $0, score: terms.count { $0.isEmpty ? false : snippet.lowercased().contains($0) }) }
+      .map { snippet -> (snippet: String, score: Int) in
+        let haystack = snippet.lowercased()
+        return (snippet: snippet, score: terms.count { haystack.contains($0) })
+      }
       .filter { $0.score > 0 }
       .sorted { $0.score > $1.score }
       .prefix(limit)
