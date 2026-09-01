@@ -315,11 +315,11 @@ private extension AISettingsView {
           nyxSources.append(KnowledgeSourcePreference(kind: "project", target: "", name: ""))
         }
 
-        Text("Offered in the editor's source picker, in addition to the two fields above. "
-          + "\"Project + patterns\" also pulls the project's recorded patterns, solutions "
-          + "and pains through the MCP token; the Axiom kinds search documents only. "
-          + "Incomplete rows are ignored.")
+        Text("Offered in the editor's source picker. \"Project + patterns\" also pulls "
+          + "the project's patterns, solutions and pains; the Axiom kinds search "
+          + "documents only. Incomplete rows are ignored.")
           .formDescription()
+          .frame(width: descriptionWidth, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
       }
       .frame(width: descriptionWidth, alignment: .leading)
