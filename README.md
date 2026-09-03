@@ -51,6 +51,62 @@ MarkEdit checks for updates automatically; you can also browse version history [
 
 For older macOS: [macos-12](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-12), [macos-13](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-13), [macos-14](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-14).
 
+## Build from source
+
+Prebuilt releases are the easy path; build locally if you want to run unreleased changes or produce your own downloadable app bundle.
+
+**Requirements:** macOS 15.0+, a full [Xcode](https://developer.apple.com/xcode/) 26 install (Command Line Tools alone are not enough), and Node.js 22.x.
+
+The project has two halves that must be built **in order**: the CodeMirror editor first, then the Xcode app that bundles it.
+
+```sh
+# 0. One-time setup, if you have never used this Xcode install
+sudo xcodebuild -license accept
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+# 1. Build the CoreEditor web app
+cd CoreEditor
+corepack enable
+yarn install
+yarn build
+cd ..
+
+# 2. Build MarkEdit.app in Release configuration
+xcodebuild build \
+  -project MarkEdit.xcodeproj \
+  -scheme MarkEditMac \
+  -configuration Release \
+  -destination 'platform=macOS' \
+  -derivedDataPath .derived-data \
+  CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+# 3. Ad-hoc sign and package it as a downloadable zip
+APP=".derived-data/Build/Products/Release/MarkEdit.app"
+VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$APP/Contents/Info.plist")
+codesign --force --deep --sign - "$APP"
+xattr -cr "$APP"
+mkdir -p dist
+ditto -c -k --sequesterRsrc --keepParent "$APP" "dist/MarkEdit-$VERSION.zip"
+shasum -a 256 "dist/MarkEdit-$VERSION.zip"
+```
+
+This leaves the app at `.derived-data/Build/Products/Release/MarkEdit.app` and the shareable archive at `dist/MarkEdit-<version>.zip`. Both paths are git-ignored. Install it by unzipping and dragging `MarkEdit.app` to `Applications`, same as a release build.
+
+> [!NOTE]
+> A local build is **ad-hoc signed and not notarized**, so Gatekeeper will refuse it on first launch. Open it once via right-click → _Open_, or clear the quarantine flag with `xattr -dr com.apple.quarantine /Applications/MarkEdit.app`. Only do this for builds you produced yourself.
+
+If `xcode-select -p` still points at `/Library/Developer/CommandLineTools`, prefix the `xcodebuild` calls with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` instead of switching it globally.
+
+These are the same steps CI runs in [`.github/workflows/release.yml`](.github/workflows/release.yml); tagging a `v*` release runs them on a clean machine and publishes the zip to [Releases](https://github.com/MarkEdit-app/MarkEdit/releases).
+
+### Running the tests
+
+```sh
+cd CoreEditor && yarn test && cd ..
+xcodebuild test -project MarkEdit.xcodeproj -scheme MarkEditCoreTests -destination 'platform=macOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+xcodebuild test -project MarkEdit.xcodeproj -scheme ModulesTests -destination 'platform=macOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+```
+
 ## Using MarkEdit
 
 Please refer to the [wiki page](https://github.com/MarkEdit-app/MarkEdit/wiki/Manual) for details. Check out [MarkEdit-skill](https://github.com/MarkEdit-app/MarkEdit-skill) if you're interested in managing MarkEdit with an AI agent.

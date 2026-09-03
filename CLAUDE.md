@@ -25,7 +25,14 @@ The project has two halves that must be built in order: the TypeScript editor fi
 - Single Swift test: append `-only-testing:<TestTarget>/<ClassName>/<testMethod>` to the `xcodebuild test` invocation.
 - SwiftLint runs as a SwiftPM build-tool plugin (`MarkEditTools`) on every Swift target — lint errors will fail the Xcode build, not a separate command. Rules live in `.swiftlint.yml`.
 
-CI (`.github/workflows/build-and-test.yml`) runs all of the above on macOS 26 / Xcode 26. Local overrides for signing/team go in `Build.xcconfig` via an ignored `Local.xcconfig`.
+**Local release build (downloadable app, run from repo root):**
+- Needs a **full Xcode** install. If `xcode-select -p` still points at `/Library/Developer/CommandLineTools`, prefix the commands with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`. A freshly installed Xcode also needs `sudo xcodebuild -license accept` once, otherwise every `xcodebuild` call fails with a license error.
+- Build: `xcodebuild build -project MarkEdit.xcodeproj -scheme MarkEditMac -configuration Release -destination 'platform=macOS' -derivedDataPath .derived-data CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO` (CoreEditor must be built first).
+- Package: ad-hoc sign with `codesign --force --deep --sign -`, clear attributes with `xattr -cr`, then `ditto -c -k --sequesterRsrc --keepParent <app> dist/MarkEdit-<version>.zip`.
+- `.derived-data/` and `dist/` are git-ignored. The full copy-paste sequence is in the README's "Build from source" section; `.github/workflows/release.yml` runs the identical steps for tagged releases.
+- **Never pass `-derivedDataPath build`** — `build/` is checked into git in this fork (~4,800 files, ~1 GB of stale DerivedData), so building there floods `git status`.
+
+CI (`.github/workflows/build-and-test.yml`) runs all of the above on macOS 26 / Xcode 26, and `release.yml` builds, packages and publishes the zip for `v*` tags. Local overrides for signing/team go in `Build.xcconfig` via an ignored `Local.xcconfig`.
 
 ## Architecture
 
