@@ -8,6 +8,7 @@ Local.xcconfig
 
 # Local MCP config (contains secret token)
 .mcp.json
+.codex/
 
 ## Local builds
 .derived-data/
