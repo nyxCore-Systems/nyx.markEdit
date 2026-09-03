@@ -1,4 +1,0 @@
-module DiffKit {
-header "DiffKit-Swift.h"
-export *
-}

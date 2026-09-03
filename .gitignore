@@ -8,3 +8,9 @@ Local.xcconfig
 
 # Local MCP config (contains secret token)
 .mcp.json
+
+## Local builds
+.derived-data/
+dist/
+build/
+MarkEdit.zip

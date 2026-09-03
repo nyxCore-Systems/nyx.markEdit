@@ -1,4 +1,0 @@
-module FileVersion {
-header "FileVersion-Swift.h"
-export *
-}

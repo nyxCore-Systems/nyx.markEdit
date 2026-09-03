@@ -1,4 +1,0 @@
-module TextBundle {
-header "TextBundle-Swift.h"
-export *
-}

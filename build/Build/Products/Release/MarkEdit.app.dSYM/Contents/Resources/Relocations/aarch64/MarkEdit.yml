@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     '/Users/oli/Projects/nyx.markEdit/build/Build/Products/Release/MarkEdit.app/Contents/MacOS/MarkEdit'
-relocations:     []
-...
