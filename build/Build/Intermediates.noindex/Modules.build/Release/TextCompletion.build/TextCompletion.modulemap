@@ -1,4 +1,0 @@
-module TextCompletion {
-header "TextCompletion-Swift.h"
-export *
-}

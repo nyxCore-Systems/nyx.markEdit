@@ -1,4 +1,0 @@
-module MarkEditKit {
-header "MarkEditKit-Swift.h"
-export *
-}

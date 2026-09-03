@@ -56,7 +56,7 @@ extension SettingsRootViewController {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
       self.view.window?.setFrameSize(CGSize(
         width: 580,
-        height: contentVC.contentView.frame.size.height
+        height: self.contentHeight(for: contentVC)
       ), animated: self.animateChanges && !self.reduceMotion)
 
       // Enable animations after initial selection
@@ -77,6 +77,24 @@ extension SettingsRootViewController {
 // MARK: - Private
 
 private extension SettingsRootViewController {
+  /// Content height for a tab, never taller than what the screen can show.
+  ///
+  /// `setFrameSize` takes a *content* size and grows it by the titlebar and
+  /// toolbar, so the cap has to be computed in content space too. Without the
+  /// cap AppKit shrinks the oversized window to fit the screen, and since the
+  /// pane below is only reachable by scrolling, the difference is invisible:
+  /// the settings simply appear to end early.
+  func contentHeight(for contentVC: SettingsTabViewController) -> Double {
+    let contentHeight = contentVC.contentView.fittingSize.height
+    guard let window = view.window, let screen = window.screen ?? .main else {
+      return contentHeight
+    }
+
+    let chromeHeight = window.frameRect(forContentRect: .zero).height
+    let available = screen.visibleFrame.height - chromeHeight
+    return min(contentHeight, max(available, 0))
+  }
+
   var reduceMotion: Bool {
     NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
   }

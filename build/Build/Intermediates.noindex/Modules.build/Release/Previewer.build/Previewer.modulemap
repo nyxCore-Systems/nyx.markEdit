@@ -1,4 +1,0 @@
-module Previewer {
-header "Previewer-Swift.h"
-export *
-}

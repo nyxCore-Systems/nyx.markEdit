@@ -1,4 +1,0 @@
-module Renderer {
-header "Renderer-Swift.h"
-export *
-}

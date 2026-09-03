@@ -13,6 +13,7 @@ import SwiftUI
 public final class SettingsTabViewController: NSViewController {
   let tabViewItem: NSTabViewItem
   let contentView: NSView
+  private let scrollView = NSScrollView(frame: .zero)
 
   public init(_ rootView: some View, title: String, icon: String) {
     tabViewItem = NSTabViewItem()
@@ -32,14 +33,32 @@ public final class SettingsTabViewController: NSViewController {
 
   override public func loadView() {
     view = NSView(frame: .zero)
-    view.addSubview(contentView)
+    view.addSubview(scrollView)
+
+    scrollView.drawsBackground = false
+    scrollView.hasVerticalScroller = true
+    scrollView.autohidesScrollers = true
+    scrollView.documentView = contentView
+
+    // No bounce when the pane fits, which is the normal case;
+    // scrolling only exists for panes too tall for the screen.
+    scrollView.verticalScrollElasticity = .none
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
 
     // Rely on SwiftUI view size to have auto-sizing,
     // the window height respects to the contentView height.
+    //
+    // Pinned to the top only: leaving the bottom free is what lets the
+    // document view keep its full intrinsic height and scroll, instead of
+    // being squeezed into the clip view and clipped like it used to be.
     contentView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      contentView.topAnchor.constraint(equalTo: view.topAnchor),
+      scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      contentView.centerXAnchor.constraint(equalTo: scrollView.contentView.centerXAnchor),
+      contentView.topAnchor.constraint(equalTo: scrollView.contentView.topAnchor),
     ])
   }
 }
