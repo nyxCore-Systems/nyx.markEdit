@@ -225,6 +225,14 @@
     }
     tbody tr:hover { background: var(--bg-softer); }
     tbody tr:last-child td { border-bottom: 0; }
+    /* URLs and code paths have no break opportunities and would push the table past the page edge. */
+    th a, td a, th code, td code { overflow-wrap: anywhere; }
+    /* Print sizing of a table, applied on screen while its --print-zoom is measured.
+       616px: WebKit lays out print pages at the printable width (A4 minus the 51pt margins
+       in Renderer.swift) times its minimum shrink factor 1.25. */
+    .table-wrap.print-measure { width: 616px; }
+    .table-wrap.print-measure table { font-size: calc(9.5pt * var(--print-zoom, 1)); }
+    .table-wrap.print-measure :is(th, td) { padding: calc(8px * var(--print-zoom, 1)) calc(14px * var(--print-zoom, 1)); }
 
     img {
       max-width: 100%;
@@ -335,6 +343,10 @@
       /* Tables */
       .table-wrap { overflow: visible; border: 0; }
       table { font-size: 9.5pt; break-inside: avoid; page-break-inside: avoid; }
+      /* Shrink tables wider than the page. Not zoom: WebKit counts a zoomed table at full width
+         and then shrinks the whole document. */
+      .table-wrap table { font-size: calc(9.5pt * var(--print-zoom, 1)); }
+      .table-wrap :is(th, td) { padding: calc(8px * var(--print-zoom, 1)) calc(14px * var(--print-zoom, 1)); }
       thead { display: table-header-group; }
       tfoot { display: table-footer-group; }
       tr, th, td { break-inside: avoid; page-break-inside: avoid; }
@@ -467,6 +479,20 @@
         console.warn("Mermaid render failed:", err);
       }
     }
+
+    // A table wider than the printed page would make WebKit shrink the whole document,
+    // and cut it off beyond a factor of 2. Measure each table at print size and shrink it alone.
+    root.querySelectorAll(".table-wrap").forEach((wrap) => {
+      const table = wrap.querySelector("table");
+      if (!table) return;
+      wrap.classList.add("print-measure");
+      let zoom = 1;
+      for (let pass = 0; pass < 4 && table.scrollWidth > wrap.clientWidth + 1; pass++) {
+        zoom *= wrap.clientWidth / table.scrollWidth;
+        wrap.style.setProperty("--print-zoom", zoom.toFixed(3));
+      }
+      wrap.classList.remove("print-measure");
+    });
 
     // Tell the host we're ready (so PDF export waits for full render).
     try {
