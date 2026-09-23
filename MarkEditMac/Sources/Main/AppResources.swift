@@ -77,6 +77,20 @@ enum Localized {
     static let okButton = String(localized: "OK", comment: "Default confirmation button")
   }
 
+  enum Extensions {
+    static let confirmTitleFormat = String(localized: "Install “%@”?", comment: "Title (format) for the extension install confirmation")
+    static let versionFormat = String(localized: "Version %1$@ by %2$@", comment: "Extension version and author (format) in the install confirmation")
+    static let sourceFormat = String(localized: "Source: %@", comment: "Extension download URL (format) in the install confirmation")
+    static let replacesNotice = String(localized: "This replaces the installed copy.", comment: "Notice in the install confirmation when the extension is already installed")
+    static let installButton = String(localized: "Install", comment: "Button title to confirm installing an extension")
+    static let installedTitle = String(localized: "Extension Installed", comment: "Title for the extension installed confirmation")
+    static let installedMessageFormat = String(localized: "New windows load “%@”. Relaunch MarkEdit to use it in open windows.", comment: "Message (format) shown after an extension is installed")
+    static let notFoundFormat = String(localized: "Couldn’t find the extension “%@” in the registry.", comment: "Error (format) when an install link id is not in the registry")
+    static let incompatibleFormat = String(localized: "This extension requires MarkEdit %@ or later.", comment: "Error (format) when an extension needs a newer app version")
+    static let failedTitle = String(localized: "Failed to install the extension.", comment: "Title for a failed extension installation")
+    static let failedMessage = String(localized: "The extension couldn’t be downloaded or verified.", comment: "Message for a failed extension installation")
+  }
+
   enum Search {
     static let find = String(localized: "Find", comment: "Find mode in search menu")
     static let replace = String(localized: "Replace", comment: "Replace mode in search menu")
