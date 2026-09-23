@@ -81,6 +81,8 @@
       background: var(--paper-bg);
       box-shadow: 0 4px 24px var(--paper-shadow), 0 0 0 1px rgba(0, 0, 0, 0.04);
       border-radius: 2px;
+      /* Long words (inline code, URLs) wrap instead of running past the page edge. */
+      overflow-wrap: break-word;
     }
     /* Manual page-break: visible band on screen, real page break in print. */
     main div[style*="page-break"],
@@ -314,6 +316,9 @@
       a { color: #0e58a4 !important; border-bottom: 0 !important; }
       a[href]::after { content: " (" attr(href) ")"; font-size: 0.82em; color: #6a737d; }
       a[href^="#"]::after, a[href=""]::after { content: ""; }
+      a.bare-url::after { content: none; }
+      /* Code blocks scroll on screen; on paper they wrap, or long lines would be cut off. */
+      pre, pre code, pre code.hljs { white-space: pre-wrap; overflow: visible; overflow-wrap: anywhere; }
       h1, h2 { border-color: #d8dce0 !important; }
       h1 { font-size: 17pt; }
       h2 { font-size: 13pt; }
@@ -446,6 +451,14 @@
       root.querySelectorAll('li > input[type="checkbox"]').forEach((cb) => {
         cb.parentElement?.classList.add("task-list-item");
         cb.disabled = true;
+      });
+
+      // Links whose text already is the address print without the " (href)" suffix.
+      const address = (s) => s.trim().replace(/^(https?:\/\/|mailto:)/i, "").replace(/\/$/, "");
+      root.querySelectorAll("a[href]").forEach((a) => {
+        if (address(a.textContent) === address(a.getAttribute("href"))) {
+          a.classList.add("bare-url");
+        }
       });
 
       // Wrap tables for horizontal scrolling on narrow widths.
