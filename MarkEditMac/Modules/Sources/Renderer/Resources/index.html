@@ -81,6 +81,8 @@
       background: var(--paper-bg);
       box-shadow: 0 4px 24px var(--paper-shadow), 0 0 0 1px rgba(0, 0, 0, 0.04);
       border-radius: 2px;
+      /* Long words (inline code, URLs) wrap instead of running past the page edge. */
+      overflow-wrap: break-word;
     }
     /* Manual page-break: visible band on screen, real page break in print. */
     main div[style*="page-break"],
@@ -225,6 +227,14 @@
     }
     tbody tr:hover { background: var(--bg-softer); }
     tbody tr:last-child td { border-bottom: 0; }
+    /* URLs and code paths have no break opportunities and would push the table past the page edge. */
+    th a, td a, th code, td code { overflow-wrap: anywhere; }
+    /* Print sizing of a table, applied on screen while its --print-zoom is measured.
+       616px: WebKit lays out print pages at the printable width (A4 minus the 51pt margins
+       in Renderer.swift) times its minimum shrink factor 1.25. */
+    .table-wrap.print-measure { width: 616px; }
+    .table-wrap.print-measure table { font-size: calc(9.5pt * var(--print-zoom, 1)); }
+    .table-wrap.print-measure :is(th, td) { padding: calc(8px * var(--print-zoom, 1)) calc(14px * var(--print-zoom, 1)); }
 
     img {
       max-width: 100%;
@@ -306,6 +316,9 @@
       a { color: #0e58a4 !important; border-bottom: 0 !important; }
       a[href]::after { content: " (" attr(href) ")"; font-size: 0.82em; color: #6a737d; }
       a[href^="#"]::after, a[href=""]::after { content: ""; }
+      a.bare-url::after { content: none; }
+      /* Code blocks scroll on screen; on paper they wrap, or long lines would be cut off. */
+      pre, pre code, pre code.hljs { white-space: pre-wrap; overflow: visible; overflow-wrap: anywhere; }
       h1, h2 { border-color: #d8dce0 !important; }
       h1 { font-size: 17pt; }
       h2 { font-size: 13pt; }
@@ -335,6 +348,10 @@
       /* Tables */
       .table-wrap { overflow: visible; border: 0; }
       table { font-size: 9.5pt; break-inside: avoid; page-break-inside: avoid; }
+      /* Shrink tables wider than the page. Not zoom: WebKit counts a zoomed table at full width
+         and then shrinks the whole document. */
+      .table-wrap table { font-size: calc(9.5pt * var(--print-zoom, 1)); }
+      .table-wrap :is(th, td) { padding: calc(8px * var(--print-zoom, 1)) calc(14px * var(--print-zoom, 1)); }
       thead { display: table-header-group; }
       tfoot { display: table-footer-group; }
       tr, th, td { break-inside: avoid; page-break-inside: avoid; }
@@ -436,6 +453,14 @@
         cb.disabled = true;
       });
 
+      // Links whose text already is the address print without the " (href)" suffix.
+      const address = (s) => s.trim().replace(/^(https?:\/\/|mailto:)/i, "").replace(/\/$/, "");
+      root.querySelectorAll("a[href]").forEach((a) => {
+        if (address(a.textContent) === address(a.getAttribute("href"))) {
+          a.classList.add("bare-url");
+        }
+      });
+
       // Wrap tables for horizontal scrolling on narrow widths.
       root.querySelectorAll("table").forEach((tbl) => {
         if (tbl.parentElement?.classList.contains("table-wrap")) return;
@@ -467,6 +492,20 @@
         console.warn("Mermaid render failed:", err);
       }
     }
+
+    // A table wider than the printed page would make WebKit shrink the whole document,
+    // and cut it off beyond a factor of 2. Measure each table at print size and shrink it alone.
+    root.querySelectorAll(".table-wrap").forEach((wrap) => {
+      const table = wrap.querySelector("table");
+      if (!table) return;
+      wrap.classList.add("print-measure");
+      let zoom = 1;
+      for (let pass = 0; pass < 4 && table.scrollWidth > wrap.clientWidth + 1; pass++) {
+        zoom *= wrap.clientWidth / table.scrollWidth;
+        wrap.style.setProperty("--print-zoom", zoom.toFixed(3));
+      }
+      wrap.classList.remove("print-measure");
+    });
 
     // Tell the host we're ready (so PDF export waits for full render).
     try {
